@@ -1,12 +1,8 @@
 import Image from 'next/image';
 import styled from 'styled-components';
 import { customMedia } from '../../styles/breakpoint';
-import { useRouter } from 'next/router';
-import ass from '../../public/asset/images/hero-home-after.svg';
 import { brand, twitter, facebook, instagram, linkedin, youtube } from '../../public/asset';
 function Footer() {
-  const router = useRouter();
-  console.log(router);
   const destinations = ['Bali', 'Yogyakarta', 'Jakarta', 'Kalimantan', 'Malang'];
   const vehicle = ['Bike', 'Cars', 'Motorbike', 'Return Times', 'FAQs'];
   const interests = ['Adventure Travel', 'Art And Culture', 'Wildlife And Nature', 'Family Holidays', 'Culinary Trip'];
@@ -84,6 +80,8 @@ const SytleFooter = styled.footer`
 
     ${customMedia.lessThan('media_md')`
   flex-direction: column;
+  
+  }
   `}
     .identity {
       max-width: 391px;
@@ -97,5 +95,6 @@ const SytleFooter = styled.footer`
     justify-content: space-between;
     margin: 0 auto;
     max-width: 250px;
-  }
+    ${customMedia.lessThan('media_md')`
+      margin-bottom: 120px;`}
 `;

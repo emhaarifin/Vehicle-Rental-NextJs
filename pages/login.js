@@ -1,7 +1,12 @@
 import Main from '../components/templates/Main';
 
 function Login() {
-  return <Main></Main>;
+  return (
+    <Main>
+      <div className="left"></div>
+      <div className="right"></div>
+    </Main>
+  );
 }
 
 export default Login;

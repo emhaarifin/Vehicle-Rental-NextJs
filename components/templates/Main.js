@@ -1,11 +1,13 @@
 import Footer from '../organism/Footer';
+import Navbar from '../organism/Navbar';
 
 function Main({ children }) {
   return (
-    <div>
+    <>
+      <Navbar />
       {children}
       <Footer />
-    </div>
+    </>
   );
 }
 
