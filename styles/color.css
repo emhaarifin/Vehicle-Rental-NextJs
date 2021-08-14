@@ -1,0 +1,31 @@
+.c-primary {
+  color: #ffcd61;
+}
+
+.c-black {
+  color: #393939;
+}
+
+.c-light {
+  color: #848484;
+}
+
+.c-orange-gradient {
+  color: #f8a170;
+}
+
+.c-orange-gradient-opaque {
+  color: #ffc7a7;
+}
+
+.bg-primary {
+  background: #ffcd61;
+}
+
+.bg-orange-gradient {
+  background: linear-gradient(91.97deg, #f8a170 14.73%, #ffcd61 97.52%);
+}
+
+.bg-orange-gradient-opaque {
+  background: linear-gradient(91.97deg, rgba(255, 199, 167, 0.2) 14.73%, rgba(255, 213, 121, 0.2) 97.52%);
+}
