@@ -1,11 +1,41 @@
-import styled from 'styled-components';
-import { customMedia } from '../../styles/breakpoint';
-import { brand, home, history, searchGrey, about } from '../../public/asset';
-import Image from 'next/image';
-import Link from 'next/link';
-import Button from '../atoms/Button';
+import styled from "styled-components";
+import { customMedia } from "../../styles/breakpoint";
+import {
+  brand,
+  home,
+  history,
+  searchGrey,
+  about,
+  avatarUser,
+  email,
+  arrowRight,
+} from "../../public/asset";
+import Image from "next/image";
+import Link from "next/link";
+import Button from "../atoms/Button";
+import { useState, useEffect } from "react";
 
 function Navbar() {
+  const [login, setLogin] = useState(false);
+  function dropDownUser() {
+    document.getElementById("myDropdown").classList.toggle("show");
+  }
+
+  useEffect(() => {
+    window.onclick = function (event) {
+      if (!event.target.matches(".avatar-user")) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains("show")) {
+            openDropdown.classList.remove("show");
+          }
+        }
+      }
+    };
+  }, []);
+
   return (
     <>
       <StyleNavbar>
@@ -53,10 +83,44 @@ function Navbar() {
               </div>
             </Link>
           </div>
-          <div className="button">
-            <Button className="text-black">Login</Button>
-            <Button className="text-black">Register</Button>
-          </div>
+          {login ? (
+            <div className="button">
+              <Button className="text-black">Login</Button>
+              <Button className="text-black">Register</Button>
+            </div>
+          ) : (
+            <div className="icon-user">
+              <Image src={email} alt="icon chat"></Image>
+              <Image
+                src={avatarUser}
+                onClick={dropDownUser}
+                className="avatar-user"
+                width="50px"
+                height="50px"
+                alt="avatar user"
+              ></Image>
+              <div id="myDropdown" className="dropdown-content">
+                <Link href="/">
+                  <div className="dropdown-item">
+                    <a className="text-14 text-bold">Edit Profile</a>
+                    <Image src={arrowRight} alt="go"></Image>
+                  </div>
+                </Link>
+                <Link href="/">
+                  <div className="dropdown-item">
+                    <a className="text-14 text-bold">Help</a>
+                    <Image src={arrowRight} alt="go"></Image>
+                  </div>
+                </Link>
+                <Link href="/">
+                  <div className="dropdown-item">
+                    <a className="text-14 text-bold">Logout</a>
+                    <Image src={arrowRight} alt="go"></Image>
+                  </div>
+                </Link>
+              </div>
+            </div>
+          )}
         </div>
       </StyleNavbar>
     </>
@@ -70,8 +134,8 @@ const StyleNavbar = styled.nav`
   padding-bottom: 1rem;
   background: #fff;
   display: flex;
-  justify-content: space-between;
 
+  justify-content: space-between;
   div {
     display: flex;
   }
@@ -91,7 +155,37 @@ const StyleNavbar = styled.nav`
       background: #ffcd61;
     }
   }
-
+  .icon-user {
+    gap: 2rem;
+    position: relative;
+    .avatar-user {
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #fff;
+      min-width: 160px;
+      overflow: auto;
+      box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.23);
+      border-radius: 10px;
+      right: 0;
+      top: 3.5rem;
+      z-index: 1;
+      &.show {
+        display: flex;
+        flex-direction: column;
+        .dropdown-item {
+          padding: 0.75rem 1rem;
+          justify-content: space-between;
+          &:active {
+            background: #ffcd61 !important;
+          }
+        }
+      }
+    }
+  }
   .route {
     width: 350px;
     margin: auto;
@@ -100,9 +194,11 @@ const StyleNavbar = styled.nav`
     justify-content: space-between;
     .route-custom {
       color: #b8becd;
-    }
-    .route-custom:hover {
-      background: red;
+      cursor: pointer;
+      &:hover, &:focus, &:active {
+        color: #ffcd61;
+      }
+      }
     }
   }
 
@@ -121,7 +217,7 @@ const StyleNavbar = styled.nav`
   .wrapper {
     display: flex;
     justify-content: space-between;
-    ${customMedia.lessThan('media_md')`
+    ${customMedia.lessThan("media_md")`
   flex-direction: column;
   `}
     .identity {
@@ -132,7 +228,7 @@ const StyleNavbar = styled.nav`
     }
   }
 
-  ${customMedia.lessThan('media_md')`
+  ${customMedia.lessThan("media_md")`
   .custom-img {
     display: block;
   }
@@ -158,13 +254,12 @@ const StyleNavbar = styled.nav`
     }
   }`}
 
-  ${customMedia.lessThan('media_sm')`
+  ${customMedia.lessThan("media_sm")`
   padding: 1rem;
   .route {
       padding: 0rem;
       .route-custom {
         padding: 0.5rem;
       }
-  }
-  `}
+  }`}
 `;
