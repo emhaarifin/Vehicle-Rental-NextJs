@@ -9,6 +9,9 @@
 .c-light {
   color: #848484;
 }
+.c-white {
+  color: #fff !important;
+}
 
 .c-orange-gradient {
   color: #f8a170;
