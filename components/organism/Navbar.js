@@ -1,35 +1,26 @@
-import styled from "styled-components";
-import { customMedia } from "../../styles/breakpoint";
-import {
-  brand,
-  home,
-  history,
-  searchGrey,
-  about,
-  avatarUser,
-  email,
-  arrowRight,
-} from "../../public/asset";
-import Image from "next/image";
-import Link from "next/link";
-import Button from "../atoms/Button";
-import { useState, useEffect } from "react";
-
+/* eslint-disable @next/next/link-passhref */
+import styled from 'styled-components';
+import { customMedia } from '../../styles/breakpoint';
+import { brand, history, searchGrey, home, about, avatarUser, email, arrowRight } from '../../public/asset';
+import Image from 'next/image';
+import Link from 'next/link';
+import Button from '../atoms/Button';
+import { useState, useEffect } from 'react';
 function Navbar() {
-  const [login, setLogin] = useState(false);
+  const [login, setLogin] = useState(true);
   function dropDownUser() {
-    document.getElementById("myDropdown").classList.toggle("show");
+    document.getElementById('myDropdown').classList.toggle('show');
   }
 
   useEffect(() => {
     window.onclick = function (event) {
-      if (!event.target.matches(".avatar-user")) {
-        var dropdowns = document.getElementsByClassName("dropdown-content");
+      if (!event.target.matches('.avatar-user')) {
+        var dropdowns = document.getElementsByClassName('dropdown-content');
         var i;
         for (i = 0; i < dropdowns.length; i++) {
           var openDropdown = dropdowns[i];
-          if (openDropdown.classList.contains("show")) {
-            openDropdown.classList.remove("show");
+          if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');
           }
         }
       }
@@ -85,8 +76,12 @@ function Navbar() {
           </div>
           {login ? (
             <div className="button">
-              <Button className="text-black">Login</Button>
-              <Button className="text-black">Register</Button>
+              <Link href="/login">
+                <Button className="text-black">Login</Button>
+              </Link>
+              <Link href="/signup">
+                <Button className="text-black">Sign Up</Button>
+              </Link>
             </div>
           ) : (
             <div className="icon-user">
@@ -100,7 +95,7 @@ function Navbar() {
                 alt="avatar user"
               ></Image>
               <div id="myDropdown" className="dropdown-content">
-                <Link href="/">
+                <Link href="/profile">
                   <div className="dropdown-item">
                     <a className="text-14 text-bold">Edit Profile</a>
                     <Image src={arrowRight} alt="go"></Image>
@@ -217,7 +212,7 @@ const StyleNavbar = styled.nav`
   .wrapper {
     display: flex;
     justify-content: space-between;
-    ${customMedia.lessThan("media_md")`
+    ${customMedia.lessThan('media_md')`
   flex-direction: column;
   `}
     .identity {
@@ -228,7 +223,7 @@ const StyleNavbar = styled.nav`
     }
   }
 
-  ${customMedia.lessThan("media_md")`
+  ${customMedia.lessThan('media_md')`
   .custom-img {
     display: block;
   }
@@ -254,7 +249,7 @@ const StyleNavbar = styled.nav`
     }
   }`}
 
-  ${customMedia.lessThan("media_sm")`
+  ${customMedia.lessThan('media_sm')`
   padding: 1rem;
   .route {
       padding: 0rem;

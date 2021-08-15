@@ -2,7 +2,7 @@ import Image from 'next/image';
 import styled from 'styled-components';
 import { customMedia } from '../../styles/breakpoint';
 import { brand, twitter, facebook, instagram, linkedin, youtube } from '../../public/asset';
-function Footer() {
+function Footer({ onlyRegister }) {
   const destinations = ['Bali', 'Yogyakarta', 'Jakarta', 'Kalimantan', 'Malang'];
   const vehicle = ['Bike', 'Cars', 'Motorbike', 'Return Times', 'FAQs'];
   const interests = ['Adventure Travel', 'Art And Culture', 'Wildlife And Nature', 'Family Holidays', 'Culinary Trip'];
@@ -11,7 +11,7 @@ function Footer() {
   return (
     <>
       <SytleFooter>
-        <div className="wrapper">
+        <div className={`wrapper  ${onlyRegister ? 'onlyRegister' : ''}`}>
           <div className="identity">
             <Image src={brand} alt="brand icon"></Image>
             <div className="indentity-text">
@@ -72,6 +72,9 @@ const SytleFooter = styled.footer`
     margin-top: 3rem;
     margin-bottom: 2rem;
   }
+  p {
+    font-family: Mulish;
+  }
   ${customMedia.lessThan('media_sm')`
   padding: 1rem;`}
   .wrapper {
@@ -97,4 +100,13 @@ const SytleFooter = styled.footer`
     max-width: 250px;
     ${customMedia.lessThan('media_md')`
       margin-bottom: 120px;`}
+  }
+
+  .onlyRegister {
+    .destinations,
+    .vehicle,
+    .interest {
+      display: none;
+    }
+  }
 `;
