@@ -30,7 +30,11 @@ function Navbar() {
   return (
     <>
       <StyleNavbar>
-        <Image src={brand} alt="Brand"></Image>
+        <Link href="/">
+          <a>
+            <Image src={brand} alt="Brand"></Image>
+          </a>
+        </Link>
         <div>
           <div className="route">
             <Link href="/">
@@ -76,12 +80,16 @@ function Navbar() {
           </div>
           {login ? (
             <div className="button">
-              <Link href="/login">
-                <Button className="text-black">Login</Button>
-              </Link>
-              <Link href="/signup">
-                <Button className="text-black">Sign Up</Button>
-              </Link>
+              <div>
+                <Link href="/login">
+                  <Button className="text-black login">Login</Button>
+                </Link>
+              </div>
+              <div>
+                <Link href="/signup">
+                  <Button className="text-black signup">Sign Up</Button>
+                </Link>
+              </div>
             </div>
           ) : (
             <div className="icon-user">
@@ -129,7 +137,6 @@ const StyleNavbar = styled.nav`
   padding-bottom: 1rem;
   background: #fff;
   display: flex;
-
   justify-content: space-between;
   div {
     display: flex;
@@ -140,14 +147,18 @@ const StyleNavbar = styled.nav`
   }
 
   .button {
-    button:nth-child(1) {
+    .login {
       padding: 8px 46px;
       background: #fff;
       border: 1px solid #ffcd61;
+      ${customMedia.lessThan('media_lg')`
+      padding: 1px 23px;`}
     }
-    button:nth-child(2) {
+    .signup {
       padding: 8px 36px;
       background: #ffcd61;
+      ${customMedia.lessThan('media_lg')`
+      padding: 1px 18px;`}
     }
   }
   .icon-user {
