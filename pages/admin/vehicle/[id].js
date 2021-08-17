@@ -1,12 +1,13 @@
+/* eslint-disable @next/next/no-img-element */
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import Main from '../../components/templates/Main';
+import Main from '../../../components/templates/Main';
 // import Link from 'next/link';
 
 import styled from 'styled-components';
-import { customMedia } from '../../styles/breakpoint';
-import Input from '../../components/atoms/Input';
-import Button from '../../components/atoms/Button';
+import { customMedia } from '../../../styles/breakpoint';
+import Input from '../../../components/atoms/Input';
+import Button from '../../../components/atoms/Button';
 function Id(vehicle) {
   const data = vehicle.result;
   return (

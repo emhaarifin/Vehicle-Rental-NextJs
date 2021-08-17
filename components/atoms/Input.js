@@ -18,6 +18,7 @@ function Input(props) {
           placeholder={props.placeholder}
           min={props.min}
           max={props.max}
+          {...props}
         ></StyleInput>
         <Image src={props.image} width={props.widthImg} height={props.heightImg} alt={props.alt}></Image>
       </>
@@ -37,6 +38,7 @@ function Input(props) {
         placeholder={props.placeholder}
         min={props.min}
         max={props.max}
+        {...props}
       ></StyleInput>
     </>
   );
