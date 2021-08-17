@@ -1,28 +1,39 @@
 import Image from 'next/image';
-import { heroSignup } from '../../public/asset';
 import styled from 'styled-components';
-
+import Link from 'next/link';
 import { customMedia } from '../../styles/breakpoint';
-function CardProduct() {
+function CardProduct(props) {
   return (
-    <StyleCard>
-      <div className="product-img">
-        <Image src={heroSignup} layout="fill" objectFit="cover" alt="img product"></Image>
-      </div>
-      <div className="information info">
-        <p className="info">Teluk Bogam</p>
-        <p className="info">Kalimantan Utaraaaaa</p>
-      </div>
-    </StyleCard>
+    <Link href={props.href}>
+      <a>
+        <StyleCard>
+          <div className="product-img">
+            <Image src={props.image} layout="fill" objectFit="cover" alt={props.alt}></Image>
+          </div>
+          <div className="information info">
+            <p className="info">{props.name}</p>
+            <p className="info">{props.location}</p>
+          </div>
+        </StyleCard>
+      </a>
+    </Link>
   );
 }
 
 export default CardProduct;
 
 const StyleCard = styled.div`
-  width: 261px;
-  height: 337px;
+  & {
+    width: 261px;
+    height: 337px;
+    ${customMedia.lessThan('425px')`
+    background: red;
+    width: 100%
+    `}
+  }
+
   display: flex;
+  margin-bottom: 1.5rem;
   img {
     border-radius: 8px;
   }
