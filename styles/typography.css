@@ -43,6 +43,10 @@
   font-weight: 300;
 }
 
+.font-playfair {
+  font-family: Playfair Display;
+}
+
 @media screen and (max-width: 768px) {
   .text-13 {
     font-size: 12px;

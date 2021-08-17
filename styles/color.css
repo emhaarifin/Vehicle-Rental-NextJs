@@ -17,18 +17,30 @@
   color: #f8a170;
 }
 
+.c-green {
+  color: #087e0d;
+}
+
 .c-orange-gradient-opaque {
   color: #ffc7a7;
 }
 
-.bg-primary {
-  background: #ffcd61;
+.bg__primary {
+  background: #ffcd61 !important;
 }
 
 .bg-orange-gradient {
-  background: linear-gradient(91.97deg, #f8a170 14.73%, #ffcd61 97.52%);
+  background: linear-gradient(91.97deg, #f8a170 14.73%, #ffcd61 97.52%) !important;
 }
 
 .bg-orange-gradient-opaque {
   background: linear-gradient(91.97deg, rgba(255, 199, 167, 0.2) 14.73%, rgba(255, 213, 121, 0.2) 97.52%);
+}
+
+.bg__gray {
+  background: #f5f5f6;
+}
+
+.bg__black {
+  background: #393939;
 }
