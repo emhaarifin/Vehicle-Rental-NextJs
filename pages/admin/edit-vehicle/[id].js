@@ -12,19 +12,19 @@ import Input from '../../../components/atoms/Input';
 import Button from '../../../components/atoms/Button';
 import { useState, useEffect } from 'react';
 function Index(vehicleItem) {
-  const data = vehicleItem.result[0];
-  console.log(data);
-  // useEffect(())
+  useEffect(() => {
+    // console.log(id, 'id');
+    console.log(vehicleItem);
+  });
   const [vehicle, setVehicle] = useState({
-    id: data.id,
-    location_id: data.location_id,
-    category_id: data.category_id,
-    name: data.name,
-    description: data.description,
-    price: data.price,
-    status: data.status,
-    stock: data.stock,
-    image: data.image,
+    location_id: 1,
+    category_id: 1,
+    name: '',
+    description: '',
+    price: 1,
+    status: 'Availabel',
+    stock: 1,
+    image: null,
     defaultImg: true,
     imagePreview: null,
   });
@@ -61,10 +61,6 @@ function Index(vehicleItem) {
     data.append('price', vehicle.price);
     data.append('status', vehicle.status);
     data.append('stock', vehicle.stock);
-
-    // data.append('price', vehicle.price);
-    // data.append('status', vehicle.status);
-    // data.append('stock', vehicle.stock);
     for (let i = 0; i < files.length; i++) {
       data.append('image', files[i]);
     }
@@ -76,13 +72,10 @@ function Index(vehicleItem) {
         },
       })
       .then((result) => {
-        alert('a');
-        console.log(result, FormData, 'silit');
+        alert(result?.data?.message || 'Sukses Update');
       })
       .catch((error) => {
-        alert(error.response.data.message);
-        console.log(error.response, 'as');
-        // alert(error.response.data.message);
+        alert(error?.response?.data?.message || 'Gagal Update');
       });
   };
   return (
@@ -151,7 +144,6 @@ function Index(vehicleItem) {
                 id="status"
                 name="status"
               >
-                <option>Select status</option>
                 <option name="status" value="Available">
                   Available
                 </option>
@@ -171,7 +163,26 @@ function Index(vehicleItem) {
           </div>
         </StyleDetail>
         <StyleButton className="choice-item ">
-          <Button className="bg__black text-24 c-primary choice-item">Add to home page</Button>
+          <select
+            value={vehicle.category_id}
+            onChange={handleChange}
+            className="bg__black text-24 c-primary choice-item"
+            id="category_id"
+            name="category_id"
+          >
+            <option value="" disabled hidden>
+              Choose Category
+            </option>
+            <option name="category_id" value="2">
+              Cars
+            </option>
+            <option name="category_id" value="1">
+              Bike
+            </option>
+            <option name="category_id" value="3">
+              Motorbike
+            </option>
+          </select>
           <Button type="submit" className="text-24 bg__primary choice-item">
             Save Item
           </Button>
@@ -316,5 +327,6 @@ export async function getServerSideProps(context) {
   const vehicleItem = await res.data;
   return {
     props: vehicleItem,
+    id: id,
   };
 }

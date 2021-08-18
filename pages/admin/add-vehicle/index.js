@@ -136,7 +136,9 @@ function Index() {
             <div className="status my-choice">
               <label htmlFor="status">Status: </label>
               <select onChange={handleChange} className="bg__gray ps-3" id="status" name="status">
-                <option>Select status</option>
+                <option value="" selected disabled hidden>
+                  Select status
+                </option>
                 <option name="status" value="Available">
                   Available
                 </option>
@@ -156,7 +158,25 @@ function Index() {
           </div>
         </StyleDetail>
         <StyleButton className="choice-item ">
-          <Button className="bg__black text-24 c-primary choice-item">Add to home page</Button>
+          <select
+            onChange={handleChange}
+            className="bg__black text-24 c-primary choice-item"
+            id="category_id"
+            name="category_id"
+          >
+            <option value="" disabled hidden>
+              Add item to
+            </option>
+            <option name="category_id" value="2">
+              Cars
+            </option>
+            <option name="category_id" value="1">
+              Bike
+            </option>
+            <option name="category_id" value="3">
+              Motorbike
+            </option>
+          </select>
           <Button type="submit" className="text-24 bg__primary choice-item">
             Save Item
           </Button>

@@ -9,6 +9,8 @@ import { customMedia } from '../styles/breakpoint';
 import CardContainer from '../components/molecules/CardContainer';
 import { heroSignup } from '../public/asset';
 export default function Home({ vehicles }) {
+  // console.log(vehicles, 'vefhi');
+
   return (
     <Main>
       <CardContainer>
@@ -17,7 +19,7 @@ export default function Home({ vehicles }) {
             <CardProduct
               href={`/admin/vehicle/${item.id}`}
               key={index}
-              image={item.image}
+              image={item.image[0]}
               alt={item.name}
               name={item.name}
               location={item.location}
@@ -32,6 +34,7 @@ export default function Home({ vehicles }) {
 export async function getServerSideProps() {
   const res = await axios.get(`http://localhost:4000/vehicle?limit=4`);
   const vehicles = await res.data.data;
+  console.log(res, vehicles, 'ress');
   return {
     props: { vehicles },
   };

@@ -24,12 +24,17 @@ function CardProduct(props) {
 export default CardProduct;
 
 const StyleCard = styled.div`
-  & {
+  .product-img {
     width: 261px;
     height: 337px;
     ${customMedia.lessThan('425px')`
     width: 100%
     `}
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
   }
 
   display: flex;
