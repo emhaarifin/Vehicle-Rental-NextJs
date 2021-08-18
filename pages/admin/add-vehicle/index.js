@@ -8,6 +8,7 @@ import camera from '../../../public/asset/images/camera.svg';
 import styled from 'styled-components';
 import { customMedia } from '../../../styles/breakpoint';
 import Image from 'next/image';
+import { frame1, frame2 } from '../../../public/asset';
 import Input from '../../../components/atoms/Input';
 import Button from '../../../components/atoms/Button';
 import { useState, useEffect } from 'react';
@@ -26,11 +27,10 @@ function Index() {
   });
 
   const [images, setImages] = useState([]);
-  // const [imagesPreview] = [images.map((item) => URL.createObjectURL(item))];
+  const [imagesPreview] = [vehicle.image.map((item) => URL.createObjectURL(item))];
   const handleInputFile = (e) => {
     const formData = new FormData();
     const files = e.target.files;
-    // let data = {};
     for (let i = 0; i < files.length; i++) {
       formData.append('image', files[i]);
     }
@@ -38,17 +38,15 @@ function Index() {
       ...vehicle,
       image: formData,
     });
-    // for (let i = 0; i < files.length; i++) {
-    //   data.append(files[i]);
-    // }
-    // console.log(data);
   };
   const handleChange = (e) => {
+    e.preventDefault();
     setVehicle({
       ...vehicle,
       [e.target.name]: e.target.value,
     });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const files = document.querySelector('input[type="file"]').files;
@@ -60,10 +58,6 @@ function Index() {
     data.append('price', vehicle.price);
     data.append('status', vehicle.status);
     data.append('stock', vehicle.stock);
-
-    // data.append('price', vehicle.price);
-    // data.append('status', vehicle.status);
-    // data.append('stock', vehicle.stock);
     for (let i = 0; i < files.length; i++) {
       data.append('image', files[i]);
     }
@@ -75,13 +69,10 @@ function Index() {
         },
       })
       .then((result) => {
-        alert('a');
-        console.log(result, FormData, 'silit');
+        alert(result?.data?.messaga || 'Suskes Tambah Data');
       })
       .catch((error) => {
-        alert(error.response.data.message);
-        console.log(error.response, 'as');
-        // alert(error.response.data.message);
+        alert(error?.response?.data?.message || 'Gagal');
       });
   };
   return (
@@ -92,14 +83,14 @@ function Index() {
           <div className="left">
             <div className="image">
               <div className="main-image">
-                <Image src={camera} width="130px" height="108.17px" alt="aa"></Image>
+                <Image src={frame1 ? image1 : frame1} width="130px" height="108.17px" alt="aa"></Image>
               </div>
               <div className="second-image second">
                 <div className="second">
-                  <Image src={camera} width="65px" height="68px" alt="aa"></Image>
+                  <Image src={frame2 ? frame2 : frame2} width="65px" height="68px" alt="aa"></Image>
                 </div>
                 <div className="second">
-                  <Image src={camera ? camera : camera} width="65px" height="68px" alt="aa"></Image>
+                  <Image src={frame2 ? camera : frame2} width="65px" height="68px" alt="aa"></Image>
                   <Input
                     multiple
                     id="image"

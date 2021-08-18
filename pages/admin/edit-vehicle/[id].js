@@ -9,26 +9,31 @@ import styled from 'styled-components';
 import { customMedia } from '../../../styles/breakpoint';
 import Image from 'next/image';
 import Input from '../../../components/atoms/Input';
+
+import { frame1, frame2 } from '../../../public/asset';
 import Button from '../../../components/atoms/Button';
 import { useState, useEffect } from 'react';
 function Index(vehicleItem) {
-  useEffect(() => {
-    // console.log(id, 'id');
-    console.log(vehicleItem);
-  });
+  const { location_id, category_id, name, description, price, status, stock, image } = vehicleItem.result[0];
+
+  const { query } = useRouter();
+
+  const router = useRouter();
+  const id = Number(query.id);
   const [vehicle, setVehicle] = useState({
-    location_id: 1,
-    category_id: 1,
-    name: '',
-    description: '',
-    price: 1,
-    status: 'Availabel',
-    stock: 1,
-    image: null,
+    location_id: location_id,
+    category_id: category_id,
+    name: name,
+    description: description,
+    price: price,
+    status: status,
+    stock: stock,
     defaultImg: true,
     imagePreview: null,
   });
 
+  // const [images, setImages] = useState([]);
+  // const [imagesPreview] = [vehicle?.image?.map((item) => URL.createObjectURL(item))];
   // const [imagesPreview] = [images.map((item) => URL.createObjectURL(item))];
   const handleInputFile = (e) => {
     const formData = new FormData();
@@ -49,6 +54,8 @@ function Index(vehicleItem) {
       ...vehicle,
       [e.target.name]: e.target.value,
     });
+
+    console.log(e, vehicle.image, 'e');
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -61,12 +68,14 @@ function Index(vehicleItem) {
     data.append('price', vehicle.price);
     data.append('status', vehicle.status);
     data.append('stock', vehicle.stock);
-    for (let i = 0; i < files.length; i++) {
-      data.append('image', files[i]);
-    }
 
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        data.append('image', files[i]);
+      }
+    }
     await axios
-      .put(`http://localhost:4000/vehicle/${vehicle.id}`, data, {
+      .put(`http://localhost:4000/vehicle/${id}`, data, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -78,6 +87,20 @@ function Index(vehicleItem) {
         alert(error?.response?.data?.message || 'Gagal Update');
       });
   };
+
+  const deleteVihacle = async (e) => {
+    e.preventDefault();
+    axios
+      .delete(`http://localhost:4000/vehicle/${id}`)
+      .then((result) => {
+        alert(result?.data?.message || 'Sukses Delete Data');
+        router.push('/');
+      })
+      .catch((error) => {
+        alert(error?.response?.data?.message || 'Gagal Delete');
+      });
+  };
+
   return (
     <Main>
       <p>Detail Item</p>
@@ -86,25 +109,22 @@ function Index(vehicleItem) {
           <div className="left">
             <div className="image">
               <div className="main-image">
-                <Image src={camera} width="130px" height="108.17px" alt="aa"></Image>
+                <img src={frame1} alt="aa"></img>
               </div>
               <div className="second-image second">
                 <div className="second">
-                  <Image src={camera} width="65px" height="68px" alt="aa"></Image>
+                  <img src={frame2} alt="aa"></img>
                 </div>
                 <div className="second">
-                  <Image src={camera ? camera : camera} width="65px" height="68px" alt="aa"></Image>
-                  <Input
-                    multiple
-                    id="image"
-                    type="file"
-                    name="image"
-                    onChange={handleChange}
-                    element="input"
-                    placeholder="url image product"
-                  />
+                  <img src={frame2} alt="aa"></img>
                 </div>
               </div>
+            </div>
+            <div className="input-files">
+              <label className="label">
+                <div>Click to add image</div>
+                <Input multiple id="image" type="file" name="image" onChange={handleChange} element="input" />
+              </label>
             </div>
           </div>
           <div className="right">
@@ -144,6 +164,9 @@ function Index(vehicleItem) {
                 id="status"
                 name="status"
               >
+                <option value="" selected disabled hidden>
+                  Select status
+                </option>
                 <option name="status" value="Available">
                   Available
                 </option>
@@ -162,7 +185,7 @@ function Index(vehicleItem) {
             </div>
           </div>
         </StyleDetail>
-        <StyleButton className="choice-item ">
+        <StyleButton className="choice-item">
           <select
             value={vehicle.category_id}
             onChange={handleChange}
@@ -184,7 +207,10 @@ function Index(vehicleItem) {
             </option>
           </select>
           <Button type="submit" className="text-24 bg__primary choice-item">
-            Save Item
+            Save Change
+          </Button>
+          <Button onClick={deleteVihacle} className="text-24 bg__black text-24 c-primary choice-item">
+            Delete
           </Button>
         </StyleButton>
       </form>
@@ -200,6 +226,43 @@ const StyleDetail = styled.div`
   gap: 2rem;
   `}
   .left {
+
+    .input-files{
+      margin-top: 1rem;
+      display:flex;
+      justify-content: center;
+      align-items:center;
+      .label {
+        display: inline-block;
+        position: relative;
+        height: 3rem;
+        
+        width: 20rem;
+        div {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          // background: #ccc;
+          border: 1px dotted #bebebe;
+          border-radius: 10px;
+        }
+        input[type='file'] {
+          position: absolute;
+          left: 0;
+          opacity: 0;
+
+      cursor: pointer;
+          top: 0;
+          bottom: 0;
+          width: 100%;
+        }
+      }
+    }
+
     height: 100%;
     flex: 1;
     .image {
@@ -315,6 +378,9 @@ gap: 1.5rem;
     flex: 2;
     box-shadow: 0px 0px 20px rgba(251, 143, 29, 0.4);
   }
+  .choice-item:nth-child(3) {
+    flex: 1 20%;
+  }
   button {
     padding: 1.35rem;
   }
@@ -323,10 +389,9 @@ gap: 1.5rem;
 export async function getServerSideProps(context) {
   const { id } = context.params;
 
-  const res = await axios.get(`http://localhost:4000/vehicle/${Number(id)}`);
+  const res = await axios.get(`http://localhost:4000/vehicle/${id}`);
   const vehicleItem = await res.data;
   return {
     props: vehicleItem,
-    id: id,
   };
 }

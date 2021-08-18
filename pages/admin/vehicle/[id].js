@@ -3,7 +3,8 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import Main from '../../../components/templates/Main';
 import Link from 'next/link';
-
+import Image from 'next/image';
+import { arrowLeftBlack, arrowRightBlack } from '../../../public/asset';
 import styled from 'styled-components';
 import { customMedia } from '../../../styles/breakpoint';
 import Input from '../../../components/atoms/Input';
@@ -15,35 +16,61 @@ function Id(vehicle) {
       <p>Detail Item</p>
       {data.map((item, index) => {
         return (
-          <StyleDetail key={index}>
-            <div className="left">
-              <di className="left-img">
-                <img src={item.image} alt={item.name}></img>
-              </di>
-              <Button className="bg__black text-24 c-primary">Add to home page</Button>
-            </div>
-            <div className="right">
-              <p className="text-48 text-bold font-playfair">{item.name}</p>
-              <p className="text-36 font-playfair">{item.location}</p>
-              <p className="text-24 c-green text-bold">{item.status}</p>
-              <p className="text-24">Type: {item.category}</p>
-              <p className="text-36 font-playfair text-bold price">Rp. {item.price}/day</p>
-              <div className="choice choiche-item">
-                <div className="choice-item">
-                  <Button className="btn-minus bg__gray">-</Button>
-                  <Input type="number" value="12"></Input>
-                  <Button className="btn-plus bg__primary">+</Button>
-                </div>
-                <div className="choice-item">
-                  <Link href={`/admin/edit-vehicle/${item.id}`}>
-                    <a>
-                      <Button className="text-24 bg__primary">Edit Item</Button>
-                    </a>
-                  </Link>
+          <>
+            <StyleDetail key={index}>
+              <div className="left">
+                <div className="left-img img-item">
+                  <div className="img-item">
+                    <img className="img-main" src={item.image} alt={item.name}></img>
+                  </div>
+                  <div className="img-item">
+                    <div className="arrow">
+                      <Image src={arrowLeftBlack} alt="arrow"></Image>
+                    </div>
+                    <div className="img2">
+                      <img className="img-second" src={item.image} alt={item.name}></img>
+                    </div>
+                    <div className="img2">
+                      <img className="img-second" src={item.image} alt={item.name}></img>
+                    </div>
+                    <div className="arrow">
+                      <Image src={arrowRightBlack} alt="arrow"></Image>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </StyleDetail>
+              <div className="right">
+                <div className="right-content">
+                  <p className="text-48 text-bold font-playfair">{item.name}</p>
+                  <p className="text-36 font-playfair">{item.location}</p>
+                  <p className="text-24 c-green text-bold">{item.status}</p>
+                  <p className="text-24">Type: {item.category}</p>
+                  <p className="text-36 font-playfair text-bold price">Rp. {item.price}/day</p>
+                  <div className="choice choiche-item">
+                    <div className="choice-item">
+                      <Button className="btn-minus bg__gray">-</Button>
+                      <Input type="number" value="12"></Input>
+                      <Button className="btn-plus bg__primary">+</Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </StyleDetail>
+
+            <StyleButton className="choice-item">
+              <div className="choice-item">
+                <Button className="bg__black text-24 c-primary">Add to home page</Button>
+              </div>
+
+              <div className="choice-item">
+                <Link href={`/admin/edit-vehicle/${item.id}`}>
+                  <a>
+                    <Button className="text-24  bg__primary">Edit Item</Button>
+                  </a>
+                </Link>
+              </div>
+            </StyleButton>
+          </>
         );
       })}
     </Main>
@@ -53,15 +80,54 @@ function Id(vehicle) {
 export default Id;
 
 const StyleDetail = styled.div`
-  ${customMedia.greaterThan('media_md')`
+  ${customMedia.greaterThan('960px')`
   display: flex;
   gap: 2rem;
   `}
   .left {
+    gap: 2rem;
+
     .left-img {
-      img {
-        width: auto;
-        height: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      .img-item:nth-child(1) {
+        flex: auto;
+        // ${customMedia.greaterThan('768px')`
+        // // max-height: 409px;
+        // `}
+        & .img-main {
+          max-height: 409px;
+          height: 100%;
+          object-fit: cover;
+          width: 100%;
+          border-radius: 10px;
+        }
+      }
+      .img-item:nth-child(2) {
+        display: flex;
+        .arrow {
+          margin: auto 0;
+        }
+        ${customMedia.lessThan('media_md')`
+        .arrow {
+          display: none !important;
+        }
+        `}
+        justify-content: space-between;
+        .img2 {
+          flex: 1;
+          max-height: 158px;
+        }
+        .img-second {
+          width: 100%;
+          height: 100%;
+          // height: 158px;
+          // flex: 1;
+          object-fit: cover;
+          border-radius: 10px;
+        }
+        gap: 1rem;
       }
     }
     flex: 1;
@@ -74,9 +140,12 @@ const StyleDetail = styled.div`
   }
   .right {
     flex: 1;
+    .right-content {
+      width: 100%;
+    }
     .price {
       ${customMedia.greaterThan('media_md')`
-      text-align: center;
+      text-align: right;
       `}
     }
     .choice {
@@ -106,6 +175,29 @@ const StyleDetail = styled.div`
         align-self: center;
       }
     }
+  }
+`;
+
+const StyleButton = styled.div`
+  ${customMedia.greaterThan('media_md')`
+display: flex;
+gap: 2.5rem;
+`}
+  ${customMedia.lessThan('media_md')`
+display: flex;
+flex-direction: column;
+gap: 1.5rem;
+`}
+  margin-top: 5rem;
+  .choice-item:nth-child(1) {
+    flex: 1 20%;
+  }
+  .choice-item:nth-child(2) {
+    flex: 2;
+    box-shadow: 0px 0px 20px rgba(251, 143, 29, 0.4);
+  }
+  button {
+    padding: 1.35rem;
   }
 `;
 
