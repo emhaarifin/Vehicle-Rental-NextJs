@@ -12,16 +12,19 @@ import Input from '../../../components/atoms/Input';
 import Button from '../../../components/atoms/Button';
 import { useState, useEffect } from 'react';
 function Index(vehicleItem) {
-  const data = vehicleItem.result;
+  const data = vehicleItem.result[0];
+  console.log(data);
+  // useEffect(())
   const [vehicle, setVehicle] = useState({
-    location_id: 1,
-    category_id: 1,
-    name: '',
-    description: '',
-    price: 1,
-    status: 'Available',
-    stock: 1,
-    image: null,
+    id: data.id,
+    location_id: data.location_id,
+    category_id: data.category_id,
+    name: data.name,
+    description: data.description,
+    price: data.price,
+    status: data.status,
+    stock: data.stock,
+    image: data.image,
     defaultImg: true,
     imagePreview: null,
   });
@@ -38,11 +41,8 @@ function Index(vehicleItem) {
       ...vehicle,
       image: formData,
     });
-    // for (let i = 0; i < files.length; i++) {
-    //   data.append(files[i]);
-    // }
-    // console.log(data);
   };
+
   const handleChange = (e) => {
     e.preventDefault();
     setVehicle({
@@ -70,7 +70,7 @@ function Index(vehicleItem) {
     }
 
     await axios
-      .post(`http://localhost:4000/vehicle`, data, {
+      .put(`http://localhost:4000/vehicle/${vehicle.id}`, data, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -88,106 +88,95 @@ function Index(vehicleItem) {
   return (
     <Main>
       <p>Detail Item</p>
-      {data.map((item, index) => {
-        return (
-          <>
-            <form onSubmit={handleSubmit} encType="multipart/form-data">
-              <StyleDetail>
-                <div className="left">
-                  <div className="image">
-                    <div className="main-image">
-                      <Image src={camera} width="130px" height="108.17px" alt="aa"></Image>
-                    </div>
-                    <div className="second-image second">
-                      <div className="second">
-                        <Image src={camera} width="65px" height="68px" alt="aa"></Image>
-                      </div>
-                      <div className="second">
-                        <Image src={camera ? camera : camera} width="65px" height="68px" alt="aa"></Image>
-                        <Input
-                          multiple
-                          id="image"
-                          type="file"
-                          name="image"
-                          onChange={handleChange}
-                          element="input"
-                          placeholder="url image product"
-                        />
-                      </div>
-                    </div>
-                  </div>
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
+        <StyleDetail>
+          <div className="left">
+            <div className="image">
+              <div className="main-image">
+                <Image src={camera} width="130px" height="108.17px" alt="aa"></Image>
+              </div>
+              <div className="second-image second">
+                <div className="second">
+                  <Image src={camera} width="65px" height="68px" alt="aa"></Image>
                 </div>
-                <div className="right">
+                <div className="second">
+                  <Image src={camera ? camera : camera} width="65px" height="68px" alt="aa"></Image>
                   <Input
-                    name="name"
-                    className="input text"
+                    multiple
+                    id="image"
+                    type="file"
+                    name="image"
                     onChange={handleChange}
-                    value={item.name}
-                    placeholder="Name (max up to 50 words)"
-                    maxlength="50"
-                  ></Input>
-                  <Input
-                    className="input text"
-                    onChange={handleChange}
-                    placeholder="Location"
-                    name="location_id"
-                  ></Input>
-                  <Input
-                    className="input text"
-                    name="description"
-                    value={item.description}
-                    onChange={handleChange}
-                    placeholder="Description"
-                  ></Input>
-                  <div className="my-choice">
-                    <label htmlFor="price">Price:</label>
-                    <Input
-                      className="input ps-3 bg__gray"
-                      name="price"
-                      value={item.price}
-                      onChange={handleChange}
-                      id="price"
-                      placeholder="Type the price"
-                    ></Input>
-                  </div>
-                  <div className="status my-choice">
-                    <label htmlFor="status">Status: </label>
-                    <select
-                      value={item.status}
-                      onChange={handleChange}
-                      className="bg__gray ps-3"
-                      id="status"
-                      name="status"
-                    >
-                      <option>Select status</option>
-                      <option name="status" value="Available">
-                        Available
-                      </option>
-                      <option name="status" value="Full Booked">
-                        Full Booked
-                      </option>
-                    </select>
-                  </div>
-                  <div className="stock-item">
-                    <label htmlFor="stock">Stock:</label>
-                    <div className="stock-vehicle">
-                      <Button className="btn-plus bg__primary">+</Button>
-                      <Input name="stock" value={item.stock} onChange={handleChange} type="number"></Input>
-                      <Button className="btn-minus bg__gray">-</Button>
-                    </div>
-                  </div>
+                    element="input"
+                    placeholder="url image product"
+                  />
                 </div>
-              </StyleDetail>
-              <StyleButton className="choice-item ">
-                <Button className="bg__black text-24 c-primary choice-item">Add to home page</Button>
-                <Button type="submit" className="text-24 bg__primary choice-item">
-                  Save Item
-                </Button>
-              </StyleButton>
-            </form>
-          </>
-        );
-      })}
+              </div>
+            </div>
+          </div>
+          <div className="right">
+            <Input
+              name="name"
+              className="input text"
+              onChange={handleChange}
+              value={vehicle.name}
+              placeholder="Name (max up to 50 words)"
+              maxlength="50"
+            ></Input>
+            <Input className="input text" onChange={handleChange} placeholder="Location" name="location_id"></Input>
+            <Input
+              className="input text"
+              name="description"
+              value={vehicle.description}
+              onChange={handleChange}
+              placeholder="Description"
+            ></Input>
+            <div className="my-choice">
+              <label htmlFor="price">Price:</label>
+              <Input
+                className="input ps-3 bg__gray"
+                name="price"
+                value={vehicle.price}
+                onChange={handleChange}
+                id="price"
+                placeholder="Type the price"
+              ></Input>
+            </div>
+            <div className="status my-choice">
+              <label htmlFor="status">Status: </label>
+              <select
+                value={vehicle.status}
+                onChange={handleChange}
+                className="bg__gray ps-3"
+                id="status"
+                name="status"
+              >
+                <option>Select status</option>
+                <option name="status" value="Available">
+                  Available
+                </option>
+                <option name="status" value="Full Booked">
+                  Full Booked
+                </option>
+              </select>
+            </div>
+            <div className="stock-item">
+              <label htmlFor="stock">Stock:</label>
+              <div className="stock-vehicle">
+                <Button className="btn-plus bg__primary">+</Button>
+                <Input name="stock" value={vehicle.stock} onChange={handleChange} type="number"></Input>
+                <Button className="btn-minus bg__gray">-</Button>
+              </div>
+            </div>
+          </div>
+        </StyleDetail>
+        <StyleButton className="choice-item ">
+          <Button className="bg__black text-24 c-primary choice-item">Add to home page</Button>
+          <Button type="submit" className="text-24 bg__primary choice-item">
+            Save Item
+          </Button>
+        </StyleButton>
+      </form>
     </Main>
   );
 }
