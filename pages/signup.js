@@ -99,12 +99,13 @@ const RegisterLayout = styled.div`
         margin: 2rem 0;
         justify-content: center;
         align-items: center;
+        gap: 2rem;
         .divider-line {
           flex: 1;
           border: 2px solid black;
         }
         .span {
-          flex: 2;
+          // flex: 2 20%;
           text-align: center;
           color: rgba(57, 57, 57, 0.5);
         }

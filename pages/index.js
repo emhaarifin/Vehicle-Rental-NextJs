@@ -15,9 +15,9 @@ export default function Home({ vehicles }) {
         {vehicles?.map((item, index) => {
           return (
             <CardProduct
-              href={`/vehicle/${item.id}`}
+              href={`/admin/vehicle/${item.id}`}
               key={index}
-              image={heroSignup}
+              image={item.image}
               alt={item.name}
               name={item.name}
               location={item.location}
@@ -29,7 +29,7 @@ export default function Home({ vehicles }) {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const res = await axios.get(`http://localhost:4000/vehicle?limit=4`);
   const vehicles = await res.data.data;
   return {

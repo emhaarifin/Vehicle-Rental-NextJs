@@ -52,6 +52,6 @@ const StyleInput = styled.input`
   border-radius: 10px;
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 2pt #ffcd61;
+    box-shadow: 0 0 0 0.5pt #ffcd61;
   }
 `;

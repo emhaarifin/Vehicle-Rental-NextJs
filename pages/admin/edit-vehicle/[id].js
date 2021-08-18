@@ -11,7 +11,8 @@ import Image from 'next/image';
 import Input from '../../../components/atoms/Input';
 import Button from '../../../components/atoms/Button';
 import { useState, useEffect } from 'react';
-function Index() {
+function Index(vehicleItem) {
+  const data = vehicleItem.result;
   const [vehicle, setVehicle] = useState({
     location_id: 1,
     category_id: 1,
@@ -25,7 +26,6 @@ function Index() {
     imagePreview: null,
   });
 
-  const [images, setImages] = useState([]);
   // const [imagesPreview] = [images.map((item) => URL.createObjectURL(item))];
   const handleInputFile = (e) => {
     const formData = new FormData();
@@ -44,6 +44,7 @@ function Index() {
     // console.log(data);
   };
   const handleChange = (e) => {
+    e.preventDefault();
     setVehicle({
       ...vehicle,
       [e.target.name]: e.target.value,
@@ -87,81 +88,106 @@ function Index() {
   return (
     <Main>
       <p>Detail Item</p>
-      <form onSubmit={handleSubmit} encType="multipart/form-data">
-        <StyleDetail>
-          <div className="left">
-            <div className="image">
-              <div className="main-image">
-                <Image src={camera} width="130px" height="108.17px" alt="aa"></Image>
-              </div>
-              <div className="second-image second">
-                <div className="second">
-                  <Image src={camera} width="65px" height="68px" alt="aa"></Image>
+      {data.map((item, index) => {
+        return (
+          <>
+            <form onSubmit={handleSubmit} encType="multipart/form-data">
+              <StyleDetail>
+                <div className="left">
+                  <div className="image">
+                    <div className="main-image">
+                      <Image src={camera} width="130px" height="108.17px" alt="aa"></Image>
+                    </div>
+                    <div className="second-image second">
+                      <div className="second">
+                        <Image src={camera} width="65px" height="68px" alt="aa"></Image>
+                      </div>
+                      <div className="second">
+                        <Image src={camera ? camera : camera} width="65px" height="68px" alt="aa"></Image>
+                        <Input
+                          multiple
+                          id="image"
+                          type="file"
+                          name="image"
+                          onChange={handleChange}
+                          element="input"
+                          placeholder="url image product"
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="second">
-                  <Image src={camera ? camera : camera} width="65px" height="68px" alt="aa"></Image>
+                <div className="right">
                   <Input
-                    multiple
-                    id="image"
-                    type="file"
-                    name="image"
+                    name="name"
+                    className="input text"
                     onChange={handleChange}
-                    element="input"
-                    placeholder="url image product"
-                  />
+                    value={item.name}
+                    placeholder="Name (max up to 50 words)"
+                    maxlength="50"
+                  ></Input>
+                  <Input
+                    className="input text"
+                    onChange={handleChange}
+                    placeholder="Location"
+                    name="location_id"
+                  ></Input>
+                  <Input
+                    className="input text"
+                    name="description"
+                    value={item.description}
+                    onChange={handleChange}
+                    placeholder="Description"
+                  ></Input>
+                  <div className="my-choice">
+                    <label htmlFor="price">Price:</label>
+                    <Input
+                      className="input ps-3 bg__gray"
+                      name="price"
+                      value={item.price}
+                      onChange={handleChange}
+                      id="price"
+                      placeholder="Type the price"
+                    ></Input>
+                  </div>
+                  <div className="status my-choice">
+                    <label htmlFor="status">Status: </label>
+                    <select
+                      value={item.status}
+                      onChange={handleChange}
+                      className="bg__gray ps-3"
+                      id="status"
+                      name="status"
+                    >
+                      <option>Select status</option>
+                      <option name="status" value="Available">
+                        Available
+                      </option>
+                      <option name="status" value="Full Booked">
+                        Full Booked
+                      </option>
+                    </select>
+                  </div>
+                  <div className="stock-item">
+                    <label htmlFor="stock">Stock:</label>
+                    <div className="stock-vehicle">
+                      <Button className="btn-plus bg__primary">+</Button>
+                      <Input name="stock" value={item.stock} onChange={handleChange} type="number"></Input>
+                      <Button className="btn-minus bg__gray">-</Button>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
-          <div className="right">
-            <Input
-              name="name"
-              className="input text"
-              onChange={handleChange}
-              placeholder="Name (max up to 50 words)"
-              maxlength="50"
-            ></Input>
-            <Input className="input text" onChange={handleChange} placeholder="Location" name="location_id"></Input>
-            <Input className="input text" name="description" onChange={handleChange} placeholder="Description"></Input>
-            <div className="my-choice">
-              <label htmlFor="price">Price:</label>
-              <Input
-                className="input ps-3 bg__gray"
-                name="price"
-                onChange={handleChange}
-                id="price"
-                placeholder="Type the price"
-              ></Input>
-            </div>
-            <div className="status my-choice">
-              <label htmlFor="status">Status: </label>
-              <select onChange={handleChange} className="bg__gray ps-3" id="status" name="status">
-                <option>Select status</option>
-                <option name="status" value="Available">
-                  Available
-                </option>
-                <option name="status" value="Full Booked">
-                  Full Booked
-                </option>
-              </select>
-            </div>
-            <div className="stock-item">
-              <label htmlFor="stock">Stock:</label>
-              <div className="stock-vehicle">
-                <Button className="btn-plus bg__primary">+</Button>
-                <Input name="stock" onChange={handleChange} type="number"></Input>
-                <Button className="btn-minus bg__gray">-</Button>
-              </div>
-            </div>
-          </div>
-        </StyleDetail>
-        <StyleButton className="choice-item ">
-          <Button className="bg__black text-24 c-primary choice-item">Add to home page</Button>
-          <Button type="submit" className="text-24 bg__primary choice-item">
-            Save Item
-          </Button>
-        </StyleButton>
-      </form>
+              </StyleDetail>
+              <StyleButton className="choice-item ">
+                <Button className="bg__black text-24 c-primary choice-item">Add to home page</Button>
+                <Button type="submit" className="text-24 bg__primary choice-item">
+                  Save Item
+                </Button>
+              </StyleButton>
+            </form>
+          </>
+        );
+      })}
     </Main>
   );
 }
@@ -293,3 +319,13 @@ gap: 1.5rem;
     padding: 1.35rem;
   }
 `;
+
+export async function getServerSideProps(context) {
+  const { id } = context.params;
+
+  const res = await axios.get(`http://localhost:4000/vehicle/${Number(id)}`);
+  const vehicleItem = await res.data;
+  return {
+    props: vehicleItem,
+  };
+}

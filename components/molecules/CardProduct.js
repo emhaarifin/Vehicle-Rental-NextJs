@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Image from 'next/image';
 import styled from 'styled-components';
 import Link from 'next/link';
@@ -8,7 +9,7 @@ function CardProduct(props) {
       <a>
         <StyleCard>
           <div className="product-img">
-            <Image src={props.image} layout="fill" objectFit="cover" alt={props.alt}></Image>
+            <img src={props.image} alt={props.alt}></img>
           </div>
           <div className="information info">
             <p className="info">{props.name}</p>
@@ -27,7 +28,6 @@ const StyleCard = styled.div`
     width: 261px;
     height: 337px;
     ${customMedia.lessThan('425px')`
-    background: red;
     width: 100%
     `}
   }

@@ -2,7 +2,7 @@
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import Main from '../../../components/templates/Main';
-// import Link from 'next/link';
+import Link from 'next/link';
 
 import styled from 'styled-components';
 import { customMedia } from '../../../styles/breakpoint';
@@ -17,7 +17,9 @@ function Id(vehicle) {
         return (
           <StyleDetail key={index}>
             <div className="left">
-              <img src={item.image} alt={item.name}></img>
+              <di className="left-img">
+                <img src={item.image} alt={item.name}></img>
+              </di>
               <Button className="bg__black text-24 c-primary">Add to home page</Button>
             </div>
             <div className="right">
@@ -33,7 +35,11 @@ function Id(vehicle) {
                   <Button className="btn-plus bg__primary">+</Button>
                 </div>
                 <div className="choice-item">
-                  <Button className="text-24 bg__primary">Edit Item</Button>
+                  <Link href={`/admin/edit-vehicle/${item.id}`}>
+                    <a>
+                      <Button className="text-24 bg__primary">Edit Item</Button>
+                    </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -52,7 +58,16 @@ const StyleDetail = styled.div`
   gap: 2rem;
   `}
   .left {
+    .left-img {
+      img {
+        width: auto;
+        height: auto;
+      }
+    }
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     button {
       padding: 1.35rem;
     }
@@ -73,7 +88,7 @@ const StyleDetail = styled.div`
         display: flex;
         justify-content: space-between;
         button {
-          padding: 1.5rem 2rem;
+          padding: 1.4rem;
           width: 15%;
         }
         input {
