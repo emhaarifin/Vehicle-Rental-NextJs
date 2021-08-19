@@ -11,7 +11,7 @@ function VehicleType({ cars, bike, motorbike }) {
       <br></br>
       <div className="d-flex justify-content-between">
         <p className="text-36 font-playfair">Cars</p>
-        <Link href="/vehicle-type">
+        <Link href="/view-all/cars">
           <a className="text-16 c-primary">View all</a>
         </Link>
       </div>
@@ -53,7 +53,7 @@ function VehicleType({ cars, bike, motorbike }) {
       <br></br>
       <div className="d-flex justify-content-between">
         <p className="text-36 font-playfair">Motorbike</p>
-        <Link href="/vehicle-type">
+        <Link href="/view-all/motorbike">
           <a className="text-16 c-primary">View all</a>
         </Link>
       </div>
