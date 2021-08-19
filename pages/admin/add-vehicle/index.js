@@ -2,16 +2,13 @@
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import Main from '../../../components/templates/Main';
-// import Link from 'next/link';
-// import { camera } from '../../../public/asset';
-import camera from '../../../public/asset/images/camera.svg';
 import styled from 'styled-components';
 import { customMedia } from '../../../styles/breakpoint';
 import Image from 'next/image';
 import { frame1, frame2 } from '../../../public/asset';
 import Input from '../../../components/atoms/Input';
 import Button from '../../../components/atoms/Button';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 function Index() {
   const [vehicle, setVehicle] = useState({
     location_id: 1,
@@ -21,24 +18,16 @@ function Index() {
     price: 1,
     status: 'Available',
     stock: 1,
-    image: null,
-    defaultImg: true,
-    imagePreview: null,
   });
 
   const [images, setImages] = useState([]);
-  const [imagesPreview] = [vehicle.image.map((item) => URL.createObjectURL(item))];
-  const handleInputFile = (e) => {
-    const formData = new FormData();
-    const files = e.target.files;
-    for (let i = 0; i < files.length; i++) {
-      formData.append('image', files[i]);
-    }
-    setVehicle({
-      ...vehicle,
-      image: formData,
-    });
+  const [imagesPreview] = [images.map((item) => URL.createObjectURL(item))];
+  console.log(imagesPreview[0]);
+  const onFileChange = (e) => {
+    setImages([...e.target.files]);
+    console.log(images, 'mes');
   };
+
   const handleChange = (e) => {
     e.preventDefault();
     setVehicle({
@@ -83,25 +72,30 @@ function Index() {
           <div className="left">
             <div className="image">
               <div className="main-image">
-                <Image src={frame1 ? image1 : frame1} width="130px" height="108.17px" alt="aa"></Image>
+                <img src={imagesPreview[0] ? imagesPreview[0] : frame1} alt="aa"></img>
               </div>
               <div className="second-image second">
                 <div className="second">
-                  <Image src={frame2 ? frame2 : frame2} width="65px" height="68px" alt="aa"></Image>
+                  <img src={imagesPreview[1] ? imagesPreview[1] : frame2} width="290px" height="164px" alt="aa"></img>
                 </div>
                 <div className="second">
-                  <Image src={frame2 ? camera : frame2} width="65px" height="68px" alt="aa"></Image>
-                  <Input
-                    multiple
-                    id="image"
-                    type="file"
-                    name="image"
-                    onChange={handleChange}
-                    element="input"
-                    placeholder="url image product"
-                  />
+                  <img src={imagesPreview[2] ? imagesPreview[2] : frame2} width="290px" height="164px" alt="aa"></img>
                 </div>
               </div>
+            </div>
+            <div className="input-files">
+              <label className="label">
+                <div>Click to add image</div>
+                <Input
+                  multiple
+                  id="image"
+                  type="file"
+                  name="image"
+                  onChange={(e) => onFileChange(e)}
+                  element="input"
+                  placeholder="url image product"
+                />
+              </label>
             </div>
           </div>
           <div className="right">
@@ -187,6 +181,43 @@ const StyleDetail = styled.div`
   .left {
     height: 100%;
     flex: 1;
+
+    .input-files{
+      margin-top: 1rem;
+      display:flex;
+      justify-content: center;
+      align-items:center;
+      .label {
+        display: inline-block;
+        position: relative;
+        height: 3rem;
+        
+        width: 20rem;
+        div {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          // background: #ccc;
+          border: 1px dotted #bebebe;
+          border-radius: 10px;
+        }
+        input[type='file'] {
+          position: absolute;
+          left: 0;
+          opacity: 0;
+
+      cursor: pointer;
+          top: 0;
+          bottom: 0;
+          width: 100%;
+        }
+      }
+    }
+
     .image {
       display: flex;
       flex-direction: column;

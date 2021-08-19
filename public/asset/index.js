@@ -15,6 +15,7 @@ export { default as avatarUser } from './icons/avatar-user.svg';
 export { default as email } from './icons/email.svg';
 // export { default as arrowRight } from './icons/arrow-right.svg';
 export { default as google } from './icons/google.svg';
+export { default as heroHome } from './images/hero-home.svg';
 export { default as heroLogin } from './images/hero-login.svg';
 export { default as camera } from './images/camera.svg';
 export { default as arrowLeftBlack } from './icons/arrow-left-black.svg';
