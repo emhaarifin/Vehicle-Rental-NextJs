@@ -17,6 +17,7 @@ export default Main;
 
 const ContainerMain = styled.div`
   padding: 5rem;
+  padding-top: 1rem;
   margin: 0 auto;
   ${customMedia.lessThan('media_sm')`
   padding: 1rem;

@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/link-passhref */
 import styled from 'styled-components';
 import { customMedia } from '../../styles/breakpoint';
-import { brand, history, searchGrey, home, about, avatarUser, email, arrowRight } from '../../public/asset';
+import { brand, history, searchGrey, home, about, avatarUser, email, arrowRightBlack } from '../../public/asset';
 import Image from 'next/image';
 import Link from 'next/link';
 import Button from '../atoms/Button';
@@ -106,19 +106,19 @@ function Navbar() {
                 <Link href="/profile">
                   <div className="dropdown-item">
                     <a className="text-14 text-bold">Edit Profile</a>
-                    <Image src={arrowRight} alt="go"></Image>
+                    <Image src={arrowRightBlack} width="10px" height="14px" alt="go"></Image>
                   </div>
                 </Link>
                 <Link href="/">
                   <div className="dropdown-item">
                     <a className="text-14 text-bold">Help</a>
-                    <Image src={arrowRight} alt="go"></Image>
+                    <Image src={arrowRightBlack} width="10px" height="14px" alt="go"></Image>
                   </div>
                 </Link>
                 <Link href="/">
                   <div className="dropdown-item">
                     <a className="text-14 text-bold">Logout</a>
-                    <Image src={arrowRight} alt="go"></Image>
+                    <Image src={arrowRightBlack} width="10px" height="14px" alt="go"></Image>
                   </div>
                 </Link>
               </div>

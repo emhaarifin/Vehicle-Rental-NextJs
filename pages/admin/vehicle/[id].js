@@ -10,69 +10,69 @@ import { customMedia } from '../../../styles/breakpoint';
 import Input from '../../../components/atoms/Input';
 import Button from '../../../components/atoms/Button';
 function Id(vehicle) {
-  const data = vehicle.result;
+  const data = vehicle.result[0];
+  const { category, description, stock, location, name, price, status, id, image } = data;
+  // const image = data.image
+  console.log(image[0]);
+  console.log(data);
   return (
     <Main>
       <p>Detail Item</p>
-      {data.map((item, index) => {
-        return (
-          <>
-            <StyleDetail key={index}>
-              <div className="left">
-                <div className="left-img img-item">
-                  <div className="img-item">
-                    <img className="img-main" src={item.image} alt={item.name}></img>
-                  </div>
-                  <div className="img-item">
-                    <div className="arrow">
-                      <Image src={arrowLeftBlack} alt="arrow"></Image>
-                    </div>
-                    <div className="img2">
-                      <img className="img-second" src={item.image} alt={item.name}></img>
-                    </div>
-                    <div className="img2">
-                      <img className="img-second" src={item.image} alt={item.name}></img>
-                    </div>
-                    <div className="arrow">
-                      <Image src={arrowRightBlack} alt="arrow"></Image>
-                    </div>
-                  </div>
+      <>
+        <StyleDetail>
+          <div className="left">
+            <div className="left-img img-item">
+              <div className="img-item">
+                <img className="img-main" src={image[0]} alt=""></img>
+              </div>
+              <div className="img-item">
+                <div className="arrow">
+                  <Image src={arrowLeftBlack} alt="arrow"></Image>
+                </div>
+                <div className="img2">
+                  <img className="img-second" src={image[1] ? image[1] : image[0]} alt=""></img>
+                </div>
+                <div className="img2">
+                  <img className="img-second" src={image[2] ? image[2] : image[0]} alt=""></img>
+                </div>
+                <div className="arrow">
+                  <Image src={arrowRightBlack} alt="arrow"></Image>
                 </div>
               </div>
-              <div className="right">
-                <div className="right-content">
-                  <p className="text-48 text-bold font-playfair">{item.name}</p>
-                  <p className="text-36 font-playfair">{item.location}</p>
-                  <p className="text-24 c-green text-bold">{item.status}</p>
-                  <p className="text-24">Type: {item.category}</p>
-                  <p className="text-36 font-playfair text-bold price">Rp. {item.price}/day</p>
-                  <div className="choice choiche-item">
-                    <div className="choice-item">
-                      <Button className="btn-minus bg__gray">-</Button>
-                      <Input type="number" value="12"></Input>
-                      <Button className="btn-plus bg__primary">+</Button>
-                    </div>
-                  </div>
+            </div>
+          </div>
+          <div className="right">
+            <div className="right-content">
+              <p className="text-48 text-bold font-playfair">{name}</p>
+              <p className="text-36 font-playfair">{location}</p>
+              <p className="text-24 c-green text-bold">{status}</p>
+              <p className="text-24">Type: {category}</p>
+              <p className="text-36 font-playfair text-bold price">Rp. {price}/day</p>
+              <div className="choice choiche-item">
+                <div className="choice-item">
+                  <Button className="btn-minus bg__gray">-</Button>
+                  <Input type="number" value={stock}></Input>
+                  <Button className="btn-plus bg__primary">+</Button>
                 </div>
               </div>
-            </StyleDetail>
+            </div>
+          </div>
+        </StyleDetail>
 
-            <StyleButton className="choice-item">
-              <div className="choice-item">
-                <Button className="bg__black text-24 c-primary">Add to home page</Button>
-              </div>
+        <StyleButton className="choice-item">
+          <div className="choice-item">
+            <Button className="bg__black text-24 c-primary">Add to home page</Button>
+          </div>
 
-              <div className="choice-item">
-                <Link href={`/admin/edit-vehicle/${item.id}`}>
-                  <a>
-                    <Button className="text-24  bg__primary">Edit Item</Button>
-                  </a>
-                </Link>
-              </div>
-            </StyleButton>
-          </>
-        );
-      })}
+          <div className="choice-item">
+            <Link href={`/admin/edit-vehicle/${id}`}>
+              <a>
+                <Button className="text-24  bg__primary">Edit Item</Button>
+              </a>
+            </Link>
+          </div>
+        </StyleButton>
+      </>
     </Main>
   );
 }

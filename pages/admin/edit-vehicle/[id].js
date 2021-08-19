@@ -15,7 +15,7 @@ import Button from '../../../components/atoms/Button';
 import { useState, useEffect } from 'react';
 function Index(vehicleItem) {
   const { location_id, category_id, name, description, price, status, stock, image } = vehicleItem.result[0];
-
+  console.log(image);
   const { query } = useRouter();
 
   const router = useRouter();
@@ -28,24 +28,14 @@ function Index(vehicleItem) {
     price: price,
     status: status,
     stock: stock,
-    defaultImg: true,
-    imagePreview: null,
   });
 
-  // const [images, setImages] = useState([]);
-  // const [imagesPreview] = [vehicle?.image?.map((item) => URL.createObjectURL(item))];
-  // const [imagesPreview] = [images.map((item) => URL.createObjectURL(item))];
-  const handleInputFile = (e) => {
-    const formData = new FormData();
-    const files = e.target.files;
-    // let data = {};
-    for (let i = 0; i < files.length; i++) {
-      formData.append('image', files[i]);
-    }
-    setVehicle({
-      ...vehicle,
-      image: formData,
-    });
+  const [images, setImages] = useState([]);
+  const [imagesPreview] = [images.map((item) => URL.createObjectURL(item))];
+  console.log(imagesPreview[0]);
+  const onFileChange = (e) => {
+    setImages([...e.target.files]);
+    console.log(images, 'mes');
   };
 
   const handleChange = (e) => {
@@ -109,21 +99,21 @@ function Index(vehicleItem) {
           <div className="left">
             <div className="image">
               <div className="main-image">
-                <img src={frame1} alt="aa"></img>
+                <img src={imagesPreview[0] ? imagesPreview[0] : image[0]} alt="aa"></img>
               </div>
               <div className="second-image second">
                 <div className="second">
-                  <img src={frame2} alt="aa"></img>
+                  <img src={imagesPreview[1] ? imagesPreview[1] : image[1]} width="290px" height="164px" alt="aa"></img>
                 </div>
                 <div className="second">
-                  <img src={frame2} alt="aa"></img>
+                  <img src={imagesPreview[2] ? imagesPreview[2] : image[2]} width="290px" height="164px" alt="aa"></img>
                 </div>
               </div>
             </div>
             <div className="input-files">
               <label className="label">
-                <div>Click to add image</div>
-                <Input multiple id="image" type="file" name="image" onChange={handleChange} element="input" />
+                <div>Click to update image</div>
+                <Input multiple id="image" type="file" name="image" onChange={(e) => onFileChange(e)} element="input" />
               </label>
             </div>
           </div>
