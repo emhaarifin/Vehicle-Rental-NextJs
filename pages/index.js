@@ -10,9 +10,13 @@ import CardContainer from '../components/molecules/CardContainer';
 import { heroSignup, heroHome } from '../public/asset';
 import Button from '../components/atoms/Button';
 import Input from '../components/atoms/Input';
+import Navbar from '../components/organism/Navbar';
+import Footer from '../components/organism/Footer';
 export default function Home({ vehicles }) {
   return (
-    <Main>
+    <ContainerMain>
+      <Navbar></Navbar>
+      <br></br>
       <StyleHero className="hero">
         <div className="hero-wrapper">
           <div className="hero-content">
@@ -22,52 +26,71 @@ export default function Home({ vehicles }) {
             </div>
             <div className="my-flex my-col">
               <div className="my-flex my-row">
-                <Input placeholder="Location"></Input>
-                <Input placeholder="Type"></Input>
+                <Input className="cstm" placeholder="Location"></Input>
+                <Input className="cstm" placeholder="Type"></Input>
               </div>
               <div className="my-flex my-row">
-                <Input placeholder="Payment"></Input>
-                <Input placeholder="Date"></Input>
+                <Input className="cstm " placeholder="Payment"></Input>
+                <Input className="cstm" placeholder="Date"></Input>
               </div>
             </div>
             <Button className="btn-exprole text-bold bg__primary c-black text-18">Exprole</Button>
           </div>
         </div>
       </StyleHero>
-      <div className="d-flex justify-content-between">
-        <p className="text-36 font-playfair">Popular in town</p>
-        <Link href="/vehicle-type">
-          <a className="text-16 c-primary">View all</a>
+      <Popular>
+        <div className="d-flex justify-content-between">
+          <p className="text-36 font-playfair">Popular in town</p>
+          <Link href="/vehicle-type">
+            <a className="text-16 c-primary">View all</a>
+          </Link>
+        </div>
+        <CardContainer>
+          {vehicles?.map((item, index) => {
+            return (
+              <CardProduct
+                href={`/admin/vehicle/${item.id}`}
+                key={index}
+                image={item.image[0]}
+                alt={item.name}
+                name={item.name}
+                location={item.location}
+              ></CardProduct>
+            );
+          })}
+        </CardContainer>
+        <Link href="/admin/add-vehicle">
+          <a>
+            <Button className="bg__black add-new-item text-24 c-primary">Add new item</Button>
+          </a>
         </Link>
-      </div>
-      <CardContainer>
-        {vehicles?.map((item, index) => {
-          return (
-            <CardProduct
-              href={`/admin/vehicle/${item.id}`}
-              key={index}
-              image={item.image[0]}
-              alt={item.name}
-              name={item.name}
-              location={item.location}
-            ></CardProduct>
-          );
-        })}
-      </CardContainer>
-      <Link href="/admin/add-vehicle">
-        <a>
-          <Button className="bg__black text-24 c-primary">Add new item</Button>
-        </a>
-      </Link>
-    </Main>
+      </Popular>
+      <Footer></Footer>
+    </ContainerMain>
   );
 }
 
 const StyleHero = styled.div`
   width: 100%;
-  background: rgba(0, 0, 0, 0.4) url('/public/assets/images/hero-home.svg');
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4) url('asset/images/hero-home.svg');
+  // object-fit: cover;
   background-size: 100% auto;
   background-blend-mode: multiply;
+  // background-size: 100% 100%;
+  ${customMedia.greaterThan('media_md')`
+  padding: 5rem;
+  `}
+  .hero-content {
+    ${customMedia.lessThan('media_md')`
+    padding: 1rem;
+    `}
+  // }
+  // .hero-wrapper {
+  // }
+  // background-size: 100% 100%;
+  // background-blend-mode: multiply;
+  // background-repeat: no-repeat;
   ${customMedia.lessThan('media_md')`
   .hero-content{
     display:flex;
@@ -103,10 +126,39 @@ const StyleHero = styled.div`
     width: 15%;
   }
   `}
+  .cstm {
+    background: rgba(255, 255, 255, 0.5);
+    border: 0.8px solid #AFB0B9;
+}
+  .cstm::placeholder { 
+    color: #393939;
+    mix-blend-mode: normal;
+  }
   input, button {
     padding: 1rem;
   }
+  .add-new-item {
+    padding: 1rem;
+  }
   margin-bottom: 2.5rem;
+`;
+
+const ContainerMain = styled.div`
+  // padding: 5rem;
+  // padding-top: 1rem;
+  margin: 0 auto;
+  ${customMedia.lessThan('media_sm')`
+  // padding: 1rem;
+`}
+`;
+
+const Popular = styled.div`
+  padding: 5rem;
+  padding-top: 1rem;
+  margin: 0 auto;
+  ${customMedia.lessThan('media_sm')`
+  padding: 1rem;
+`}
 `;
 
 export async function getServerSideProps() {

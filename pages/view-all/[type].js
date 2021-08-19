@@ -13,7 +13,7 @@ import { customMedia } from '../../styles/breakpoint';
 import Search from '../../components/molecules/Search';
 function VehicleType() {
   const { query } = useRouter();
-
+  console.log(query, 'aa');
   const [data, setData] = useState([]);
 
   let pageNumbers = [];
@@ -24,7 +24,7 @@ function VehicleType() {
   const [Refresh, setRefresh] = useState(false);
   const [err, setErr] = useState();
   const type = query.type;
-  // console.log(type);
+  console.log(type);
   useEffect(async () => {
     await axios
       .get(
@@ -53,6 +53,10 @@ function VehicleType() {
     setSearchKeyword(`&searchVehicle=${e.target.value}`);
     Refresh === true ? setRefresh(false) : setRefresh(true);
   };
+  const handleSort = (e) => {
+    setSort(e.target.value);
+    Refresh === true ? setRefresh(false) : setRefresh(true);
+  };
   console.log(Refresh);
   return (
     <Main>
@@ -63,6 +67,13 @@ function VehicleType() {
         ) : (
           <StyleType>
             <br></br>
+            <select onChange={(e) => handleSort(e)}>
+              <option selected disabled hidden>
+                Urutkan berdasar
+              </option>
+              <option value="sortBy=price&sort=desc">Barang Mewah</option>
+              <option value="sortBy=price&sort=asc">Sewa Termurah</option>
+            </select>
             <div className="d-flex justify-content-between">
               <p className="text-36 font-playfair">{query.type}</p>
             </div>
