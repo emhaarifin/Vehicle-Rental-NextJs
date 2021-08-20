@@ -5,11 +5,13 @@ import Main from '../../../components/templates/Main';
 import styled from 'styled-components';
 import { customMedia } from '../../../styles/breakpoint';
 import Image from 'next/image';
-import { frame1, frame2 } from '../../../public/asset';
+import { frame1, frame2, frame3 } from '../../../public/asset';
 import Input from '../../../components/atoms/Input';
 import Button from '../../../components/atoms/Button';
 import { useState } from 'react';
-function Index() {
+function Index({ data, dataLocation }) {
+  const categoryData = data.result;
+  const locationData = dataLocation.result;
   const [vehicle, setVehicle] = useState({
     location_id: 1,
     category_id: 1,
@@ -22,10 +24,8 @@ function Index() {
 
   const [images, setImages] = useState([]);
   const [imagesPreview] = [images.map((item) => URL.createObjectURL(item))];
-  console.log(imagesPreview[0]);
   const onFileChange = (e) => {
     setImages([...e.target.files]);
-    console.log(images, 'mes');
   };
 
   const handleChange = (e) => {
@@ -64,6 +64,7 @@ function Index() {
         alert(error?.response?.data?.message || 'Gagal');
       });
   };
+
   return (
     <Main>
       <p>Detail Item</p>
@@ -72,30 +73,29 @@ function Index() {
           <div className="left">
             <div className="image">
               <div className="main-image">
-                <img src={imagesPreview[0] ? imagesPreview[0] : frame1} alt="aa"></img>
+                <img src={imagesPreview[0] ? imagesPreview[0] : frame1.src} alt="aa"></img>
               </div>
               <div className="second-image second">
                 <div className="second">
-                  <img src={imagesPreview[1] ? imagesPreview[1] : frame2} width="290px" height="164px" alt="aa"></img>
+                  <img src={imagesPreview[1] ? imagesPreview[1] : frame2.src} alt="aa"></img>
                 </div>
                 <div className="second">
-                  <img src={imagesPreview[2] ? imagesPreview[2] : frame2} width="290px" height="164px" alt="aa"></img>
+                  <div className="input-files">
+                    <label className="label">
+                      <img src={imagesPreview[2] ? imagesPreview[2] : frame3.src} alt="aa"></img>
+                      <Input
+                        multiple
+                        id="image"
+                        type="file"
+                        name="image"
+                        onChange={(e) => onFileChange(e)}
+                        element="input"
+                        placeholder="url image product"
+                      />
+                    </label>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="input-files">
-              <label className="label">
-                <div>Click to add image</div>
-                <Input
-                  multiple
-                  id="image"
-                  type="file"
-                  name="image"
-                  onChange={(e) => onFileChange(e)}
-                  element="input"
-                  placeholder="url image product"
-                />
-              </label>
             </div>
           </div>
           <div className="right">
@@ -106,7 +106,18 @@ function Index() {
               placeholder="Name (max up to 50 words)"
               maxlength="50"
             ></Input>
-            <Input className="input text" onChange={handleChange} placeholder="Location" name="location_id"></Input>
+            <select className="input text" onChange={handleChange} placeholder="Location" name="location_id">
+              {locationData &&
+                locationData.map((item) => {
+                  return (
+                    <>
+                      <option key={item.id} name="category_id" value={item.id}>
+                        {item.name_location}
+                      </option>
+                    </>
+                  );
+                })}
+            </select>
             <Input className="input text" name="description" onChange={handleChange} placeholder="Description"></Input>
             <div className="my-choice">
               <label htmlFor="price">Price:</label>
@@ -152,15 +163,16 @@ function Index() {
             <option value="" disabled hidden>
               Add item to
             </option>
-            <option name="category_id" value="2">
-              Cars
-            </option>
-            <option name="category_id" value="1">
-              Bike
-            </option>
-            <option name="category_id" value="3">
-              Motorbike
-            </option>
+            {categoryData &&
+              categoryData.map((item) => {
+                return (
+                  <>
+                    <option key={item.id} name="category_id" value={item.id}>
+                      {item.name_category}
+                    </option>
+                  </>
+                );
+              })}
           </select>
           <Button type="submit" className="text-24 bg__primary choice-item">
             Save Item
@@ -181,43 +193,6 @@ const StyleDetail = styled.div`
   .left {
     height: 100%;
     flex: 1;
-
-    .input-files{
-      margin-top: 1rem;
-      display:flex;
-      justify-content: center;
-      align-items:center;
-      .label {
-        display: inline-block;
-        position: relative;
-        height: 3rem;
-        
-        width: 20rem;
-        div {
-          position: absolute;
-          top: 0;
-          bottom: 0;
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          // background: #ccc;
-          border: 1px dotted #bebebe;
-          border-radius: 10px;
-        }
-        input[type='file'] {
-          position: absolute;
-          left: 0;
-          opacity: 0;
-
-      cursor: pointer;
-          top: 0;
-          bottom: 0;
-          width: 100%;
-        }
-      }
-    }
-
     .image {
       display: flex;
       flex-direction: column;
@@ -229,6 +204,13 @@ const StyleDetail = styled.div`
         justify-content: center;
         align-items: center;
         background: #f5f5f6;
+        border-radius: 10px;
+        img{
+          width: 100%;
+          border-radius: 10px;
+          height: 100%;
+          object-fit: cover;
+        }
       }
       .second-image {
         display: flex;
@@ -242,12 +224,49 @@ const StyleDetail = styled.div`
           display: flex;
           justify-content: center;
           align-items: center;
+          border-radius: 10px;
+          img {
+            width: 100%;
+            border-radius: 10px;
+            height: 100%;
+            object-fit: cover;
+          }
         }
         .second:nth-child(2) {
           flex: 1;
           display: flex;
           justify-content: center;
           align-items: center;
+          border-radius: 10px;
+          .input-files{
+            display:flex;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items:center;
+            .label {
+              display: inline-block;
+              position: relative;
+              width: 100%;
+              height: 100%;
+              img{
+                width: 100%;
+                border-radius: 10px;
+                height: 100%;
+                object-fit: cover;
+              }
+              input[type='file'] {
+                position: absolute;
+                left: 0;
+                opacity: 0;
+                cursor: pointer;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                bottom: 0;
+              }
+            }
+          }
         }
       }
     }
@@ -335,3 +354,12 @@ gap: 1.5rem;
     padding: 1.35rem;
   }
 `;
+
+export async function getServerSideProps() {
+  const { data } = await axios.get(`http://localhost:4000/category`);
+  const data2 = await axios.get(`http://localhost:4000/location`);
+  const dataLocation = await data2.data;
+  return {
+    props: { data, dataLocation },
+  };
+}

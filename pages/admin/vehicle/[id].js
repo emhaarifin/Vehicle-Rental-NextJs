@@ -13,8 +13,7 @@ function Id(vehicle) {
   const data = vehicle.result[0];
   const { category, description, stock, location, name, price, status, id, image } = data;
   // const image = data.image
-  console.log(image[0]);
-  console.log(data);
+
   return (
     <Main>
       <p>Detail Item</p>

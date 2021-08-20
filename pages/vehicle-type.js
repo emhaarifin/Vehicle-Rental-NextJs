@@ -5,7 +5,6 @@ import { facebook } from '../public/asset';
 import axios from 'axios';
 import Link from 'next/link';
 function VehicleType({ cars, bike, motorbike }) {
-  console.log(cars);
   return (
     <Main>
       <br></br>

@@ -8,9 +8,9 @@ function CardProduct(props) {
     <Link href={props.href}>
       <a>
         <StyleCard>
-          <div className="product-img">
-            <img src={props.image} alt={props.alt}></img>
-          </div>
+          {/* <div className="product-img"> */}
+          <img src={props.image} alt={props.alt}></img>
+          {/* </div> */}
           <div className="information info">
             <p className="info">{props.name}</p>
             <p className="info">{props.location}</p>
@@ -24,35 +24,24 @@ function CardProduct(props) {
 export default CardProduct;
 
 const StyleCard = styled.div`
-  .product-img {
-    width: 261px;
-    height: 337px;
-    ${customMedia.lessThan('425px')`
-    width: 100%
-    `}
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-  }
-
-  display: flex;
-  margin-bottom: 1.5rem;
   img {
-    border-radius: 8px;
+    position: absolute;
+    max-width: 100%;
+    min-height: inherit;
+    border-radius: 10px;
+    object-fit: cover;
   }
+  width: 261px;
+  min-height: 337px;
   position: relative;
   .information {
     background: #fff;
     width: 55%;
     position: absolute;
     bottom: 0;
-    // left: 25%;
+    left: 0;
     padding: 0.7rem 0.7rem 0.2rem 1rem;
     border-radius: 0px 6px 0px 0px;
-    // border-radius: 6px 6px 0px 0px;
-
     p {
       white-space: nowrap;
       overflow: hidden;
@@ -76,6 +65,5 @@ const StyleCard = styled.div`
       line-height: 24px;
       color: #80918e;
     }
-    // align-self: flex-start;
   }
 `;

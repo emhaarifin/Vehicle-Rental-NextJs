@@ -13,7 +13,6 @@ import { customMedia } from '../../styles/breakpoint';
 import Search from '../../components/molecules/Search';
 function VehicleType() {
   const { query } = useRouter();
-  console.log(query, 'aa');
   const [data, setData] = useState([]);
 
   let pageNumbers = [];
@@ -24,7 +23,6 @@ function VehicleType() {
   const [Refresh, setRefresh] = useState(false);
   const [err, setErr] = useState();
   const type = query.type;
-  console.log(type);
   useEffect(async () => {
     await axios
       .get(
@@ -35,7 +33,6 @@ function VehicleType() {
         const pageDetail = result.data.pageDetail;
         setData(data);
         setPagination(pageDetail);
-        console.log(pageDetail);
         setErr(result.data.status);
       })
       .catch((err) => setErr(err.response.status));
@@ -57,7 +54,6 @@ function VehicleType() {
     setSort(e.target.value);
     Refresh === true ? setRefresh(false) : setRefresh(true);
   };
-  console.log(Refresh);
   return (
     <Main>
       <>

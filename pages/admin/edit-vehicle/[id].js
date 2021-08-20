@@ -13,8 +13,11 @@ import Input from '../../../components/atoms/Input';
 import { frame1, frame2 } from '../../../public/asset';
 import Button from '../../../components/atoms/Button';
 import { useState, useEffect } from 'react';
-function Index(vehicleItem) {
+function Index({ vehicleItem, data, dataLocation }) {
   const { location_id, category_id, name, description, price, status, stock, image } = vehicleItem.result[0];
+
+  const dataCategory = data.result;
+  const locationData = dataLocation.result;
   console.log(image);
   const { query } = useRouter();
 
@@ -103,18 +106,25 @@ function Index(vehicleItem) {
               </div>
               <div className="second-image second">
                 <div className="second">
-                  <img src={imagesPreview[1] ? imagesPreview[1] : image[1]} width="290px" height="164px" alt="aa"></img>
+                  <img src={imagesPreview[1] ? imagesPreview[1] : image[1]} alt="aa"></img>
                 </div>
                 <div className="second">
-                  <img src={imagesPreview[2] ? imagesPreview[2] : image[2]} width="290px" height="164px" alt="aa"></img>
+                  <div className="input-files">
+                    <label className="label">
+                      <img src={imagesPreview[2] ? imagesPreview[2] : image[2]} alt="aa"></img>
+                      <Input
+                        multiple
+                        id="image"
+                        type="file"
+                        name="image"
+                        onChange={(e) => onFileChange(e)}
+                        element="input"
+                        placeholder="url image product"
+                      />
+                    </label>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="input-files">
-              <label className="label">
-                <div>Click to update image</div>
-                <Input multiple id="image" type="file" name="image" onChange={(e) => onFileChange(e)} element="input" />
-              </label>
             </div>
           </div>
           <div className="right">
@@ -126,7 +136,18 @@ function Index(vehicleItem) {
               placeholder="Name (max up to 50 words)"
               maxlength="50"
             ></Input>
-            <Input className="input text" onChange={handleChange} placeholder="Location" name="location_id"></Input>
+            <select className="input text" onChange={handleChange} placeholder="Location" name="location_id">
+              {locationData &&
+                locationData.map((item) => {
+                  return (
+                    <>
+                      <option key={item.id} name="category_id" value={item.id}>
+                        {item.name_location}
+                      </option>
+                    </>
+                  );
+                })}
+            </select>
             <Input
               className="input text"
               name="description"
@@ -183,18 +204,16 @@ function Index(vehicleItem) {
             id="category_id"
             name="category_id"
           >
-            <option value="" disabled hidden>
-              Choose Category
-            </option>
-            <option name="category_id" value="2">
-              Cars
-            </option>
-            <option name="category_id" value="1">
-              Bike
-            </option>
-            <option name="category_id" value="3">
-              Motorbike
-            </option>
+            {dataCategory &&
+              dataCategory.map((item) => {
+                return (
+                  <>
+                    <option key={item.id} name="category_id" value={item.id}>
+                      {item.name_category}
+                    </option>
+                  </>
+                );
+              })}
           </select>
           <Button type="submit" className="text-24 bg__primary choice-item">
             Save Change
@@ -216,43 +235,6 @@ const StyleDetail = styled.div`
   gap: 2rem;
   `}
   .left {
-
-    .input-files{
-      margin-top: 1rem;
-      display:flex;
-      justify-content: center;
-      align-items:center;
-      .label {
-        display: inline-block;
-        position: relative;
-        height: 3rem;
-        
-        width: 20rem;
-        div {
-          position: absolute;
-          top: 0;
-          bottom: 0;
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          // background: #ccc;
-          border: 1px dotted #bebebe;
-          border-radius: 10px;
-        }
-        input[type='file'] {
-          position: absolute;
-          left: 0;
-          opacity: 0;
-
-      cursor: pointer;
-          top: 0;
-          bottom: 0;
-          width: 100%;
-        }
-      }
-    }
-
     height: 100%;
     flex: 1;
     .image {
@@ -266,6 +248,12 @@ const StyleDetail = styled.div`
         justify-content: center;
         align-items: center;
         background: #f5f5f6;
+        img{
+          width: 100%;
+          height: 100%;
+          border-radius: 10px;
+          object-fit: cover;
+        }
       }
       .second-image {
         display: flex;
@@ -279,12 +267,52 @@ const StyleDetail = styled.div`
           display: flex;
           justify-content: center;
           align-items: center;
+
+          border-radius: 10px;
+          img{
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            object-fit: cover;
+          }
         }
         .second:nth-child(2) {
           flex: 1;
           display: flex;
           justify-content: center;
           align-items: center;
+
+          border-radius: 10px;
+          .input-files{
+            display:flex;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items:center;
+            .label {
+              display: inline-block;
+              position: relative;
+              width: 100%;
+              height: 100%;
+
+              img{
+                width: 100%;
+                border-radius: 10px;
+                height: 100%;
+                object-fit: cover;
+              }
+              input[type='file'] {
+                position: absolute;
+                left: 0;
+                opacity: 0;
+                cursor: pointer;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                bottom: 0;
+              }
+            }
+          }
         }
       }
     }
@@ -378,10 +406,12 @@ gap: 1.5rem;
 
 export async function getServerSideProps(context) {
   const { id } = context.params;
-
   const res = await axios.get(`http://localhost:4000/vehicle/${id}`);
+  const { data } = await axios.get(`http://localhost:4000/category`);
+  const data2 = await axios.get(`http://localhost:4000/location`);
+  const dataLocation = await data2.data;
   const vehicleItem = await res.data;
   return {
-    props: vehicleItem,
+    props: { vehicleItem, data, dataLocation },
   };
 }
