@@ -5,35 +5,50 @@ import Link from 'next/link';
 import { customMedia } from '../../styles/breakpoint';
 function CardProduct(props) {
   return (
-    <Link href={props.href}>
-      <a>
-        <StyleCard>
-          {/* <div className="product-img"> */}
-          <img src={props.image} alt={props.alt}></img>
-          {/* </div> */}
+    <StyleCard>
+      <Link href={props.href}>
+        <a>
+          <div className="product-img">
+            <img src={props.image} alt={props.alt}></img>
+          </div>
           <div className="information info">
             <p className="info">{props.name}</p>
             <p className="info">{props.location}</p>
           </div>
-        </StyleCard>
-      </a>
-    </Link>
+        </a>
+      </Link>
+    </StyleCard>
   );
 }
 
 export default CardProduct;
 
 const StyleCard = styled.div`
-  img {
-    position: absolute;
-    max-width: 100%;
-    min-height: inherit;
-    border-radius: 10px;
-    object-fit: cover;
-  }
-  width: 261px;
-  min-height: 337px;
+  flex: 1 46%;
+  ${customMedia.greaterThan('media_md')`
+flex: 1 21%;
+`}
+  ${customMedia.greaterThan('media_xl')`
+flex: 1 16%;
+`}
   position: relative;
+  a {
+    width: 100%;
+    height: 100%;
+  }
+  min-height: 337px;
+  margin-bottom: 2rem;
+  .product-img {
+    position: absolute;
+    border-radius: 10px;
+    img {
+      max-width: 100%;
+      min-height: 337px;
+      max-height: 337px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+  }
   .information {
     background: #fff;
     width: 55%;
