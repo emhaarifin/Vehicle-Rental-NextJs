@@ -20,6 +20,14 @@ function Button(props) {
         </StyleButton>
       </>
     );
+  } else if (props.onlyIcon) {
+    return (
+      <>
+        <StyleButton className={props.className} onClick={props.onClick} disabled={props.disabled} style={props.style}>
+          <Image width={props.width} height={props.height} src={props.Image} alt="btn-with-text-icon"></Image>
+        </StyleButton>
+      </>
+    );
   }
   return (
     <>
