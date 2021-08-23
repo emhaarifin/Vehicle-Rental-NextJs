@@ -6,9 +6,35 @@ import Input from '../components/atoms/Input';
 import { heroLogin } from '../public/asset';
 import { customMedia } from '../styles/breakpoint';
 import { google } from '../public/asset';
+import { useState } from 'react';
 
+import { useRouter } from 'next/router';
 import Link from 'next/link';
+import axios from 'axios';
 function Login() {
+  const router = useRouter();
+  const [input, setInput] = useState({
+    email: '',
+    password: '',
+  });
+  const handleChange = (e) => {
+    e.preventDefault();
+    setInput({
+      ...input,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const handleLogin = (e) => {
+    e.preventDefault();
+    axios
+      .post('http://localhost:4000/auth/login', input, { withCredentials: true })
+      .then(() => {
+        router.push('/');
+      })
+      .catch((error) => {
+        alert(error?.response?.data?.message);
+      });
+  };
   return (
     <LayoutAuth>
       <LoginLayout>
@@ -19,18 +45,36 @@ function Login() {
           <p className="header text-64 c-white text-bold">Le’ts Explore The World</p>
           <div className="auth-content">
             <div className="left">
-              <div className="input-auth">
-                <Input type="text" className="text-24 c-white text-bold email" placeholder="Email"></Input>
-                <Input type="password" className="text-24 c-white text-bold" placeholder="Password"></Input>
-              </div>
-              <div className="forgot-password">
-                <Link href="/forgot-password">
-                  <a className="c-white">Forgot password?</a>
-                </Link>
-              </div>
-              <div>
-                <Button className="login text-24 text-bold">Login</Button>
-              </div>
+              <form onSubmit={handleLogin}>
+                <div className="input-auth">
+                  <Input
+                    type="text"
+                    name="email"
+                    autocomplete="email"
+                    onChange={handleChange}
+                    className="text-24 c-white text-bold email"
+                    placeholder="Email"
+                  ></Input>
+                  <Input
+                    type="password"
+                    name="password"
+                    onChange={handleChange}
+                    autocomplete="current-password"
+                    className="text-24 c-white text-bold"
+                    placeholder="Password"
+                  ></Input>
+                </div>
+                <div className="forgot-password">
+                  <Link href="/forgot-password">
+                    <a className="c-white">Forgot password?</a>
+                  </Link>
+                </div>
+                <div>
+                  <Button type="submit" className="login text-24 text-bold">
+                    Login
+                  </Button>
+                </div>
+              </form>
             </div>
             <div className="or">
               <p>or</p>

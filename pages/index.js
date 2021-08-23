@@ -172,7 +172,7 @@ const Popular = styled.div`
 `;
 
 export async function getServerSideProps() {
-  const res = await axios.get(`${process.env.NEXT_BACKEND_API}/vehicle?limit=4&sort=DESC`);
+  const res = await axios.get(`${process.env.NEXT_BACKEND_API}/vehicle?limit=5&sort=DESC`);
   const vehicles = await res.data.data;
   return {
     props: { vehicles },

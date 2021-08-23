@@ -4,11 +4,14 @@ import '../styles/globals.css';
 import '../styles/color.css';
 import '../styles/typography.css';
 import Head from 'next/head';
-
 import '../node_modules/bootstrap/dist/css/bootstrap.css';
+import { Provider } from 'react-redux';
+import { createWrapper } from 'next-redux-wrapper';
+import { store } from '../redux/store';
 function MyApp({ Component, pageProps }) {
   return (
     <>
+      {/* <Provider store={store}> */}
       <Head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
@@ -18,8 +21,13 @@ function MyApp({ Component, pageProps }) {
         />
       </Head>
       <Component {...pageProps} />
+      {/* </Provider> */}
     </>
   );
 }
 
+// const makeStore = () => store;
+// const wrapper = createWrapper(makeStore);
+
+// export default wrapper.withRedux(MyApp);
 export default MyApp;

@@ -23,3 +23,4 @@ export { default as arrowRightBlack } from './icons/arrow-right-black.svg';
 export { default as frame1 } from './decorations/frame1.png';
 export { default as frame2 } from './decorations/frame2.png';
 export { default as frame3 } from './decorations/frame3.png';
+export { default as editProfile } from './icons/edit-profile.svg';

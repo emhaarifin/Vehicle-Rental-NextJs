@@ -36,6 +36,7 @@ flex: 1 16%;
     width: 100%;
     height: 100%;
   }
+  max-width: 261px;
   min-height: 337px;
   margin-bottom: 2rem;
   .product-img {
