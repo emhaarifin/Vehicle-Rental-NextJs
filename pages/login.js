@@ -9,8 +9,8 @@ import { google } from '../public/asset';
 import { useState } from 'react';
 
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 import axios from 'axios';
+import Link from 'next/link';
 function Login() {
   const router = useRouter();
   const [input, setInput] = useState({

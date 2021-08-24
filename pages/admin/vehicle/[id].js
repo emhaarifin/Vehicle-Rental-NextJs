@@ -202,7 +202,6 @@ gap: 1.5rem;
 
 export async function getServerSideProps(context) {
   const { id } = context.params;
-
   const res = await axios.get(`http://localhost:4000/vehicle/${id}`);
   const vehicle = await res.data;
   return {

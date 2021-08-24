@@ -59,11 +59,14 @@ function Input(props) {
         onBlur={props.onBlur}
         type={props.type}
         name={props.name}
+        disabled={props.disabled}
         placeholder={props.placeholder}
         min={props.min}
         max={props.max}
         {...props}
-      ></StyleInput>
+      >
+        {props.children}
+      </StyleInput>
     </>
   );
 }

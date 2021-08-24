@@ -1,33 +1,38 @@
-// // import { createStore, applyMiddleware } from 'redux';
-// // import { composeWithDevTools } from 'redux-devtools-extension';
-// // import { persistStore, persistReducer } from 'redux-persist';
-// // import thunk from 'redux-thunk';
-// // import storage from 'redux-persist/lib/storage';
-// // import reducers from './reducers';
+import { useMemo } from 'react';
+import { createStore, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import thunkMiddleware from 'redux-thunk';
+import reducers from './reducers/index';
 
-// // const persistConfig = {
-// //   key: 'root',
-// //   storage,
-// // };
+let store;
 
-// // const persistedReducer = persistReducer(persistConfig, reducers);
-// // const logger = composeWithDevTools();
-// // let store = createStore(persistedReducer, applyMiddleware(thunk, logger));
-// // let persistor = persistStore(store);
+function initStore(initialState) {
+  return createStore(reducers, initialState, composeWithDevTools(applyMiddleware(thunkMiddleware)));
+}
 
-// // export { store, persistor };
+export const initializeStore = (preloadedState) => {
+  let _store = store ?? initStore(preloadedState);
 
-// //store.ts
-// import { createStore } from 'redux';
-// import { persistStore, persistCombineReducers } from 'redux-persist';
-// import { composeWithDevTools } from 'redux-devtools-extension';
-// import { CookieStorage } from 'redux-persist-cookie-storage';
-// import Cookies from 'cookies-js';
-// import reducers from './rootReducer';
-// const persistConfig = {
-//     key: 'root',
-//     storage: new CookieStorage(Cookies, {}),
-// };
-// const rootReducer = persistCombineReducers(persistConfig, reducers);
-// export const reduxStore = createStore(rootReducer, composeWithDevTools());
-// export const reduxPersistor = persistStore(reduxStore, {});
+  // After navigating to a page with an initial Redux state, merge that state
+  // with the current state in the store, and create a new store
+  if (preloadedState && store) {
+    _store = initStore({
+      ...store.getState(),
+      ...preloadedState,
+    });
+    // Reset the current store
+    store = undefined;
+  }
+
+  // For SSG and SSR always create a new store
+  if (typeof window === 'undefined') return _store;
+  // Create the store once in the client
+  if (!store) store = _store;
+
+  return _store;
+};
+
+export function useStore(initialState) {
+  const store = useMemo(() => initializeStore(initialState), [initialState]);
+  return store;
+}
