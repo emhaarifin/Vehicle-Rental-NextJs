@@ -9,10 +9,11 @@ import styled from 'styled-components';
 import { customMedia } from '../../../styles/breakpoint';
 import Image from 'next/image';
 import Input from '../../../components/atoms/Input';
-
+import swal from 'sweetalert';
 import { frame1, frame2 } from '../../../public/asset';
 import Button from '../../../components/atoms/Button';
 import { useState, useEffect } from 'react';
+import { privateRoute } from '../../../components/HOC/privateRoute';
 function Index({ vehicleItem, data, dataLocation }) {
   const { location_id, category_id, name, description, price, status, stock, image } = vehicleItem.result[0];
 
@@ -74,10 +75,10 @@ function Index({ vehicleItem, data, dataLocation }) {
         },
       })
       .then((result) => {
-        alert(result?.data?.message || 'Sukses Update');
+        swal('Success', result?.data?.message || 'Suskes Update Data', 'success');
       })
       .catch((error) => {
-        alert(error?.response?.data?.message || 'Gagal Update');
+        swal('error', error?.response?.data?.message || 'Gagal Update ', 'error');
       });
   };
 
@@ -404,7 +405,7 @@ gap: 1.5rem;
   }
 `;
 
-export async function getServerSideProps(context) {
+export const getServerSideProps = privateRoute(async (context) => {
   const { id } = context.params;
   const res = await axios.get(`http://localhost:4000/vehicle/${id}`);
   const { data } = await axios.get(`http://localhost:4000/category`);
@@ -414,4 +415,4 @@ export async function getServerSideProps(context) {
   return {
     props: { vehicleItem, data, dataLocation },
   };
-}
+});

@@ -10,7 +10,7 @@ import Input from '../components/atoms/Input';
 import Button from '../components/atoms/Button';
 
 import { useState } from 'react';
-
+import swal from 'sweetalert';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 function Login() {
@@ -31,11 +31,12 @@ function Login() {
     e.preventDefault();
     axios
       .post('http://localhost:4000/auth/register', input)
-      .then(() => {
+      .then((result) => {
+        swal('Success', result?.data?.message || 'Signup Sukses', 'success');
         router.push('/login');
       })
       .catch((error) => {
-        alert(error?.response?.data?.message);
+        swal('error', error?.response?.data?.message || 'Signup Gagal', 'error');
       });
   };
   return (

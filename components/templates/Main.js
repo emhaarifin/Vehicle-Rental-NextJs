@@ -3,7 +3,8 @@ import Navbar from '../organism/Navbar';
 import styled from 'styled-components';
 import { customMedia } from '../../styles/breakpoint';
 
-function Main({ children }) {
+function Main({ children, avatar }) {
+  console.log(avatar, 'avatar');
   return (
     <MainC>
       <Navbar />
@@ -33,3 +34,13 @@ const ContainerMain = styled.div`
   padding: 1rem;
 `}
 `;
+
+export async function getServerSideProps(ctx) {
+  console.log('asu');
+  return {
+    props: {},
+  };
+}
+
+// const avatar = ctx.req.headers.cookie;
+// console.log(avatar.split('; ')[1].slice(11));

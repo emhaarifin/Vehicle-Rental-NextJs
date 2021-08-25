@@ -11,7 +11,7 @@ export { default as history } from './icons/history.svg';
 export { default as about } from './icons/about.svg';
 export { default as user } from './icons/user.svg';
 export { default as heroSignup } from './images/hero-signup.svg';
-export { default as avatarUser } from './icons/avatar-user.svg';
+export { default as avatarUser } from './icons/user.svg';
 export { default as email } from './icons/email.svg';
 // export { default as arrowRight } from './icons/arrow-right.svg';
 export { default as google } from './icons/google.svg';

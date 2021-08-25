@@ -12,13 +12,21 @@ import Button from '../components/atoms/Button';
 import Input from '../components/atoms/Input';
 import Navbar from '../components/organism/Navbar';
 import Footer from '../components/organism/Footer';
+import { useEffect, useState } from 'react';
 export default function Home({ vehicles }) {
+  const [roles, setRoles] = useState();
+  const getRole = () => {
+    const roles = localStorage.getItem('roles');
+    setRoles(roles);
+  };
+  useEffect(() => {
+    getRole();
+  }, []);
   return (
     <>
       <ContainerMain>
         <Navbar></Navbar>
       </ContainerMain>
-
       <br></br>
       <StyleHero className="hero">
         <ContainerMain>
@@ -55,7 +63,7 @@ export default function Home({ vehicles }) {
             {vehicles?.map((item, index) => {
               return (
                 <CardProduct
-                  href={`/admin/vehicle/${item.id}`}
+                  href={`/vehicle/${item.id}`}
                   key={index}
                   image={item.image[0]}
                   alt={item.name}
@@ -65,11 +73,13 @@ export default function Home({ vehicles }) {
               );
             })}
           </CardContainer>
-          <Link href="/admin/add-vehicle">
-            <a>
-              <Button className="bg__black add-new-item text-24 c-primary">Add new item</Button>
-            </a>
-          </Link>
+          {roles === 'admin' && (
+            <Link href="/admin/add-vehicle">
+              <a>
+                <Button className="bg__black add-new-item text-24 c-primary">Add new item</Button>
+              </a>
+            </Link>
+          )}
         </Popular>
       </ContainerMain>
       <ContainerMain>
@@ -171,7 +181,9 @@ const Popular = styled.div`
 `}
 `;
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
+  // let roles = context.req.headers.cookie;
+  // roles = await roles.split('; ')[1].slice(6);
   const res = await axios.get(`${process.env.NEXT_BACKEND_API}/vehicle?limit=5&sort=DESC`);
   const vehicles = await res.data.data;
   return {

@@ -1,18 +1,17 @@
 /* eslint-disable @next/next/no-img-element */
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import Main from '../../../components/templates/Main';
+import Main from '../../components/templates/Main';
 import Link from 'next/link';
 import Image from 'next/image';
-import { arrowLeftBlack, arrowRightBlack } from '../../../public/asset';
+import { arrowLeftBlack, arrowRightBlack } from '../../public/asset';
 import styled from 'styled-components';
-import { customMedia } from '../../../styles/breakpoint';
-import Input from '../../../components/atoms/Input';
-import Button from '../../../components/atoms/Button';
+import { customMedia } from '../../styles/breakpoint';
+import Input from '../../components/atoms/Input';
+import Button from '../../components/atoms/Button';
 function Id(vehicle) {
   const data = vehicle.result[0];
   const { category, description, stock, location, name, price, status, id, image } = data;
-  // const image = data.image
 
   return (
     <Main>
@@ -24,51 +23,35 @@ function Id(vehicle) {
               <div className="img-item">
                 <img className="img-main" src={image[0]} alt=""></img>
               </div>
-              <div className="img-item">
-                <div className="arrow">
-                  <Image src={arrowLeftBlack} alt="arrow"></Image>
-                </div>
-                <div className="img2">
-                  <img className="img-second" src={image[1] ? image[1] : image[0]} alt=""></img>
-                </div>
-                <div className="img2">
-                  <img className="img-second" src={image[2] ? image[2] : image[0]} alt=""></img>
-                </div>
-                <div className="arrow">
-                  <Image src={arrowRightBlack} alt="arrow"></Image>
-                </div>
-              </div>
             </div>
           </div>
           <div className="right">
             <div className="right-content">
               <p className="text-48 text-bold font-playfair">{name}</p>
               <p className="text-36 font-playfair">{location}</p>
-              <p className="text-24 c-green text-bold">{status}</p>
               <p className="text-24">Type: {category}</p>
-              <p className="text-36 font-playfair text-bold price">Rp. {price}/day</p>
-              <div className="choice choiche-item">
-                <div className="choice-item">
-                  <Button className="btn-minus bg__gray">-</Button>
-                  <Input type="number" value={stock}></Input>
-                  <Button className="btn-plus bg__primary">+</Button>
-                </div>
-              </div>
             </div>
           </div>
         </StyleDetail>
-
+        <StatusPayment>
+          <div className="left">
+            <div>
+              <p>Quantity : 2 bikes</p>
+            </div>
+            <div>Order details : 1 bike : Rp. 78.000 1 bike : Rp. 78.000</div>
+          </div>
+          <div className="right"></div>
+        </StatusPayment>
+        <Payment className="">
+          <label htmlFor="method">Payment:</label>
+          <select id="method" className="bg__gray" style={{ width: '100%', padding: '1.35rem', border: 'none' }}>
+            <option className="text-24">Cash</option>
+            <option className="text-24">Transfer</option>
+          </select>
+        </Payment>
         <StyleButton className="choice-item">
           <div className="choice-item">
-            <Button className="bg__black text-24 c-primary">Add to home page</Button>
-          </div>
-
-          <div className="choice-item">
-            <Link href={`/admin/edit-vehicle/${id}`}>
-              <a>
-                <Button className="text-24  bg__primary">Edit Item</Button>
-              </a>
-            </Link>
+            <Button className="text-24 text-bold  bg__primary">Finish Payment</Button>
           </div>
         </StyleButton>
       </>
@@ -78,6 +61,15 @@ function Id(vehicle) {
 
 export default Id;
 
+const Payment = styled.div`
+  margin-top: 5rem;
+  display: flex;
+  justify-content: row;
+  align-items: center;
+  gap: 50%;
+`;
+
+const StatusPayment = styled.div``;
 const StyleDetail = styled.div`
   ${customMedia.greaterThan('960px')`
   display: flex;
@@ -178,21 +170,8 @@ const StyleDetail = styled.div`
 `;
 
 const StyleButton = styled.div`
-  ${customMedia.greaterThan('media_md')`
-display: flex;
-gap: 2.5rem;
-`}
-  ${customMedia.lessThan('media_md')`
-display: flex;
-flex-direction: column;
-gap: 1.5rem;
-`}
   margin-top: 5rem;
   .choice-item:nth-child(1) {
-    flex: 1 20%;
-  }
-  .choice-item:nth-child(2) {
-    flex: 2;
     box-shadow: 0px 0px 20px rgba(251, 143, 29, 0.4);
   }
   button {

@@ -3,16 +3,17 @@ import Search from '../components/molecules/Search';
 import styled from 'styled-components';
 import { customMedia } from '../styles/breakpoint';
 import CardHistory from '../components/molecules/CardHistory';
+import { requireAuthentication } from '../components/HOC/requireAuth';
 
 import CardProduct from '../components/molecules/CardProduct';
-function History() {
+function History({}) {
   return (
     <Main>
       <StyleHistory>
         <div className="left">
           <div className="search">
             <Search></Search>
-            <select onChange={(e) => handleSort(e)}>
+            <select>
               <option selected disabled hidden>
                 Urutkan berdasar
               </option>
@@ -63,3 +64,9 @@ const StyleHistory = styled.div`
 `;
 
 export default History;
+
+export const getServerSideProps = requireAuthentication((context) => {
+  return {
+    props: {},
+  };
+});

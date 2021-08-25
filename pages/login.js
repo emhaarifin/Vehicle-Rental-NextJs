@@ -7,10 +7,11 @@ import { heroLogin } from '../public/asset';
 import { customMedia } from '../styles/breakpoint';
 import { google } from '../public/asset';
 import { useState } from 'react';
-
+import swal from 'sweetalert';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import Link from 'next/link';
+import localStorage from 'redux-persist/es/storage';
 function Login() {
   const router = useRouter();
   const [input, setInput] = useState({
@@ -28,11 +29,17 @@ function Login() {
     e.preventDefault();
     axios
       .post('http://localhost:4000/auth/login', input, { withCredentials: true })
-      .then(() => {
+      .then(async (result) => {
+        localStorage.setItem('isAuth', true);
+        localStorage.setItem('roles', result.data.result.roles);
+        localStorage.setItem('avatar', result.data.result.avatar);
+
+        localStorage.setItem('id', result.data.result.id);
+
         router.push('/');
       })
       .catch((error) => {
-        alert(error?.response?.data?.message);
+        swal('error', error?.response?.data?.message || 'Login Gagal', 'error');
       });
   };
   return (
@@ -101,6 +108,7 @@ function Login() {
 export default Login;
 
 const LoginLayout = styled.div`
+  background: rgba(0, 0, 0, 0.38);
   .custom-hero {
     position: relative;
     width: 100vw;

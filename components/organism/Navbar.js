@@ -1,3 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/link-passhref */
 import styled from 'styled-components';
 import { customMedia } from '../../styles/breakpoint';
@@ -6,13 +8,39 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Button from '../atoms/Button';
 import { useState, useEffect } from 'react';
-function Navbar() {
+import cookieCutter from 'cookie-cutter';
+import axios from 'axios';
+function Navbar({ DataUser }) {
   const [login, setLogin] = useState(true);
+  const [avatar, setAvatar] = useState(avatarUser.src);
+  const [refresh, setRefresh] = useState(true);
   function dropDownUser() {
     document.getElementById('myDropdown').classList.toggle('show');
   }
 
+  const handleLogOut = () => {
+    localStorage.clear();
+    setLogin(!login);
+  };
+
+  const isAuth = async () => {
+    let id = localStorage.getItem('id');
+    const res = await axios.get(`http://localhost:4000/auth/profile/${id}`);
+    // console.log();
+    const DataUser = await res.data.result;
+
+    const auth = localStorage.getItem('isAuth');
+    const avaP = localStorage.getItem('avatar');
+    setLogin(auth);
+    if (avatar === null || avatar === 'null') {
+      return setAvatar(avatarUser.src);
+    } else {
+      return setAvatar(DataUser[0].avatar);
+    }
+  };
+
   useEffect(() => {
+    isAuth();
     window.onclick = function (event) {
       if (!event.target.matches('.avatar-user')) {
         var dropdowns = document.getElementsByClassName('dropdown-content');
@@ -25,7 +53,7 @@ function Navbar() {
         }
       }
     };
-  }, []);
+  }, [login]);
 
   return (
     <>
@@ -79,29 +107,16 @@ function Navbar() {
             </Link>
           </div>
           {login ? (
-            <div className="button">
-              <div>
-                <Link href="/login">
-                  <Button className="text-black login">Login</Button>
-                </Link>
-              </div>
-              <div>
-                <Link href="/signup">
-                  <Button className="text-black signup">Sign Up</Button>
-                </Link>
-              </div>
-            </div>
-          ) : (
             <div className="icon-user">
               <Image src={email} alt="icon chat"></Image>
-              <Image
-                src={avatarUser}
+              <img
+                src={avatar}
                 onClick={dropDownUser}
                 className="avatar-user"
                 width="50px"
                 height="50px"
                 alt="avatar user"
-              ></Image>
+              ></img>
               <div id="myDropdown" className="dropdown-content">
                 <Link href="/profile">
                   <div className="dropdown-item">
@@ -117,9 +132,24 @@ function Navbar() {
                 </Link>
                 <Link href="/">
                   <div className="dropdown-item">
-                    <a className="text-14 text-bold">Logout</a>
+                    <a onClick={handleLogOut} className="text-14 text-bold">
+                      Logout
+                    </a>
                     <Image src={arrowRightBlack} width="10px" height="14px" alt="go"></Image>
                   </div>
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <div className="button">
+              <div>
+                <Link href="/login">
+                  <Button className="text-black login">Login</Button>
+                </Link>
+              </div>
+              <div>
+                <Link href="/signup">
+                  <Button className="text-black signup">Sign Up</Button>
                 </Link>
               </div>
             </div>
@@ -131,6 +161,14 @@ function Navbar() {
 }
 
 export default Navbar;
+
+// export async function getServerSideProps(context) {
+
+//   console.log(DataUser, 'data');
+//   return {
+//     props: { DataUser },
+//   };
+// }
 
 const StyleNavbar = styled.nav`
   padding: 5rem;

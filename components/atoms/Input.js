@@ -40,6 +40,7 @@ function Input(props) {
             placeholder={props.placeholder}
             min={props.min}
             max={props.max}
+            checked={props.checked}
             // checked={props.defaultChecked === props.value ? true : false}
             {...props}
           ></input>

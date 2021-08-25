@@ -7,23 +7,27 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Button from '../../components/atoms/Button';
-
 import styled from 'styled-components';
 import { customMedia } from '../../styles/breakpoint';
 import Search from '../../components/molecules/Search';
-function VehicleType() {
+function VehicleType({ resData }) {
+  useEffect(async () => {
+    setData(resData);
+    // getData();
+  }, [Refresh]);
+  const router = useRouter();
   const { query } = useRouter();
-  const [data, setData] = useState([]);
-
+  let [data, setData] = useState([]);
   let pageNumbers = [];
-  const [pagination, setPagination] = useState('');
+  let [pagination, setPagination] = useState('');
   const [Number, setNumber] = useState(1);
   const [searchKeyword, setSearchKeyword] = useState('');
   const [sort, setSort] = useState('sortBy=id&sort=ASC');
   const [Refresh, setRefresh] = useState(false);
   const [err, setErr] = useState();
   const type = query.type;
-  useEffect(async () => {
+
+  const getData = async () => {
     await axios
       .get(
         `http://localhost:4000/vehicle?limit=4&table=category&page=${Number}&search=${type}&${sort}&${searchKeyword}`
@@ -36,7 +40,7 @@ function VehicleType() {
         setErr(result.data.status);
       })
       .catch((err) => setErr(err.response.status));
-  }, [Refresh]);
+  };
 
   for (let i = 1; i <= pagination.totalPage; i++) {
     pageNumbers.push(i);
@@ -54,6 +58,9 @@ function VehicleType() {
     setSort(e.target.value);
     Refresh === true ? setRefresh(false) : setRefresh(true);
   };
+  if (router.isFallback) {
+    return <h1>halaman loading</h1>;
+  }
   return (
     <Main>
       <>
@@ -77,7 +84,7 @@ function VehicleType() {
               {data?.map((item, index) => {
                 return (
                   <CardProduct
-                    href={`/admin/vehicle/${item.id}`}
+                    href={`/vehicle/${item.id}`}
                     key={index}
                     image={item.image[0]}
                     alt={item.name}
@@ -124,3 +131,29 @@ const StyleType = styled.div`
     }
   }
 `;
+
+export const getStaticPaths = async () => {
+  const { data } = await axios.get(`${process.env.NEXT_BACKEND_API}/category`);
+
+  const dataLocation = data.result.map((item) => ({
+    params: { type: item.name_category.toLowerCase() },
+  }));
+  // ket: data paths harus sperti dibawah
+  const paths = [{ params: { type: 'bike' } }];
+
+  return {
+    paths: paths,
+    fallback: true,
+  };
+};
+
+export const getStaticProps = async (context) => {
+  const type = context.params.type;
+  const { data } = await axios.get(`${process.env.NEXT_BACKEND_API}/vehicle?limit=5&table=category&search=${type}`);
+  console.log(data, 'data');
+  return {
+    props: {
+      resData: data.data,
+    },
+  };
+};

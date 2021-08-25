@@ -8,7 +8,9 @@ import Image from 'next/image';
 import { frame1, frame2, frame3 } from '../../../public/asset';
 import Input from '../../../components/atoms/Input';
 import Button from '../../../components/atoms/Button';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { privateRoute } from '../../../components/HOC/privateRoute';
+import swal from 'sweetalert';
 function Index({ data, dataLocation }) {
   const categoryData = data.result;
   const locationData = dataLocation.result;
@@ -58,10 +60,10 @@ function Index({ data, dataLocation }) {
         },
       })
       .then((result) => {
-        alert(result?.data?.messaga || 'Suskes Tambah Data');
+        swal('Success', result?.data?.message || 'Suskes Tambah Data', 'success');
       })
       .catch((error) => {
-        alert(error?.response?.data?.message || 'Gagal');
+        swal('error', error?.response?.data?.message || 'Gagal Tambha Data', 'error');
       });
   };
 
@@ -146,9 +148,13 @@ function Index({ data, dataLocation }) {
             <div className="stock-item">
               <label htmlFor="stock">Stock:</label>
               <div className="stock-vehicle">
-                <Button className="btn-plus bg__primary">+</Button>
-                <Input name="stock" onChange={handleChange} type="number"></Input>
-                <Button className="btn-minus bg__gray">-</Button>
+                <Button type="button" className="btn-plus bg__primary">
+                  +
+                </Button>
+                <Input name="stock" onChange={handleChange} value={vehicle.stock} type="number"></Input>
+                <Button type="button" className="btn-minus bg__gray">
+                  -
+                </Button>
               </div>
             </div>
           </div>
@@ -354,12 +360,11 @@ gap: 1.5rem;
     padding: 1.35rem;
   }
 `;
-
-export async function getServerSideProps() {
+export const getServerSideProps = privateRoute(async (context) => {
   const { data } = await axios.get(`http://localhost:4000/category`);
   const data2 = await axios.get(`http://localhost:4000/location`);
   const dataLocation = await data2.data;
   return {
     props: { data, dataLocation },
   };
-}
+});

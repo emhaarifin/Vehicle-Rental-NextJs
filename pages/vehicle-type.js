@@ -4,72 +4,40 @@ import Main from '../components/templates/Main';
 import { facebook } from '../public/asset';
 import axios from 'axios';
 import Link from 'next/link';
-function VehicleType({ cars, bike, motorbike }) {
+function VehicleType({ category }) {
+  console.log(category, 'ca');
   return (
     <Main>
       <br></br>
-      <div className="d-flex justify-content-between">
-        <p className="text-36 font-playfair">Cars</p>
-        <Link href="/view-all/cars">
-          <a className="text-16 c-primary">View all</a>
-        </Link>
-      </div>
-      <CardContainer>
-        {cars?.map((item, index) => {
-          return (
-            <CardProduct
-              href={`/admin/vehicle/${item.id}`}
-              key={index}
-              image={item.image[0]}
-              alt={item.name}
-              name={item.name}
-              location={item.location}
-            ></CardProduct>
-          );
-        })}
-      </CardContainer>
-      <br></br>
-      <div className="d-flex justify-content-between">
-        <p className="text-36 font-playfair">Bike</p>
-        <Link href="/view-all/bike">
-          <a className="text-16 c-primary">View all</a>
-        </Link>
-      </div>
-      <CardContainer>
-        {bike?.map((item, index) => {
-          return (
-            <CardProduct
-              href={`/admin/vehicle/${item.id}`}
-              key={index}
-              image={item.image[0]}
-              alt={item.name}
-              name={item.name}
-              location={item.location}
-            ></CardProduct>
-          );
-        })}
-      </CardContainer>
-      <br></br>
-      <div className="d-flex justify-content-between">
-        <p className="text-36 font-playfair">Motorbike</p>
-        <Link href="/view-all/motorbike">
-          <a className="text-16 c-primary">View all</a>
-        </Link>
-      </div>
-      <CardContainer>
-        {motorbike?.map((item, index) => {
-          return (
-            <CardProduct
-              href={`/admin/vehicle/${item.id}`}
-              key={index}
-              image={item.image[0]}
-              alt={item.name}
-              name={item.name}
-              location={item.location}
-            ></CardProduct>
-          );
-        })}
-      </CardContainer>
+      {category?.map((resC, index) => {
+        let NC = resC.name_category.toLowerCase();
+        return (
+          <>
+            <div className="d-flex justify-content-between align-items-center">
+              <p className="text-36 font-playfair">{resC.name_category}</p>
+              <Link href={`/view-all/${NC}`}>
+                <a className="text-16 c-primary">View all</a>
+              </Link>
+            </div>
+            <CardContainer key={index}>
+              {resC?.vehicles?.map((item, i) => {
+                return (
+                  <>
+                    <CardProduct
+                      href={`/vehicle/${item.id}`}
+                      key={i}
+                      image={item.image[0]}
+                      alt={item.name}
+                      name={item.name}
+                      location={item.location}
+                    ></CardProduct>
+                  </>
+                );
+              })}
+            </CardContainer>
+          </>
+        );
+      })}
     </Main>
   );
 }
@@ -77,13 +45,19 @@ function VehicleType({ cars, bike, motorbike }) {
 export default VehicleType;
 
 export async function getServerSideProps() {
-  const res = await axios.get(`${process.env.NEXT_BACKEND_API}/vehicle?limit=4&sort=DESC&table=category&search=cars`);
-  const res1 = await axios.get(`${process.env.NEXT_BACKEND_API}/vehicle?limit=4&table=category&search=bike`);
-  const res2 = await axios.get(`${process.env.NEXT_BACKEND_API}/vehicle?limit=4&table=category&search=motorbike`);
-  const cars = await res.data.data;
-  const bike = await res1.data.data;
-  const motorbike = await res2.data.data;
+  // const resLocation = await axios.get(`${process.env.NEXT_BACKEND_API}/location`);
+  const resCategory = await axios.get(`${process.env.NEXT_BACKEND_API}/category`);
+  const category = await resCategory.data.result;
+  await Promise.all(
+    category.map(async (item, index) => {
+      const response = await axios.get(
+        `${process.env.NEXT_BACKEND_API}/vehicle?limit=4&table=category&search=${item.name_category}`
+      );
+      const todo = await response;
+      category[index].vehicles = todo.data.data;
+    })
+  );
   return {
-    props: { cars, bike, motorbike },
+    props: { category },
   };
 }
