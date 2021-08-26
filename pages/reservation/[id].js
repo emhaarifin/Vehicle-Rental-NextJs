@@ -13,6 +13,7 @@ import { useState, UseEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import cookies from 'next-cookies';
 import { addReservation } from '../../redux/actions/reservation';
+import { requireAuthentication } from '../../components/HOC/requireAuth';
 function Id(vehicle) {
   const { idUser } = vehicle;
   const data = vehicle.vehicle[0];
@@ -29,7 +30,6 @@ function Id(vehicle) {
       setForm({
         ...form,
         qty: form.qty + 1,
-
         subTotal: price * form.qty,
       });
     }
@@ -206,7 +206,17 @@ const StyleButton = styled.div`
   }
 `;
 
-export async function getServerSideProps(context) {
+// export async function getServerSideProps(context) {
+//   const idUser = cookies(context).id;
+//   const { id } = context.params;
+//   const res = await axios.get(`http://localhost:4000/vehicle/${id}`);
+//   const vehicle = await res.data.result;
+//   return {
+//     props: { vehicle, idUser },
+//   };
+// }
+
+export const getServerSideProps = requireAuthentication(async (context) => {
   const idUser = cookies(context).id;
   const { id } = context.params;
   const res = await axios.get(`http://localhost:4000/vehicle/${id}`);
@@ -214,4 +224,4 @@ export async function getServerSideProps(context) {
   return {
     props: { vehicle, idUser },
   };
-}
+});

@@ -12,15 +12,13 @@ import cookieCutter from 'cookie-cutter';
 import axios from 'axios';
 function Navbar({ DataUser }) {
   const [login, setLogin] = useState(true);
-  const [avatar, setAvatar] = useState(avatarUser.src);
+  const [avatar, setAvatar] = useState(null);
   const [refresh, setRefresh] = useState(true);
-  function dropDownUser() {
-    document.getElementById('myDropdown').classList.toggle('show');
-  }
 
   const handleLogOut = () => {
     localStorage.clear();
     setLogin(!login);
+    axios.get(`http://localhost:4000/auth/logout`);
   };
 
   const isAuth = async () => {
@@ -38,6 +36,9 @@ function Navbar({ DataUser }) {
     }
   };
 
+  function dropDownUser() {
+    document.getElementById('myDropdown').classList.toggle('show');
+  }
   useEffect(() => {
     isAuth();
     window.onclick = function (event) {

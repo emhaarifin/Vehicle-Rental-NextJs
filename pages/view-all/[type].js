@@ -11,11 +11,6 @@ import styled from 'styled-components';
 import { customMedia } from '../../styles/breakpoint';
 import Search from '../../components/molecules/Search';
 function VehicleType({ resData }) {
-  useEffect(async () => {
-    setData(resData);
-    // getData();
-  }, [Refresh]);
-
   const router = useRouter();
   const { query } = useRouter();
   let [data, setData] = useState([]);
@@ -28,10 +23,15 @@ function VehicleType({ resData }) {
   const [err, setErr] = useState();
   const type = query.type;
 
+  useEffect(async () => {
+    // setData(resData);
+    getData();
+  }, [Refresh]);
+
   const getData = async () => {
     await axios
       .get(
-        `http://localhost:4000/vehicle?limit=4&table=category&page=${Number}&search=${type}&${sort}&${searchKeyword}`
+        `http://localhost:4000/vehicle?limit=5&table=category&page=${Number}&search=${type}&${sort}&${searchKeyword}`
       )
       .then((result) => {
         const data = result.data.data;
@@ -71,17 +71,15 @@ function VehicleType({ resData }) {
         ) : (
           <StyleType>
             <br></br>
-            <select
-              className="bg__gray"
-              onChange={(e) => handleSort(e)}
-              style={{ width: '100%', padding: '1.35rem', border: 'none' }}
-            >
+            <select className="bg__gray" onChange={(e) => handleSort(e)} style={{ padding: '1rem', border: 'none' }}>
               <option selected disabled hidden>
                 Urutkan berdasar
               </option>
               <option value="sortBy=price&sort=desc">Barang Mewah</option>
               <option value="sortBy=price&sort=asc">Sewa Termurah</option>
             </select>
+            <br></br>
+            <br></br>
             <div className="d-flex justify-content-between">
               <p className="text-36 font-playfair">{query.type}</p>
             </div>

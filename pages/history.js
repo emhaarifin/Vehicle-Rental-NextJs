@@ -8,6 +8,7 @@ import axios from 'axios';
 import cookies from 'next-cookies';
 import CardProduct from '../components/molecules/CardProduct';
 function History(DataHistory) {
+  console.log(DataHistory, 'datahistory');
   return (
     <Main>
       <StyleHistory>
@@ -23,8 +24,8 @@ function History(DataHistory) {
             </select>
           </div>
           <div className="mt-5">
-            {DataHistory &&
-              DataHistory.DataHistory.map((item, index) => {
+            {DataHistory ? (
+              DataHistory?.DataHistory?.map((item, index) => {
                 return (
                   <CardHistory
                     key={index}
@@ -35,17 +36,14 @@ function History(DataHistory) {
                     total={item.subTotal}
                   ></CardHistory>
                 );
-              })}
-            {/* <CardHistory></CardHistory>
-            <CardHistory></CardHistory> */}
+              })
+            ) : (
+              <p>Data Tidak Ada</p>
+            )}
           </div>
         </div>
         <div className="right">
-          {/* <div> */}
           <p>New Arrival</p>
-          {/* <CardProduct></CardProduct>
-            <CardProduct></CardProduct> */}
-          {/* </div> */}
         </div>
       </StyleHistory>
     </Main>
@@ -79,10 +77,16 @@ const StyleHistory = styled.div`
 export default History;
 
 export const getServerSideProps = requireAuthentication(async (context) => {
-  const idUser = cookies(context).id;
-  const res = await axios.get(`http://localhost:4000/reservation/get/${idUser}`);
-  const DataHistory = await res.data.result;
-  return {
-    props: { DataHistory },
-  };
+  try {
+    const idUser = cookies(context).id;
+    const res = await axios.get(`http://localhost:4000/reservation/get/${idUser}`);
+    const DataHistory = await res.data.result;
+    return {
+      props: { DataHistory },
+    };
+  } catch (error) {
+    return {
+      props: {},
+    };
+  }
 });

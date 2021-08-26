@@ -53,7 +53,13 @@ function Login() {
             <div className="input-auth">
               <Input name="fullname" onChange={handleChange} className="text-24" placeholder="Name" />
               <Input name="email" onChange={handleChange} className="text-24" placeholder="Email" />
-              <Input name="password" onChange={handleChange} className="text-24" placeholder="Password" />
+              <Input
+                type="password"
+                name="password"
+                onChange={handleChange}
+                className="text-24"
+                placeholder="Password"
+              />
             </div>
             <div className="button-auth">
               <Button onClick={handleSignup} className="signup text-24 text-bold">

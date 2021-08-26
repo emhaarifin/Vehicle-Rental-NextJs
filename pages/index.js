@@ -41,10 +41,10 @@ export default function Home({ vehicles }) {
                   <Input className="cstm" placeholder="Location"></Input>
                   <Input className="cstm" placeholder="Type"></Input>
                 </div>
-                <div className="my-flex my-row">
+                {/* <div className="my-flex my-row">
                   <Input className="cstm " placeholder="Payment"></Input>
                   <Input className="cstm" placeholder="Date"></Input>
-                </div>
+                </div> */}
               </div>
               <Button className="btn-exprole text-bold bg__primary c-black text-18">Exprole</Button>
             </div>

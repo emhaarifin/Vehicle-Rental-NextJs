@@ -82,11 +82,11 @@ function Index({ vehicleItem, data, dataLocation }) {
     axios
       .delete(`http://localhost:4000/vehicle/${id}`)
       .then((result) => {
-        alert(result?.data?.message || 'Sukses Delete Data');
+        swal('Success', result?.data?.message || 'Sukses Delete Data', 'success');
         router.push('/');
       })
       .catch((error) => {
-        alert(error?.response?.data?.message || 'Gagal Delete');
+        swal('error', error?.response?.data?.message || 'Gagal Delete', 'error');
       });
   };
 

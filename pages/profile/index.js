@@ -9,6 +9,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import { updateProfile } from '../../redux/actions/user';
 import { useDispatch } from 'react-redux';
+import { requireAuthentication } from '../../components/HOC/requireAuth';
 import cookies from 'next-cookies';
 function Index({ DataUser }) {
   const dispatch = useDispatch();
@@ -272,11 +273,20 @@ const Action = styled.div`
 
 export default Index;
 
-export async function getServerSideProps(context) {
+export const getServerSideProps = requireAuthentication(async (context) => {
   const id = cookies(context).id;
   const res = await axios.get(`http://localhost:4000/auth/profile/${id}`);
   const DataUser = await res.data.result;
   return {
     props: { DataUser },
   };
-}
+});
+
+// export async function getServerSideProps(context) {
+//   const id = cookies(context).id;
+//   const res = await axios.get(`http://localhost:4000/auth/profile/${id}`);
+//   const DataUser = await res.data.result;
+//   return {
+//     props: { DataUser },
+//   };
+// }
