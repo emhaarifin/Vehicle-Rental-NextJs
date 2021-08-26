@@ -26,7 +26,6 @@ function Navbar({ DataUser }) {
   const isAuth = async () => {
     let id = localStorage.getItem('id');
     const res = await axios.get(`http://localhost:4000/auth/profile/${id}`);
-    // console.log();
     const DataUser = await res.data.result;
 
     const auth = localStorage.getItem('isAuth');

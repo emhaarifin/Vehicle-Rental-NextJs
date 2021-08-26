@@ -8,7 +8,6 @@ import axios from 'axios';
 import cookies from 'next-cookies';
 import CardProduct from '../components/molecules/CardProduct';
 function History(DataHistory) {
-  console.log(DataHistory, 'data');
   return (
     <Main>
       <StyleHistory>
@@ -26,7 +25,6 @@ function History(DataHistory) {
           <div className="mt-5">
             {DataHistory &&
               DataHistory.DataHistory.map((item, index) => {
-                console.log(item);
                 return (
                   <CardHistory
                     key={index}

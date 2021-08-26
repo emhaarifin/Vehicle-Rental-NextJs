@@ -23,7 +23,6 @@ function Index({ DataUser }) {
   });
 
   const handleInputFile = (e) => {
-    console.log(e);
     setUser({
       ...user,
       defaultImg: true,
@@ -40,7 +39,6 @@ function Index({ DataUser }) {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(id, 'ddddddd');
     const data = new FormData();
     data.append('phone_number', user.phone_number);
     data.append('gender', user.gender);
@@ -277,7 +275,6 @@ export default Index;
 export async function getServerSideProps(context) {
   const id = cookies(context).id;
   const res = await axios.get(`http://localhost:4000/auth/profile/${id}`);
-  // console.log();
   const DataUser = await res.data.result;
   return {
     props: { DataUser },

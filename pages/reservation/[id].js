@@ -15,7 +15,6 @@ import cookies from 'next-cookies';
 import { addReservation } from '../../redux/actions/reservation';
 function Id(vehicle) {
   const { idUser } = vehicle;
-  console.log(idUser, 'props');
   const data = vehicle.vehicle[0];
   const { category, description, stock, location, name, price, status, id, image } = data;
   const dispatch = useDispatch();

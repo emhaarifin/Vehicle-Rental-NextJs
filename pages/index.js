@@ -61,7 +61,6 @@ export default function Home({ vehicles }) {
           </div>
           <CardContainer>
             {vehicles?.map((item, index) => {
-              console.log(item);
               return (
                 <CardProduct
                   href={`/vehicle/${item.id}`}

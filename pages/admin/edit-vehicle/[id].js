@@ -19,7 +19,6 @@ function Index({ vehicleItem, data, dataLocation }) {
 
   const dataCategory = data.result;
   const locationData = dataLocation.result;
-  console.log(image);
   const { query } = useRouter();
 
   const router = useRouter();
@@ -36,10 +35,8 @@ function Index({ vehicleItem, data, dataLocation }) {
 
   const [images, setImages] = useState([]);
   const [imagesPreview] = [images.map((item) => URL.createObjectURL(item))];
-  console.log(imagesPreview[0]);
   const onFileChange = (e) => {
     setImages([...e.target.files]);
-    console.log(images, 'mes');
   };
 
   const handleChange = (e) => {
@@ -48,8 +45,6 @@ function Index({ vehicleItem, data, dataLocation }) {
       ...vehicle,
       [e.target.name]: e.target.value,
     });
-
-    console.log(e, vehicle.image, 'e');
   };
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -71,7 +71,11 @@ function VehicleType({ resData }) {
         ) : (
           <StyleType>
             <br></br>
-            <select onChange={(e) => handleSort(e)}>
+            <select
+              className="bg__gray"
+              onChange={(e) => handleSort(e)}
+              style={{ width: '100%', padding: '1.35rem', border: 'none' }}
+            >
               <option selected disabled hidden>
                 Urutkan berdasar
               </option>
@@ -151,7 +155,7 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async (context) => {
   const type = context.params.type;
   const { data } = await axios.get(`${process.env.NEXT_BACKEND_API}/vehicle?limit=5&table=category&search=${type}`);
-  console.log(data, 'data');
+
   return {
     props: {
       resData: data.data,

@@ -18,7 +18,6 @@ export const updateProfile = (user, id) => (dispatch) => {
   // data.append('date_of_birth', user.date_of_birth);
   data.append('image', user.image);
 
-  console.log(id, user, 'aa');
   axios
     .put(`http://localhost:4000/auth/profile/update/${id}`, user, {
       headers: {

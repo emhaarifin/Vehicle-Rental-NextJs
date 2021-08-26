@@ -13,7 +13,6 @@ import Button from '../../components/atoms/Button';
 import { useSelector } from 'react-redux';
 function Id(vehicle) {
   const ReserData = useSelector((state) => state.reservation.data);
-  console.log(ReserData, 'statee');
   const { qty, subTotal, startDate } = ReserData;
   const data = vehicle.result[0];
   const { category, description, stock, location, name, price, status, id, image } = data;

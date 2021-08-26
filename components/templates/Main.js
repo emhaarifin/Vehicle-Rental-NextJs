@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { customMedia } from '../../styles/breakpoint';
 
 function Main({ children, avatar }) {
-  console.log(avatar, 'avatar');
   return (
     <MainC>
       <Navbar />
