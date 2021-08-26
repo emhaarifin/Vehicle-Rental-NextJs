@@ -9,10 +9,40 @@ import styled from 'styled-components';
 import { customMedia } from '../../styles/breakpoint';
 import Input from '../../components/atoms/Input';
 import Button from '../../components/atoms/Button';
+import { useState, UseEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import cookies from 'next-cookies';
+import { addReservation } from '../../redux/actions/reservation';
 function Id(vehicle) {
-  const data = vehicle.result[0];
+  const { idUser } = vehicle;
+  console.log(idUser, 'props');
+  const data = vehicle.vehicle[0];
   const { category, description, stock, location, name, price, status, id, image } = data;
+  const dispatch = useDispatch();
+  const [form, setForm] = useState({
+    userId: idUser,
+    vehicleId: id,
+    qty: 1,
+    subTotal: price,
+  });
+  const handleQty = (params) => {
+    if (params === 'plus' && form.qty < stock) {
+      setForm({
+        ...form,
+        qty: form.qty + 1,
 
+        subTotal: price * form.qty,
+      });
+    }
+    if (params === 'minus' && form.qty > 1) {
+      setForm({
+        ...form,
+        qty: form.qty - 1,
+
+        subTotal: price * form.qty,
+      });
+    }
+  };
   return (
     <Main>
       <p>Detail Item</p>
@@ -23,20 +53,6 @@ function Id(vehicle) {
               <div className="img-item">
                 <img className="img-main" src={image[0]} alt=""></img>
               </div>
-              <div className="img-item">
-                <div className="arrow">
-                  <Image src={arrowLeftBlack} alt="arrow"></Image>
-                </div>
-                <div className="img2">
-                  <img className="img-second" src={image[1] ? image[1] : image[0]} alt=""></img>
-                </div>
-                <div className="img2">
-                  <img className="img-second" src={image[2] ? image[2] : image[0]} alt=""></img>
-                </div>
-                <div className="arrow">
-                  <Image src={arrowRightBlack} alt="arrow"></Image>
-                </div>
-              </div>
             </div>
           </div>
           <div className="right">
@@ -46,9 +62,13 @@ function Id(vehicle) {
               <p className="text-24">Type: {category}</p>
               <div className="choice choiche-item">
                 <div className="choice-item">
-                  <Button className="btn-minus bg__gray">-</Button>
-                  <Input type="number" value={stock}></Input>
-                  <Button className="btn-plus bg__primary">+</Button>
+                  <Button onClick={() => handleQty('minus')} className="btn-minus bg__gray">
+                    -
+                  </Button>
+                  <Input type="number" value={form.qty}></Input>
+                  <Button onClick={() => handleQty('plus')} className="btn-plus bg__primary">
+                    +
+                  </Button>
                 </div>
               </div>
               <div className="mt-5 ">
@@ -64,7 +84,9 @@ function Id(vehicle) {
           <div className="choice-item">
             <Link href={`/payment/${id}`}>
               <a>
-                <Button className="text-24 text-bold  bg__primary">Pay Now : Rp. {price}</Button>
+                <Button onClick={() => dispatch(addReservation(form))} className="text-24 text-bold  bg__primary">
+                  Pay Now : Rp. {form.subTotal}
+                </Button>
               </a>
             </Link>
           </div>
@@ -186,10 +208,11 @@ const StyleButton = styled.div`
 `;
 
 export async function getServerSideProps(context) {
+  const idUser = cookies(context).id;
   const { id } = context.params;
   const res = await axios.get(`http://localhost:4000/vehicle/${id}`);
-  const vehicle = await res.data;
+  const vehicle = await res.data.result;
   return {
-    props: vehicle,
+    props: { vehicle, idUser },
   };
 }

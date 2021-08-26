@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
-import vehicleReducers from './vehicle';
+import reservationReducers from './reservation';
 import userReducers from './user';
 
 const reducers = {
-  // vehicle: vehicleReducers,
+  reservation: reservationReducers,
   user: userReducers,
 };
 

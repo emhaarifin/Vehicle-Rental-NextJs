@@ -4,21 +4,21 @@ import { heroLogin } from '../../public/asset';
 import { customMedia } from '../../styles/breakpoint';
 import Button from '../atoms/Button';
 
-function CardHistory() {
+function CardHistory(props) {
   return (
     <StyleCard>
       <div className="left-card">
         <div className="the-img">
-          <img src={heroLogin.src} alt="img"></img>
+          <img src={props.image} alt="img"></img>
         </div>
         <div className="information">
           <div>
-            <p className="text-24 text-bold c-black">Vespa Matic</p>
-            <p className="text-24 c-black">Jan 18 to 21 2021</p>
+            <p className="text-24 text-bold c-black">{props.name}</p>
+            <p className="text-24 c-black">{props.date}</p>
           </div>
           <div className="mt-1">
-            <p className="text-24 p2 text-bold c-black">Prepayment: Rp.2400055</p>
-            <p className="text-24 p">Has been returned</p>
+            <p className="text-24 p2 text-bold c-black">Prepayment: Rp.{props.total}</p>
+            <p className="text-24 p">{props.status}</p>
           </div>
         </div>
       </div>

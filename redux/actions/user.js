@@ -11,7 +11,6 @@ export const Logout = () => ({
 });
 
 export const updateProfile = (user, id) => (dispatch) => {
-  console.log(id, 'ddddddd');
   const data = new FormData();
   data.append('phone_number', user.phone_number);
   data.append('gender', user.gender);

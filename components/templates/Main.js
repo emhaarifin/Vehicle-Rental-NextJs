@@ -34,13 +34,3 @@ const ContainerMain = styled.div`
   padding: 1rem;
 `}
 `;
-
-export async function getServerSideProps(ctx) {
-  console.log('asu');
-  return {
-    props: {},
-  };
-}
-
-// const avatar = ctx.req.headers.cookie;
-// console.log(avatar.split('; ')[1].slice(11));

@@ -4,9 +4,11 @@ import styled from 'styled-components';
 import { customMedia } from '../styles/breakpoint';
 import CardHistory from '../components/molecules/CardHistory';
 import { requireAuthentication } from '../components/HOC/requireAuth';
-
+import axios from 'axios';
+import cookies from 'next-cookies';
 import CardProduct from '../components/molecules/CardProduct';
-function History({}) {
+function History(DataHistory) {
+  console.log(DataHistory, 'data');
   return (
     <Main>
       <StyleHistory>
@@ -22,9 +24,22 @@ function History({}) {
             </select>
           </div>
           <div className="mt-5">
-            <CardHistory></CardHistory>
-            <CardHistory></CardHistory>
-            <CardHistory></CardHistory>
+            {DataHistory &&
+              DataHistory.DataHistory.map((item, index) => {
+                console.log(item);
+                return (
+                  <CardHistory
+                    key={index}
+                    name={item.VehicleName}
+                    image={item.image[0]}
+                    status={item.status}
+                    date={item.startDate}
+                    total={item.subTotal}
+                  ></CardHistory>
+                );
+              })}
+            {/* <CardHistory></CardHistory>
+            <CardHistory></CardHistory> */}
           </div>
         </div>
         <div className="right">
@@ -65,8 +80,11 @@ const StyleHistory = styled.div`
 
 export default History;
 
-export const getServerSideProps = requireAuthentication((context) => {
+export const getServerSideProps = requireAuthentication(async (context) => {
+  const idUser = cookies(context).id;
+  const res = await axios.get(`http://localhost:4000/reservation/get/${idUser}`);
+  const DataHistory = await res.data.result;
   return {
-    props: {},
+    props: { DataHistory },
   };
 });

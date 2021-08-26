@@ -61,6 +61,7 @@ export default function Home({ vehicles }) {
           </div>
           <CardContainer>
             {vehicles?.map((item, index) => {
+              console.log(item);
               return (
                 <CardProduct
                   href={`/vehicle/${item.id}`}
@@ -182,8 +183,6 @@ const Popular = styled.div`
 `;
 
 export async function getServerSideProps(context) {
-  // let roles = context.req.headers.cookie;
-  // roles = await roles.split('; ')[1].slice(6);
   const res = await axios.get(`${process.env.NEXT_BACKEND_API}/vehicle?limit=5&sort=DESC`);
   const vehicles = await res.data.data;
   return {

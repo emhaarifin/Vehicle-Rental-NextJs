@@ -9,7 +9,12 @@ import styled from 'styled-components';
 import { customMedia } from '../../styles/breakpoint';
 import Input from '../../components/atoms/Input';
 import Button from '../../components/atoms/Button';
+
+import { useSelector } from 'react-redux';
 function Id(vehicle) {
+  const ReserData = useSelector((state) => state.reservation.data);
+  console.log(ReserData, 'statee');
+  const { qty, subTotal, startDate } = ReserData;
   const data = vehicle.result[0];
   const { category, description, stock, location, name, price, status, id, image } = data;
 
@@ -34,13 +39,32 @@ function Id(vehicle) {
           </div>
         </StyleDetail>
         <StatusPayment>
-          <div className="left">
-            <div>
-              <p>Quantity : 2 bikes</p>
+          <div className="left lft">
+            <div className="lft">
+              <div className="left-content">
+                <p
+                  className="text-24 text-bold"
+                  style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                >
+                  Quantity : {qty} bikes
+                </p>
+              </div>
+              <div className="left-content">
+                <p className="text-24 text-bold">Order details : </p>
+                <p className="text-24 ">Total: {subTotal}</p>
+              </div>
             </div>
-            <div>Order details : 1 bike : Rp. 78.000 1 bike : Rp. 78.000</div>
+            <div className="lft">
+              <div className="left-content">
+                <p className="text-24 text-bold">Reservation Date : {startDate} </p>
+              </div>
+              <div className="left-content">
+                <p className="text-24 text-bold">Identity: </p>
+                <p className="text-24 ">Samantha Doe (+6290987682)</p>
+                <p className="text-24">samanthadoe@mail.com</p>
+              </div>
+            </div>
           </div>
-          <div className="right"></div>
         </StatusPayment>
         <Payment className="">
           <label htmlFor="method">Payment:</label>
@@ -69,7 +93,32 @@ const Payment = styled.div`
   gap: 50%;
 `;
 
-const StatusPayment = styled.div``;
+const StatusPayment = styled.div`
+  margin-top: 3rem;
+  ${customMedia.greaterThan('media_md')`
+.left {
+  
+  gap: 1rem;
+  display: flex;
+  .lft {
+    flex: 1;
+    display:flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .left-content {
+    p {
+      padding: 0;
+      margin: 0;
+    }
+    height: 100%;
+    padding: 1rem 5rem;
+  border-radius: 10px;
+  border: 1px solid #80918E;
+  }
+}
+    `}
+`;
 const StyleDetail = styled.div`
   ${customMedia.greaterThan('960px')`
   display: flex;
@@ -77,7 +126,6 @@ const StyleDetail = styled.div`
   `}
   .left {
     gap: 2rem;
-
     .left-img {
       display: flex;
       flex-direction: column;

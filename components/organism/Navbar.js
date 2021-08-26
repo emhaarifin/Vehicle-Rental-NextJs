@@ -35,7 +35,7 @@ function Navbar({ DataUser }) {
     if (avatar === null || avatar === 'null') {
       return setAvatar(avatarUser.src);
     } else {
-      return setAvatar(DataUser[0].avatar);
+      return setAvatar(DataUser[0]?.avatar);
     }
   };
 
@@ -161,15 +161,6 @@ function Navbar({ DataUser }) {
 }
 
 export default Navbar;
-
-// export async function getServerSideProps(context) {
-
-//   console.log(DataUser, 'data');
-//   return {
-//     props: { DataUser },
-//   };
-// }
-
 const StyleNavbar = styled.nav`
   padding: 5rem;
   padding-bottom: 1rem;

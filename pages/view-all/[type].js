@@ -15,6 +15,7 @@ function VehicleType({ resData }) {
     setData(resData);
     // getData();
   }, [Refresh]);
+
   const router = useRouter();
   const { query } = useRouter();
   let [data, setData] = useState([]);

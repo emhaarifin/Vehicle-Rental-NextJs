@@ -9,6 +9,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import { updateProfile } from '../../redux/actions/user';
 import { useDispatch } from 'react-redux';
+import cookies from 'next-cookies';
 function Index({ DataUser }) {
   const dispatch = useDispatch();
   const id = DataUser[0].id.toString();
@@ -274,10 +275,7 @@ const Action = styled.div`
 export default Index;
 
 export async function getServerSideProps(context) {
-  let id = context.req.headers.cookie;
-  id = await id.split('; ')[1].slice(3);
-  console.log(id, 'id');
-  // console.log(id, 'idd');
+  const id = cookies(context).id;
   const res = await axios.get(`http://localhost:4000/auth/profile/${id}`);
   // console.log();
   const DataUser = await res.data.result;

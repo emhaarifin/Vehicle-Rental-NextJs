@@ -1,9 +1,8 @@
+import cookies from 'next-cookies';
 export function privateRoute(gssp) {
   return async (context) => {
     const { req, res } = context;
-    let roles = req.headers.cookie; // Add logic to extract token from `req.headers.cookie`
-    // const roles = req.headers.roles;
-    roles = roles.split('; ')[1].slice(6);
+    const roles = cookies(context).roles;
     if (roles !== 'admin') {
       // Redirect to login page
       return {
