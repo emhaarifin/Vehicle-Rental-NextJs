@@ -6,7 +6,13 @@ function Button(props) {
   if (props.icon) {
     return (
       <>
-        <StyleButton className={props.className} onClick={props.onClick} disabled={props.disabled} style={props.style}>
+        <StyleButton
+          className={props.className}
+          onClick={props.onClick}
+          disabled={props.disabled}
+          style={props.style}
+          {...props}
+        >
           <Image width={props.width} height={props.height} src={props.Image} alt="btn-only-icon"></Image>
         </StyleButton>
       </>
@@ -14,7 +20,13 @@ function Button(props) {
   } else if (props.iconText) {
     return (
       <>
-        <StyleButton className={props.className} onClick={props.onClick} disabled={props.disabled} style={props.style}>
+        <StyleButton
+          className={props.className}
+          onClick={props.onClick}
+          disabled={props.disabled}
+          style={props.style}
+          {...props}
+        >
           <Image width={props.width} height={props.height} src={props.Image} alt="btn-with-text-icon"></Image>
           {props.children}
         </StyleButton>
@@ -23,7 +35,13 @@ function Button(props) {
   } else if (props.onlyIcon) {
     return (
       <>
-        <StyleButton className={props.className} onClick={props.onClick} disabled={props.disabled} style={props.style}>
+        <StyleButton
+          className={props.className}
+          onClick={props.onClick}
+          disabled={props.disabled}
+          style={props.style}
+          {...props}
+        >
           <Image width={props.width} height={props.height} src={props.Image} alt="btn-with-text-icon"></Image>
         </StyleButton>
       </>
@@ -31,7 +49,13 @@ function Button(props) {
   }
   return (
     <>
-      <StyleButton className={props.className} onClick={props.onClick} disabled={props.disabled} style={props.style}>
+      <StyleButton
+        className={props.className}
+        onClick={props.onClick}
+        disabled={props.disabled}
+        style={props.style}
+        {...props}
+      >
         {props.children}
       </StyleButton>
     </>

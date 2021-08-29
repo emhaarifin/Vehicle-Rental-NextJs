@@ -24,6 +24,21 @@ function Index({ data, dataLocation }) {
     stock: 1,
   });
 
+  const handleStock = (params) => {
+    if (params === 'plus') {
+      setVehicle({
+        ...vehicle,
+        stock: vehicle.stock + 1,
+      });
+    }
+    if (params === 'minus' && vehicle.stock > 1) {
+      setVehicle({
+        ...vehicle,
+        stock: vehicle.stock - 1,
+      });
+    }
+  };
+
   const [images, setImages] = useState([]);
   const [imagesPreview] = [images.map((item) => URL.createObjectURL(item))];
   const onFileChange = (e) => {
@@ -148,11 +163,11 @@ function Index({ data, dataLocation }) {
             <div className="stock-item">
               <label htmlFor="stock">Stock:</label>
               <div className="stock-vehicle">
-                <Button type="button" className="btn-plus bg__primary">
+                <Button type="button" onClick={() => handleStock('plus')} className="btn-plus bg__primary">
                   +
                 </Button>
                 <Input name="stock" onChange={handleChange} value={vehicle.stock} type="number"></Input>
-                <Button type="button" className="btn-minus bg__gray">
+                <Button type="button" onClick={() => handleStock('minus')} className="btn-minus bg__gray">
                   -
                 </Button>
               </div>
