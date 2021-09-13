@@ -1,5 +1,4 @@
-import Footer from '../organism/Footer';
-import Navbar from '../organism/Navbar';
+import { Footer, Navbar } from '@/components';
 import styled from 'styled-components';
 import { customMedia } from '../../styles/breakpoint';
 

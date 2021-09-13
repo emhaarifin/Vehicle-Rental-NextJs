@@ -6,7 +6,7 @@ import '../styles/typography.css';
 import Head from 'next/head';
 import '../node_modules/bootstrap/dist/css/bootstrap.css';
 import { Provider } from 'react-redux';
-import { useStore } from '../redux/store';
+import { useStore } from '../configs/redux/store';
 function MyApp({ Component, pageProps }) {
   const store = useStore(pageProps.initialReduxState);
   return (

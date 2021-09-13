@@ -1,19 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import { useRouter } from 'next/router';
-import axios from 'axios';
-import Main from '../../../components/templates/Main';
-// import Link from 'next/link';
-// import { camera } from '../../../public/asset';
-import camera from '../../../public/asset/images/camera.svg';
+import { axios, privateRouteAdmin } from '@/configs';
+import { Input, Button, Main } from '@/components';
 import styled from 'styled-components';
 import { customMedia } from '../../../styles/breakpoint';
-import Image from 'next/image';
-import Input from '../../../components/atoms/Input';
 import swal from 'sweetalert';
-import { frame1, frame2 } from '../../../public/asset';
-import Button from '../../../components/atoms/Button';
-import { useState, useEffect } from 'react';
-import { privateRoute } from '../../../components/HOC/privateRoute';
+import { useState } from 'react';
 function Index({ vehicleItem, data, dataLocation }) {
   const { location_id, category_id, name, description, price, status, stock, image } = vehicleItem.result[0];
 
@@ -79,7 +71,7 @@ function Index({ vehicleItem, data, dataLocation }) {
       }
     }
     await axios
-      .put(`http://localhost:4000/vehicle/${id}`, data, {
+      .put(`/vehicle/${id}`, data, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -95,7 +87,7 @@ function Index({ vehicleItem, data, dataLocation }) {
   const deleteVihacle = async (e) => {
     e.preventDefault();
     axios
-      .delete(`http://localhost:4000/vehicle/${id}`)
+      .delete(`/vehicle/${id}`)
       .then((result) => {
         swal('Success', result?.data?.message || 'Sukses Delete Data', 'success');
         router.push('/');
@@ -419,7 +411,7 @@ gap: 1.5rem;
   }
 `;
 
-export const getServerSideProps = privateRoute(async (context) => {
+export const getServerSideProps = privateRouteAdmin(async (context) => {
   const { id } = context.params;
   const res = await axios.get(`http://localhost:4000/vehicle/${id}`);
   const { data } = await axios.get(`http://localhost:4000/category`);

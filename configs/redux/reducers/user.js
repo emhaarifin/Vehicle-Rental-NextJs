@@ -4,7 +4,7 @@ const initialValue = {
   errorMsg: {},
 };
 
-const counterReducer = (state = initialValue, action) => {
+const userReducer = (state = initialValue, action) => {
   switch (action.type) {
     case 'LOGOUT':
       return {
@@ -22,4 +22,4 @@ const counterReducer = (state = initialValue, action) => {
   }
 };
 
-export default counterReducer;
+export default userReducer;

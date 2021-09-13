@@ -1,15 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import CardContainer from '../../components/molecules/CardContainer';
-import CardProduct from '../../components/molecules/CardProduct';
-import Main from '../../components/templates/Main';
-import axios from 'axios';
+import { CardProduct, CardContainer, Button, Search, Main } from '@/components';
+import { axios } from '@/configs';
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
-import Button from '../../components/atoms/Button';
 import styled from 'styled-components';
 import { customMedia } from '../../styles/breakpoint';
-import Search from '../../components/molecules/Search';
 function VehicleType({ resData }) {
   const router = useRouter();
   const { query } = useRouter();
@@ -30,9 +25,7 @@ function VehicleType({ resData }) {
 
   const getData = async () => {
     await axios
-      .get(
-        `http://localhost:4000/vehicle?limit=5&table=category&page=${Number}&search=${type}&${sort}&${searchKeyword}`
-      )
+      .get(`/vehicle?limit=5&table=category&page=${Number}&search=${type}&${sort}&${searchKeyword}`)
       .then((result) => {
         const data = result.data.data;
         const pageDetail = result.data.pageDetail;
@@ -136,14 +129,13 @@ const StyleType = styled.div`
 `;
 
 export const getStaticPaths = async () => {
-  const { data } = await axios.get(`${process.env.NEXT_BACKEND_API}/category`);
+  const { data } = await axios.get(`/category`);
 
   const dataLocation = data.result.map((item) => ({
     params: { type: item.name_category.toLowerCase() },
   }));
   // ket: data paths harus sperti dibawah
   const paths = [{ params: { type: 'bike' } }];
-
   return {
     paths: paths,
     fallback: true,
@@ -152,7 +144,7 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async (context) => {
   const type = context.params.type;
-  const { data } = await axios.get(`${process.env.NEXT_BACKEND_API}/vehicle?limit=5&table=category&search=${type}`);
+  const { data } = await axios.get(`/vehicle?limit=5&table=category&search=${type}`);
 
   return {
     props: {

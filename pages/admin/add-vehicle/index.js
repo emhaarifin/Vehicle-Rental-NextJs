@@ -1,15 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
-import { useRouter } from 'next/router';
-import axios from 'axios';
-import Main from '../../../components/templates/Main';
+import { axios, privateRouteAdmin } from '@/configs';
 import styled from 'styled-components';
 import { customMedia } from '../../../styles/breakpoint';
-import Image from 'next/image';
-import { frame1, frame2, frame3 } from '../../../public/asset';
-import Input from '../../../components/atoms/Input';
-import Button from '../../../components/atoms/Button';
-import { useState, useEffect } from 'react';
-import { privateRoute } from '../../../components/HOC/privateRoute';
+import { frame1, frame2, frame3 } from '@/public';
+import { Input, Button, Main } from '@/components';
+import { useState } from 'react';
 import swal from 'sweetalert';
 function Index({ data, dataLocation }) {
   const categoryData = data.result;
@@ -69,7 +64,7 @@ function Index({ data, dataLocation }) {
     }
 
     await axios
-      .post(`http://localhost:4000/vehicle`, data, {
+      .post(`/vehicle`, data, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -375,7 +370,7 @@ gap: 1.5rem;
     padding: 1.35rem;
   }
 `;
-export const getServerSideProps = privateRoute(async (context) => {
+export const getServerSideProps = privateRouteAdmin(async () => {
   const { data } = await axios.get(`http://localhost:4000/category`);
   const data2 = await axios.get(`http://localhost:4000/location`);
   const dataLocation = await data2.data;

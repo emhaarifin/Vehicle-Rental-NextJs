@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { customMedia } from '../../styles/breakpoint';
 
 function CardContainer(props) {
   return <ContainerCard>{props.children}</ContainerCard>;

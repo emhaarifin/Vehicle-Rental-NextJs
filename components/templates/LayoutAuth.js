@@ -1,4 +1,4 @@
-import Footer from '../organism/Footer';
+import { Footer } from '@/components';
 
 function LayoutAuth({ children, register }) {
   if (register) {

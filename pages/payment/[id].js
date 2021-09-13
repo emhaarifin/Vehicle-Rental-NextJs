@@ -1,14 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
-import { useRouter } from 'next/router';
-import axios from 'axios';
-import Main from '../../components/templates/Main';
-import Link from 'next/link';
-import Image from 'next/image';
-import { arrowLeftBlack, arrowRightBlack } from '../../public/asset';
+import { axios } from '@/configs';
+import { Input, Button, Main } from '@/components';
 import styled from 'styled-components';
 import { customMedia } from '../../styles/breakpoint';
-import Input from '../../components/atoms/Input';
-import Button from '../../components/atoms/Button';
 
 import { useSelector } from 'react-redux';
 function Id(vehicle) {
@@ -226,11 +220,11 @@ const StyleButton = styled.div`
   }
 `;
 
-export async function getServerSideProps(context) {
+export const getServerSideProps = privateRoute(async (context) => {
   const { id } = context.params;
-  const res = await axios.get(`http://localhost:4000/vehicle/${id}`);
+  const res = await axios.get(`/vehicle/${id}`);
   const vehicle = await res.data;
   return {
     props: vehicle,
   };
-}
+});

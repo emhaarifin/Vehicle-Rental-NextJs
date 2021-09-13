@@ -1,19 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
-import { useRouter } from 'next/router';
-import axios from 'axios';
-import Main from '../../components/templates/Main';
+import { axios, privateRoute, addReservation } from '@/configs';
+import { Main, Input, Button } from '@/components';
 import Link from 'next/link';
-import Image from 'next/image';
-import { arrowLeftBlack, arrowRightBlack } from '../../public/asset';
 import styled from 'styled-components';
 import { customMedia } from '../../styles/breakpoint';
-import Input from '../../components/atoms/Input';
-import Button from '../../components/atoms/Button';
-import { useState, UseEffect } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import cookies from 'next-cookies';
-import { addReservation } from '../../redux/actions/reservation';
-import { requireAuthentication } from '../../components/HOC/requireAuth';
 function Id(vehicle) {
   const { idUser } = vehicle;
   const data = vehicle.vehicle[0];
@@ -206,20 +199,10 @@ const StyleButton = styled.div`
   }
 `;
 
-// export async function getServerSideProps(context) {
-//   const idUser = cookies(context).id;
-//   const { id } = context.params;
-//   const res = await axios.get(`http://localhost:4000/vehicle/${id}`);
-//   const vehicle = await res.data.result;
-//   return {
-//     props: { vehicle, idUser },
-//   };
-// }
-
-export const getServerSideProps = requireAuthentication(async (context) => {
+export const getServerSideProps = privateRoute(async (context) => {
   const idUser = cookies(context).id;
   const { id } = context.params;
-  const res = await axios.get(`http://localhost:4000/vehicle/${id}`);
+  const res = await axios.get(`/vehicle/${id}`);
   const vehicle = await res.data.result;
   return {
     props: { vehicle, idUser },

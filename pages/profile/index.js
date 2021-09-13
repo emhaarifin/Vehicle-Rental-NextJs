@@ -1,16 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
-import Main from '../../components/templates/Main';
-import { editProfile, avatarUser } from '../../public/asset';
+import { editProfile, avatarUser } from '@/public';
 import styled from 'styled-components';
 import { customMedia } from '../../styles/breakpoint';
-import Input from '../../components/atoms/Input';
-import Button from '../../components/atoms/Button';
-import axios from 'axios';
+import { Input, Button, Main } from '@/components';
+import { axios, privateRoute } from '@/configs';
 import { useState } from 'react';
-import { updateProfile } from '../../redux/actions/user';
 import { useDispatch } from 'react-redux';
-import { requireAuthentication } from '../../components/HOC/requireAuth';
 import cookies from 'next-cookies';
+
 function Index({ DataUser }) {
   const dispatch = useDispatch();
   const id = DataUser[0].id.toString();
@@ -45,15 +42,14 @@ function Index({ DataUser }) {
     data.append('gender', user.gender);
     data.append('adress', user.adress);
     data.append('image', user.image);
-
     await axios
-      .put(`http://localhost:4000/auth/profile/update/${id}`, data, {
+      .put(`/auth/profile/update/${id}`, data, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       })
       .then((result) => {
-        dispatch({ type: 'UPDATE_USER' });
+        dispatch({ type: 'UPDATE_USER', payload: data });
         swal('Success', result?.data?.message || 'Suskes Update Data', 'success');
       })
       .catch((error) => {
@@ -98,7 +94,7 @@ function Index({ DataUser }) {
                       value="Male"
                       name="gender"
                       onChange={handleChange}
-                      checked={item.gender === 'Male'}
+                      checked={item.gender === 'Male' ? true : false}
                       label="Male"
                     ></Input>
                     <Input
@@ -107,7 +103,7 @@ function Index({ DataUser }) {
                       value="Female"
                       name="gender"
                       onChange={handleChange}
-                      checked={item.gender === 'Female'}
+                      checked={item.gender === 'Female' ? true : false}
                       label="Female"
                     ></Input>
                   </Gender>
@@ -273,20 +269,11 @@ const Action = styled.div`
 
 export default Index;
 
-export const getServerSideProps = requireAuthentication(async (context) => {
+export const getServerSideProps = privateRoute(async (context) => {
   const id = cookies(context).id;
-  const res = await axios.get(`http://localhost:4000/auth/profile/${id}`);
+  const res = await axios.get(`/auth/profile/${id}`);
   const DataUser = await res.data.result;
   return {
     props: { DataUser },
   };
 });
-
-// export async function getServerSideProps(context) {
-//   const id = cookies(context).id;
-//   const res = await axios.get(`http://localhost:4000/auth/profile/${id}`);
-//   const DataUser = await res.data.result;
-//   return {
-//     props: { DataUser },
-//   };
-// }

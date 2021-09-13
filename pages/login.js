@@ -1,17 +1,13 @@
-import LayoutAuth from '../components/templates/LayoutAuth';
 import styled from 'styled-components';
 import Image from 'next/image';
-import Button from '../components/atoms/Button';
-import Input from '../components/atoms/Input';
-import { heroLogin } from '../public/asset';
+import { Button, Input, LayoutAuth } from '@/components';
+import { axios, publicRoute } from '@/configs';
+import { heroLogin, google } from '@/public';
 import { customMedia } from '../styles/breakpoint';
-import { google } from '../public/asset';
 import { useState } from 'react';
 import swal from 'sweetalert';
 import { useRouter } from 'next/router';
-import axios from 'axios';
 import Link from 'next/link';
-import localStorage from 'redux-persist/es/storage';
 function Login() {
   const router = useRouter();
   const [input, setInput] = useState({
@@ -28,18 +24,17 @@ function Login() {
   const handleLogin = (e) => {
     e.preventDefault();
     axios
-      .post('http://localhost:4000/auth/login', input, { withCredentials: true })
+      .post('/auth/login', input, { withCredentials: true })
       .then(async (result) => {
         localStorage.setItem('isAuth', true);
         localStorage.setItem('roles', result.data.result.roles);
         localStorage.setItem('avatar', result.data.result.avatar);
-
         localStorage.setItem('id', result.data.result.id);
-
         router.push('/');
       })
       .catch((error) => {
-        swal('error', error?.response?.data?.message || 'Login Gagal', 'error');
+        console.log(error.response);
+        swal('error', error?.response?.data?.message || 'Login Gagal nih', 'error');
       });
   };
   return (
@@ -107,6 +102,11 @@ function Login() {
 
 export default Login;
 
+export const getServerSideProps = publicRoute(async () => {
+  return {
+    props: {},
+  };
+});
 const LoginLayout = styled.div`
   background: rgba(0, 0, 0, 0.38);
   .custom-hero {

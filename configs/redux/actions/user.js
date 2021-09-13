@@ -1,10 +1,6 @@
 // INCREMENT COUNTER BY 1
-import axios from 'axios';
+import { axios } from '@/configs';
 import swal from 'sweetalert';
-export const incrementCount = () => ({ type: 'types.INCREMENT' });
-
-// DECREMENT COUNTER BY 1
-export const decrementCount = () => ({ type: 'types.DECREMENT' });
 
 export const Logout = () => ({
   type: 'LOGOUT',
@@ -19,7 +15,7 @@ export const updateProfile = (user, id) => (dispatch) => {
   data.append('image', user.image);
 
   axios
-    .put(`http://localhost:4000/auth/profile/update/${id}`, user, {
+    .put(`/auth/profile/update/${id}`, user, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

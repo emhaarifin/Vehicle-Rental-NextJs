@@ -2,7 +2,7 @@ const initialValue = {
   data: [],
 };
 
-const counterReducer = (state = initialValue, action) => {
+const reservationReducer = (state = initialValue, action) => {
   switch (action.type) {
     case 'ADD_RESERVATION':
       return {
@@ -14,4 +14,4 @@ const counterReducer = (state = initialValue, action) => {
   }
 };
 
-export default counterReducer;
+export default reservationReducer;

@@ -1,19 +1,15 @@
-import LayoutAuth from '../components/templates/LayoutAuth';
-import Footer from '../components/organism/Footer';
 import styled from 'styled-components';
 import { customMedia } from '../styles/breakpoint';
-import { google } from '../public/asset';
-import heroSignup from '../public/asset/images/hero-signup.svg';
+import { google, heroSignup } from '@/public';
 import Image from 'next/image';
 import Link from 'next/link';
-import Input from '../components/atoms/Input';
-import Button from '../components/atoms/Button';
-
+import { axios, publicRoute } from '@/configs';
+import { Button, Input, Footer, LayoutAuth } from '@/components';
 import { useState } from 'react';
 import swal from 'sweetalert';
 import { useRouter } from 'next/router';
-import axios from 'axios';
-function Login() {
+
+function Signup() {
   const router = useRouter();
   const [input, setInput] = useState({
     fullname: '',
@@ -30,7 +26,7 @@ function Login() {
   const handleSignup = (e) => {
     e.preventDefault();
     axios
-      .post('http://localhost:4000/auth/register', input)
+      .post('/auth/register', input)
       .then((result) => {
         swal('Success', result?.data?.message || 'Signup Sukses', 'success');
         router.push('/login');
@@ -87,8 +83,13 @@ function Login() {
   );
 }
 
-export default Login;
+export default Signup;
 
+export const getServerSideProps = publicRoute(async () => {
+  return {
+    props: {},
+  };
+});
 const RegisterLayout = styled.div`
   display: flex;
 

@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import styled from 'styled-components';
 import { customMedia } from '../../styles/breakpoint';
-import { brand, twitter, facebook, instagram, linkedin, youtube } from '../../public/asset';
+import { brand, twitter, facebook, instagram, linkedin, youtube } from '@/public';
 function Footer({ onlyRegister }) {
   const destinations = ['Bali', 'Yogyakarta', 'Jakarta', 'Kalimantan', 'Malang'];
   const vehicle = ['Bike', 'Cars', 'Motorbike', 'Return Times', 'FAQs'];

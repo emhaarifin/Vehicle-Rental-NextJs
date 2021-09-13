@@ -3,13 +3,13 @@
 /* eslint-disable @next/next/link-passhref */
 import styled from 'styled-components';
 import { customMedia } from '../../styles/breakpoint';
-import { brand, history, searchGrey, home, about, avatarUser, email, arrowRightBlack } from '../../public/asset';
+import { brand, history, searchGrey, home, about, avatarUser, email, arrowRightBlack } from '@/public';
 import Image from 'next/image';
 import Link from 'next/link';
 import Button from '../atoms/Button';
 import { useState, useEffect } from 'react';
 import cookieCutter from 'cookie-cutter';
-import axios from 'axios';
+import { axios } from '@/configs';
 function Navbar({ DataUser }) {
   const [login, setLogin] = useState(true);
   const [avatar, setAvatar] = useState(null);
@@ -18,12 +18,12 @@ function Navbar({ DataUser }) {
   const handleLogOut = () => {
     localStorage.clear();
     setLogin(!login);
-    axios.get(`http://localhost:4000/auth/logout`);
+    axios.get(`/auth/logout`);
   };
 
   const isAuth = async () => {
     let id = localStorage.getItem('id');
-    const res = await axios.get(`http://localhost:4000/auth/profile/${id}`);
+    const res = await axios.get(`/auth/profile/${id}`);
     const DataUser = await res.data.result;
 
     const auth = localStorage.getItem('isAuth');

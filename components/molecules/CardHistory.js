@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import styled from 'styled-components';
-import { heroLogin } from '../../public/asset';
+import { heroLogin } from '@/public';
 import { customMedia } from '../../styles/breakpoint';
 import Button from '../atoms/Button';
 

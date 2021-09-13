@@ -1,14 +1,10 @@
-import Main from '../components/templates/Main';
-import Search from '../components/molecules/Search';
 import styled from 'styled-components';
+import { CardHistory, Search, Main } from '@/components';
 import { customMedia } from '../styles/breakpoint';
-import CardHistory from '../components/molecules/CardHistory';
-import { requireAuthentication } from '../components/HOC/requireAuth';
-import axios from 'axios';
+import { axios, privateRoute } from '@/configs';
 import cookies from 'next-cookies';
-import CardProduct from '../components/molecules/CardProduct';
+
 function History(DataHistory) {
-  console.log(DataHistory, 'datahistory');
   return (
     <Main>
       <StyleHistory>
@@ -76,10 +72,10 @@ const StyleHistory = styled.div`
 
 export default History;
 
-export const getServerSideProps = requireAuthentication(async (context) => {
+export const getServerSideProps = privateRoute(async (context) => {
   try {
     const idUser = cookies(context).id;
-    const res = await axios.get(`http://localhost:4000/reservation/get/${idUser}`);
+    const res = await axios.get(`/reservation/get/${idUser}`);
     const DataHistory = await res.data.result;
     return {
       props: { DataHistory },

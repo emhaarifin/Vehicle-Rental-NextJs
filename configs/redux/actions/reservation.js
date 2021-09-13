@@ -1,7 +1,7 @@
-import axios from 'axios';
+import { axios } from '@/configs';
 export const addReservation = (data) => (dispatch) => {
   axios
-    .post(`http://localhost:4000/reservation`, data)
+    .post(`/reservation`, data)
     .then((result) => {
       const endData = result.data.result[0];
       return dispatch({ type: 'ADD_RESERVATION', payload: endData });

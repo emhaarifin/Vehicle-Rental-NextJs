@@ -1,8 +1,5 @@
-import CardContainer from '../components/molecules/CardContainer';
-import CardProduct from '../components/molecules/CardProduct';
-import Main from '../components/templates/Main';
-import { facebook } from '../public/asset';
-import axios from 'axios';
+import { CardProduct, CardContainer, Main } from '@/components';
+import { axios } from '@/configs';
 import Link from 'next/link';
 function VehicleType({ category }) {
   return (
@@ -44,14 +41,11 @@ function VehicleType({ category }) {
 export default VehicleType;
 
 export async function getServerSideProps() {
-  // const resLocation = await axios.get(`${process.env.NEXT_BACKEND_API}/location`);
-  const resCategory = await axios.get(`${process.env.NEXT_BACKEND_API}/category`);
+  const resCategory = await axios.get(`/category`);
   const category = await resCategory.data.result;
   await Promise.all(
     category.map(async (item, index) => {
-      const response = await axios.get(
-        `${process.env.NEXT_BACKEND_API}/vehicle?limit=4&table=category&search=${item.name_category}`
-      );
+      const response = await axios.get(`/vehicle?limit=4&table=category&search=${item.name_category}`);
       const todo = await response;
       category[index].vehicles = todo.data.data;
     })

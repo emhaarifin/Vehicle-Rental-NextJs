@@ -1,18 +1,10 @@
-import Head from 'next/head';
-import Image from 'next/image';
 import Link from 'next/link';
-import CardProduct from '../components/molecules/CardProduct';
-import Main from '../components/templates/Main';
-import axios from 'axios';
+import { Button, Input, Navbar, Footer, CardContainer, CardProduct } from '@/components';
+import { axios } from '@/configs';
 import styled from 'styled-components';
 import { customMedia } from '../styles/breakpoint';
-import CardContainer from '../components/molecules/CardContainer';
-import { heroSignup, heroHome } from '../public/asset';
-import Button from '../components/atoms/Button';
-import Input from '../components/atoms/Input';
-import Navbar from '../components/organism/Navbar';
-import Footer from '../components/organism/Footer';
 import { useEffect, useState } from 'react';
+
 export default function Home({ vehicles }) {
   const [roles, setRoles] = useState();
   const getRole = () => {
@@ -20,7 +12,9 @@ export default function Home({ vehicles }) {
     setRoles(roles);
   };
   useEffect(() => {
-    getRole();
+    if (localStorage.getItem('roles')) {
+      getRole();
+    }
   }, []);
   return (
     <>
@@ -181,8 +175,8 @@ const Popular = styled.div`
 `}
 `;
 
-export async function getServerSideProps(context) {
-  const res = await axios.get(`${process.env.NEXT_BACKEND_API}/vehicle?limit=5&sort=DESC`);
+export async function getServerSideProps() {
+  const res = await axios.get(`/vehicle?limit=5&sort=DESC`);
   const vehicles = await res.data.data;
   return {
     props: { vehicles },
