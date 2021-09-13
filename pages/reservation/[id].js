@@ -1,20 +1,40 @@
 /* eslint-disable @next/next/no-img-element */
-import { useRouter } from 'next/router';
-import axios from 'axios';
-import Main from '../../../components/templates/Main';
+import { axios, privateRoute, addReservation } from '@/configs';
+import { Main, Input, Button } from '@/components';
 import Link from 'next/link';
-import Image from 'next/image';
-import { arrowLeftBlack, arrowRightBlack } from '../../../public/asset';
 import styled from 'styled-components';
-import { customMedia } from '../../../styles/breakpoint';
-import Input from '../../../components/atoms/Input';
-import Button from '../../../components/atoms/Button';
+import { customMedia } from '../../styles/breakpoint';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import cookies from 'next-cookies';
 function Id(vehicle) {
-  const data = vehicle.result[0];
+  const { idUser } = vehicle;
+  const data = vehicle.vehicle[0];
   const { category, description, stock, location, name, price, status, id, image } = data;
-  // const image = data.image
-  console.log(image[0]);
-  console.log(data);
+  const dispatch = useDispatch();
+  const [form, setForm] = useState({
+    userId: idUser,
+    vehicleId: id,
+    qty: 1,
+    subTotal: price,
+  });
+  const handleQty = (params) => {
+    if (params === 'plus' && form.qty < stock) {
+      setForm({
+        ...form,
+        qty: form.qty + 1,
+        subTotal: price * form.qty,
+      });
+    }
+    if (params === 'minus' && form.qty > 1) {
+      setForm({
+        ...form,
+        qty: form.qty - 1,
+
+        subTotal: price * form.qty,
+      });
+    }
+  };
   return (
     <Main>
       <p>Detail Item</p>
@@ -25,49 +45,40 @@ function Id(vehicle) {
               <div className="img-item">
                 <img className="img-main" src={image[0]} alt=""></img>
               </div>
-              <div className="img-item">
-                <div className="arrow">
-                  <Image src={arrowLeftBlack} alt="arrow"></Image>
-                </div>
-                <div className="img2">
-                  <img className="img-second" src={image[1] ? image[1] : image[0]} alt=""></img>
-                </div>
-                <div className="img2">
-                  <img className="img-second" src={image[2] ? image[2] : image[0]} alt=""></img>
-                </div>
-                <div className="arrow">
-                  <Image src={arrowRightBlack} alt="arrow"></Image>
-                </div>
-              </div>
             </div>
           </div>
           <div className="right">
             <div className="right-content">
               <p className="text-48 text-bold font-playfair">{name}</p>
               <p className="text-36 font-playfair">{location}</p>
-              <p className="text-24 c-green text-bold">{status}</p>
               <p className="text-24">Type: {category}</p>
-              <p className="text-36 font-playfair text-bold price">Rp. {price}/day</p>
               <div className="choice choiche-item">
                 <div className="choice-item">
-                  <Button className="btn-minus bg__gray">-</Button>
-                  <Input type="number" value={stock}></Input>
-                  <Button className="btn-plus bg__primary">+</Button>
+                  <Button onClick={() => handleQty('minus')} className="btn-minus bg__gray">
+                    -
+                  </Button>
+                  <Input type="number" value={form.qty}></Input>
+                  <Button onClick={() => handleQty('plus')} className="btn-plus bg__primary">
+                    +
+                  </Button>
                 </div>
+              </div>
+              <div className="mt-5 ">
+                <p className="text-24 text-bold">Reservation Date :</p>
+                <select className="bg__gray" style={{ width: '100%', padding: '1.35rem', border: 'none' }}>
+                  <option className="text-24">1 Day</option>
+                </select>
               </div>
             </div>
           </div>
         </StyleDetail>
-
         <StyleButton className="choice-item">
           <div className="choice-item">
-            <Button className="bg__black text-24 c-primary">Add to home page</Button>
-          </div>
-
-          <div className="choice-item">
-            <Link href={`/admin/edit-vehicle/${id}`}>
+            <Link href={`/payment/${id}`}>
               <a>
-                <Button className="text-24  bg__primary">Edit Item</Button>
+                <Button onClick={() => dispatch(addReservation(form))} className="text-24 text-bold  bg__primary">
+                  Pay Now : Rp. {form.subTotal}
+                </Button>
               </a>
             </Link>
           </div>
@@ -179,21 +190,8 @@ const StyleDetail = styled.div`
 `;
 
 const StyleButton = styled.div`
-  ${customMedia.greaterThan('media_md')`
-display: flex;
-gap: 2.5rem;
-`}
-  ${customMedia.lessThan('media_md')`
-display: flex;
-flex-direction: column;
-gap: 1.5rem;
-`}
   margin-top: 5rem;
   .choice-item:nth-child(1) {
-    flex: 1 20%;
-  }
-  .choice-item:nth-child(2) {
-    flex: 2;
     box-shadow: 0px 0px 20px rgba(251, 143, 29, 0.4);
   }
   button {
@@ -201,12 +199,12 @@ gap: 1.5rem;
   }
 `;
 
-export async function getServerSideProps(context) {
+export const getServerSideProps = privateRoute(async (context) => {
+  const idUser = cookies(context).id;
   const { id } = context.params;
-
-  const res = await axios.get(`http://localhost:4000/vehicle/${id}`);
-  const vehicle = await res.data;
+  const res = await axios.get(`/vehicle/${id}`);
+  const vehicle = await res.data.result;
   return {
-    props: vehicle,
+    props: { vehicle, idUser },
   };
-}
+});

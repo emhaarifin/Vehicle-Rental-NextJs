@@ -1,21 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
 import { useRouter } from 'next/router';
-import axios from 'axios';
-import Main from '../../../components/templates/Main';
-// import Link from 'next/link';
-// import { camera } from '../../../public/asset';
-import camera from '../../../public/asset/images/camera.svg';
+import { axios, privateRouteAdmin } from '@/configs';
+import { Input, Button, Main } from '@/components';
 import styled from 'styled-components';
 import { customMedia } from '../../../styles/breakpoint';
-import Image from 'next/image';
-import Input from '../../../components/atoms/Input';
-
-import { frame1, frame2 } from '../../../public/asset';
-import Button from '../../../components/atoms/Button';
-import { useState, useEffect } from 'react';
-function Index(vehicleItem) {
+import swal from 'sweetalert';
+import { useState } from 'react';
+function Index({ vehicleItem, data, dataLocation }) {
   const { location_id, category_id, name, description, price, status, stock, image } = vehicleItem.result[0];
-  console.log(image);
+
+  const dataCategory = data.result;
+  const locationData = dataLocation.result;
   const { query } = useRouter();
 
   const router = useRouter();
@@ -30,12 +25,25 @@ function Index(vehicleItem) {
     stock: stock,
   });
 
+  const handleStock = (params) => {
+    if (params === 'plus') {
+      setVehicle({
+        ...vehicle,
+        stock: vehicle.stock + 1,
+      });
+    }
+    if (params === 'minus' && vehicle.stock > 1) {
+      setVehicle({
+        ...vehicle,
+        stock: vehicle.stock - 1,
+      });
+    }
+  };
+
   const [images, setImages] = useState([]);
   const [imagesPreview] = [images.map((item) => URL.createObjectURL(item))];
-  console.log(imagesPreview[0]);
   const onFileChange = (e) => {
     setImages([...e.target.files]);
-    console.log(images, 'mes');
   };
 
   const handleChange = (e) => {
@@ -44,8 +52,6 @@ function Index(vehicleItem) {
       ...vehicle,
       [e.target.name]: e.target.value,
     });
-
-    console.log(e, vehicle.image, 'e');
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -65,29 +71,29 @@ function Index(vehicleItem) {
       }
     }
     await axios
-      .put(`http://localhost:4000/vehicle/${id}`, data, {
+      .put(`/vehicle/${id}`, data, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       })
       .then((result) => {
-        alert(result?.data?.message || 'Sukses Update');
+        swal('Success', result?.data?.message || 'Suskes Update Data', 'success');
       })
       .catch((error) => {
-        alert(error?.response?.data?.message || 'Gagal Update');
+        swal('error', error?.response?.data?.message || 'Gagal Update ', 'error');
       });
   };
 
   const deleteVihacle = async (e) => {
     e.preventDefault();
     axios
-      .delete(`http://localhost:4000/vehicle/${id}`)
+      .delete(`/vehicle/${id}`)
       .then((result) => {
-        alert(result?.data?.message || 'Sukses Delete Data');
+        swal('Success', result?.data?.message || 'Sukses Delete Data', 'success');
         router.push('/');
       })
       .catch((error) => {
-        alert(error?.response?.data?.message || 'Gagal Delete');
+        swal('error', error?.response?.data?.message || 'Gagal Delete', 'error');
       });
   };
 
@@ -103,18 +109,25 @@ function Index(vehicleItem) {
               </div>
               <div className="second-image second">
                 <div className="second">
-                  <img src={imagesPreview[1] ? imagesPreview[1] : image[1]} width="290px" height="164px" alt="aa"></img>
+                  <img src={imagesPreview[1] ? imagesPreview[1] : image[1]} alt="aa"></img>
                 </div>
                 <div className="second">
-                  <img src={imagesPreview[2] ? imagesPreview[2] : image[2]} width="290px" height="164px" alt="aa"></img>
+                  <div className="input-files">
+                    <label className="label">
+                      <img src={imagesPreview[2] ? imagesPreview[2] : image[2]} alt="aa"></img>
+                      <Input
+                        multiple
+                        id="image"
+                        type="file"
+                        name="image"
+                        onChange={(e) => onFileChange(e)}
+                        element="input"
+                        placeholder="url image product"
+                      />
+                    </label>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="input-files">
-              <label className="label">
-                <div>Click to update image</div>
-                <Input multiple id="image" type="file" name="image" onChange={(e) => onFileChange(e)} element="input" />
-              </label>
             </div>
           </div>
           <div className="right">
@@ -126,7 +139,18 @@ function Index(vehicleItem) {
               placeholder="Name (max up to 50 words)"
               maxlength="50"
             ></Input>
-            <Input className="input text" onChange={handleChange} placeholder="Location" name="location_id"></Input>
+            <select className="input text" onChange={handleChange} placeholder="Location" name="location_id">
+              {locationData &&
+                locationData.map((item) => {
+                  return (
+                    <>
+                      <option key={item.id} name="category_id" value={item.id}>
+                        {item.name_location}
+                      </option>
+                    </>
+                  );
+                })}
+            </select>
             <Input
               className="input text"
               name="description"
@@ -168,9 +192,13 @@ function Index(vehicleItem) {
             <div className="stock-item">
               <label htmlFor="stock">Stock:</label>
               <div className="stock-vehicle">
-                <Button className="btn-plus bg__primary">+</Button>
+                <Button type="button" onClick={() => handleStock('plus')} className="btn-plus bg__primary">
+                  +
+                </Button>
                 <Input name="stock" value={vehicle.stock} onChange={handleChange} type="number"></Input>
-                <Button className="btn-minus bg__gray">-</Button>
+                <Button type="button" onClick={() => handleStock('minus')} className="btn-minus bg__gray">
+                  -
+                </Button>
               </div>
             </div>
           </div>
@@ -183,18 +211,16 @@ function Index(vehicleItem) {
             id="category_id"
             name="category_id"
           >
-            <option value="" disabled hidden>
-              Choose Category
-            </option>
-            <option name="category_id" value="2">
-              Cars
-            </option>
-            <option name="category_id" value="1">
-              Bike
-            </option>
-            <option name="category_id" value="3">
-              Motorbike
-            </option>
+            {dataCategory &&
+              dataCategory.map((item) => {
+                return (
+                  <>
+                    <option key={item.id} name="category_id" value={item.id}>
+                      {item.name_category}
+                    </option>
+                  </>
+                );
+              })}
           </select>
           <Button type="submit" className="text-24 bg__primary choice-item">
             Save Change
@@ -216,43 +242,6 @@ const StyleDetail = styled.div`
   gap: 2rem;
   `}
   .left {
-
-    .input-files{
-      margin-top: 1rem;
-      display:flex;
-      justify-content: center;
-      align-items:center;
-      .label {
-        display: inline-block;
-        position: relative;
-        height: 3rem;
-        
-        width: 20rem;
-        div {
-          position: absolute;
-          top: 0;
-          bottom: 0;
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          // background: #ccc;
-          border: 1px dotted #bebebe;
-          border-radius: 10px;
-        }
-        input[type='file'] {
-          position: absolute;
-          left: 0;
-          opacity: 0;
-
-      cursor: pointer;
-          top: 0;
-          bottom: 0;
-          width: 100%;
-        }
-      }
-    }
-
     height: 100%;
     flex: 1;
     .image {
@@ -266,6 +255,12 @@ const StyleDetail = styled.div`
         justify-content: center;
         align-items: center;
         background: #f5f5f6;
+        img{
+          width: 100%;
+          height: 100%;
+          border-radius: 10px;
+          object-fit: cover;
+        }
       }
       .second-image {
         display: flex;
@@ -279,12 +274,52 @@ const StyleDetail = styled.div`
           display: flex;
           justify-content: center;
           align-items: center;
+
+          border-radius: 10px;
+          img{
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            object-fit: cover;
+          }
         }
         .second:nth-child(2) {
           flex: 1;
           display: flex;
           justify-content: center;
           align-items: center;
+
+          border-radius: 10px;
+          .input-files{
+            display:flex;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items:center;
+            .label {
+              display: inline-block;
+              position: relative;
+              width: 100%;
+              height: 100%;
+
+              img{
+                width: 100%;
+                border-radius: 10px;
+                height: 100%;
+                object-fit: cover;
+              }
+              input[type='file'] {
+                position: absolute;
+                left: 0;
+                opacity: 0;
+                cursor: pointer;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                bottom: 0;
+              }
+            }
+          }
         }
       }
     }
@@ -376,12 +411,14 @@ gap: 1.5rem;
   }
 `;
 
-export async function getServerSideProps(context) {
+export const getServerSideProps = privateRouteAdmin(async (context) => {
   const { id } = context.params;
-
   const res = await axios.get(`http://localhost:4000/vehicle/${id}`);
+  const { data } = await axios.get(`http://localhost:4000/category`);
+  const data2 = await axios.get(`http://localhost:4000/location`);
+  const dataLocation = await data2.data;
   const vehicleItem = await res.data;
   return {
-    props: vehicleItem,
+    props: { vehicleItem, data, dataLocation },
   };
-}
+});

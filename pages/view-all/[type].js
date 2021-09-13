@@ -1,45 +1,40 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import CardContainer from '../../components/molecules/CardContainer';
-import CardProduct from '../../components/molecules/CardProduct';
-import Main from '../../components/templates/Main';
-import axios from 'axios';
+import { CardProduct, CardContainer, Button, Search, Main } from '@/components';
+import { axios } from '@/configs';
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
-import Button from '../../components/atoms/Button';
-
 import styled from 'styled-components';
 import { customMedia } from '../../styles/breakpoint';
-import Search from '../../components/molecules/Search';
-function VehicleType() {
+function VehicleType({ resData }) {
+  const router = useRouter();
   const { query } = useRouter();
-
-  const [data, setData] = useState([]);
-
+  let [data, setData] = useState([]);
   let pageNumbers = [];
-  const [pagination, setPagination] = useState('');
+  let [pagination, setPagination] = useState('');
   const [Number, setNumber] = useState(1);
   const [searchKeyword, setSearchKeyword] = useState('');
   const [sort, setSort] = useState('sortBy=id&sort=ASC');
   const [Refresh, setRefresh] = useState(false);
   const [err, setErr] = useState();
   const type = query.type;
-  // console.log(type);
+
   useEffect(async () => {
+    // setData(resData);
+    getData();
+  }, [Refresh]);
+
+  const getData = async () => {
     await axios
-      .get(
-        `http://localhost:4000/vehicle?limit=4&table=category&page=${Number}&search=${type}&${sort}&${searchKeyword}`
-      )
+      .get(`/vehicle?limit=5&table=category&page=${Number}&search=${type}&${sort}&${searchKeyword}`)
       .then((result) => {
         const data = result.data.data;
         const pageDetail = result.data.pageDetail;
         setData(data);
         setPagination(pageDetail);
-        console.log(pageDetail);
         setErr(result.data.status);
       })
       .catch((err) => setErr(err.response.status));
-  }, [Refresh]);
+  };
 
   for (let i = 1; i <= pagination.totalPage; i++) {
     pageNumbers.push(i);
@@ -53,7 +48,13 @@ function VehicleType() {
     setSearchKeyword(`&searchVehicle=${e.target.value}`);
     Refresh === true ? setRefresh(false) : setRefresh(true);
   };
-  console.log(Refresh);
+  const handleSort = (e) => {
+    setSort(e.target.value);
+    Refresh === true ? setRefresh(false) : setRefresh(true);
+  };
+  if (router.isFallback) {
+    return <h1>halaman loading</h1>;
+  }
   return (
     <Main>
       <>
@@ -63,6 +64,15 @@ function VehicleType() {
         ) : (
           <StyleType>
             <br></br>
+            <select className="bg__gray" onChange={(e) => handleSort(e)} style={{ padding: '1rem', border: 'none' }}>
+              <option selected disabled hidden>
+                Urutkan berdasar
+              </option>
+              <option value="sortBy=price&sort=desc">Barang Mewah</option>
+              <option value="sortBy=price&sort=asc">Sewa Termurah</option>
+            </select>
+            <br></br>
+            <br></br>
             <div className="d-flex justify-content-between">
               <p className="text-36 font-playfair">{query.type}</p>
             </div>
@@ -70,7 +80,7 @@ function VehicleType() {
               {data?.map((item, index) => {
                 return (
                   <CardProduct
-                    href={`/admin/vehicle/${item.id}`}
+                    href={`/vehicle/${item.id}`}
                     key={index}
                     image={item.image[0]}
                     alt={item.name}
@@ -117,3 +127,28 @@ const StyleType = styled.div`
     }
   }
 `;
+
+export const getStaticPaths = async () => {
+  const { data } = await axios.get(`/category`);
+
+  const dataLocation = data.result.map((item) => ({
+    params: { type: item.name_category.toLowerCase() },
+  }));
+  // ket: data paths harus sperti dibawah
+  const paths = [{ params: { type: 'bike' } }];
+  return {
+    paths: paths,
+    fallback: true,
+  };
+};
+
+export const getStaticProps = async (context) => {
+  const type = context.params.type;
+  const { data } = await axios.get(`/vehicle?limit=5&table=category&search=${type}`);
+
+  return {
+    props: {
+      resData: data.data,
+    },
+  };
+};

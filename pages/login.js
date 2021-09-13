@@ -1,14 +1,42 @@
-import LayoutAuth from '../components/templates/LayoutAuth';
 import styled from 'styled-components';
 import Image from 'next/image';
-import Button from '../components/atoms/Button';
-import Input from '../components/atoms/Input';
-import { heroLogin } from '../public/asset';
+import { Button, Input, LayoutAuth } from '@/components';
+import { axios, publicRoute } from '@/configs';
+import { heroLogin, google } from '@/public';
 import { customMedia } from '../styles/breakpoint';
-import { google } from '../public/asset';
-
+import { useState } from 'react';
+import swal from 'sweetalert';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 function Login() {
+  const router = useRouter();
+  const [input, setInput] = useState({
+    email: '',
+    password: '',
+  });
+  const handleChange = (e) => {
+    e.preventDefault();
+    setInput({
+      ...input,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const handleLogin = (e) => {
+    e.preventDefault();
+    axios
+      .post('/auth/login', input, { withCredentials: true })
+      .then(async (result) => {
+        localStorage.setItem('isAuth', true);
+        localStorage.setItem('roles', result.data.result.roles);
+        localStorage.setItem('avatar', result.data.result.avatar);
+        localStorage.setItem('id', result.data.result.id);
+        router.push('/');
+      })
+      .catch((error) => {
+        console.log(error.response);
+        swal('error', error?.response?.data?.message || 'Login Gagal nih', 'error');
+      });
+  };
   return (
     <LayoutAuth>
       <LoginLayout>
@@ -19,18 +47,36 @@ function Login() {
           <p className="header text-64 c-white text-bold">Le’ts Explore The World</p>
           <div className="auth-content">
             <div className="left">
-              <div className="input-auth">
-                <Input type="text" className="text-24 c-white text-bold email" placeholder="Email"></Input>
-                <Input type="password" className="text-24 c-white text-bold" placeholder="Password"></Input>
-              </div>
-              <div className="forgot-password">
-                <Link href="/forgot-password">
-                  <a className="c-white">Forgot password?</a>
-                </Link>
-              </div>
-              <div>
-                <Button className="login text-24 text-bold">Login</Button>
-              </div>
+              <form onSubmit={handleLogin}>
+                <div className="input-auth">
+                  <Input
+                    type="text"
+                    name="email"
+                    autocomplete="email"
+                    onChange={handleChange}
+                    className="text-24 c-white text-bold email"
+                    placeholder="Email"
+                  ></Input>
+                  <Input
+                    type="password"
+                    name="password"
+                    onChange={handleChange}
+                    autocomplete="current-password"
+                    className="text-24 c-white text-bold"
+                    placeholder="Password"
+                  ></Input>
+                </div>
+                <div className="forgot-password">
+                  <Link href="/forgot-password">
+                    <a className="c-white">Forgot password?</a>
+                  </Link>
+                </div>
+                <div>
+                  <Button type="submit" className="login text-24 text-bold">
+                    Login
+                  </Button>
+                </div>
+              </form>
             </div>
             <div className="or">
               <p>or</p>
@@ -56,7 +102,13 @@ function Login() {
 
 export default Login;
 
+export const getServerSideProps = publicRoute(async () => {
+  return {
+    props: {},
+  };
+});
 const LoginLayout = styled.div`
+  background: rgba(0, 0, 0, 0.38);
   .custom-hero {
     position: relative;
     width: 100vw;

@@ -5,9 +5,9 @@ import Link from 'next/link';
 import { customMedia } from '../../styles/breakpoint';
 function CardProduct(props) {
   return (
-    <Link href={props.href}>
-      <a>
-        <StyleCard>
+    <StyleCard>
+      <Link href={props.href}>
+        <a>
           <div className="product-img">
             <img src={props.image} alt={props.alt}></img>
           </div>
@@ -15,44 +15,49 @@ function CardProduct(props) {
             <p className="info">{props.name}</p>
             <p className="info">{props.location}</p>
           </div>
-        </StyleCard>
-      </a>
-    </Link>
+        </a>
+      </Link>
+    </StyleCard>
   );
 }
 
 export default CardProduct;
 
 const StyleCard = styled.div`
+  flex: 1 46%;
+  ${customMedia.greaterThan('media_md')`
+flex: 1 21%;
+`}
+  ${customMedia.greaterThan('media_xl')`
+flex: 1 16%;
+`}
+  position: relative;
+  a {
+    width: 100%;
+    height: 100%;
+  }
+  max-width: 261px;
+  min-height: 337px;
+  margin-bottom: 2rem;
   .product-img {
-    width: 261px;
-    height: 337px;
-    ${customMedia.lessThan('425px')`
-    width: 100%
-    `}
+    position: absolute;
+    border-radius: 10px;
     img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
+      max-width: 100%;
+      min-height: 337px;
+      max-height: 337px;
+      border-radius: 10px;
+      object-fit: cover;
     }
   }
-
-  display: flex;
-  margin-bottom: 1.5rem;
-  img {
-    border-radius: 8px;
-  }
-  position: relative;
   .information {
     background: #fff;
     width: 55%;
     position: absolute;
     bottom: 0;
-    // left: 25%;
+    left: 0;
     padding: 0.7rem 0.7rem 0.2rem 1rem;
     border-radius: 0px 6px 0px 0px;
-    // border-radius: 6px 6px 0px 0px;
-
     p {
       white-space: nowrap;
       overflow: hidden;
@@ -76,6 +81,5 @@ const StyleCard = styled.div`
       line-height: 24px;
       color: #80918e;
     }
-    // align-self: flex-start;
   }
 `;

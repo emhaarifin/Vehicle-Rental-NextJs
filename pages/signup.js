@@ -1,14 +1,40 @@
-import LayoutAuth from '../components/templates/LayoutAuth';
-import Footer from '../components/organism/Footer';
 import styled from 'styled-components';
 import { customMedia } from '../styles/breakpoint';
-import { google } from '../public/asset';
-import heroSignup from '../public/asset/images/hero-signup.svg';
+import { google, heroSignup } from '@/public';
 import Image from 'next/image';
 import Link from 'next/link';
-import Input from '../components/atoms/Input';
-import Button from '../components/atoms/Button';
-function Login() {
+import { axios, publicRoute } from '@/configs';
+import { Button, Input, Footer, LayoutAuth } from '@/components';
+import { useState } from 'react';
+import swal from 'sweetalert';
+import { useRouter } from 'next/router';
+
+function Signup() {
+  const router = useRouter();
+  const [input, setInput] = useState({
+    fullname: '',
+    email: '',
+    password: '',
+  });
+  const handleChange = (e) => {
+    e.preventDefault();
+    setInput({
+      ...input,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const handleSignup = (e) => {
+    e.preventDefault();
+    axios
+      .post('/auth/register', input)
+      .then((result) => {
+        swal('Success', result?.data?.message || 'Signup Sukses', 'success');
+        router.push('/login');
+      })
+      .catch((error) => {
+        swal('error', error?.response?.data?.message || 'Signup Gagal', 'error');
+      });
+  };
   return (
     <LayoutAuth register>
       <RegisterLayout>
@@ -21,12 +47,20 @@ function Login() {
           <div className="right-content">
             <p className="text-48 header text-bold">Sign Up</p>
             <div className="input-auth">
-              <Input className="text-24" placeholder="Name" />
-              <Input className="text-24" placeholder="Email" />
-              <Input className="text-24" placeholder="Password" />
+              <Input name="fullname" onChange={handleChange} className="text-24" placeholder="Name" />
+              <Input name="email" onChange={handleChange} className="text-24" placeholder="Email" />
+              <Input
+                type="password"
+                name="password"
+                onChange={handleChange}
+                className="text-24"
+                placeholder="Password"
+              />
             </div>
             <div className="button-auth">
-              <Button className="signup text-24 text-bold">Sign Up</Button>
+              <Button onClick={handleSignup} className="signup text-24 text-bold">
+                Sign Up
+              </Button>
               <div className="divider">
                 <hr className="divider-line"></hr>
                 <span className="text-24 span">or try another way</span>
@@ -49,8 +83,13 @@ function Login() {
   );
 }
 
-export default Login;
+export default Signup;
 
+export const getServerSideProps = publicRoute(async () => {
+  return {
+    props: {},
+  };
+});
 const RegisterLayout = styled.div`
   display: flex;
 
