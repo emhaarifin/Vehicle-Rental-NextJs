@@ -1,95 +1,90 @@
 import styled from 'styled-components';
 import Image from 'next/image';
 import { Button, Input, LayoutAuth } from '@/components';
-import { axios, publicRoute } from '@/configs';
+import { axios, publicRoute, login } from '@/configs';
 import { heroLogin, google } from '@/asset';
 import { customMedia } from '../styles/breakpoint';
 import { useState } from 'react';
-import swal from 'sweetalert';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import cookies from 'next-cookies';
+import { useDispatch } from 'react-redux';
+import { Formik, Form } from 'formik';
+import * as Yup from 'yup';
 function Login() {
   const router = useRouter();
-  const [input, setInput] = useState({
-    email: '',
-    password: '',
-  });
-  const handleChange = (e) => {
-    e.preventDefault();
-    setInput({
-      ...input,
-      [e.target.name]: e.target.value,
-    });
-  };
-  const generateCookie = (cname, cvalue, exdays) => {
-    const d = new Date();
-    d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
-    let expires = 'expires=' + d.toUTCString();
-    document.cookie = cname + '=' + cvalue + ';' + expires + ';path=/';
-  };
-  const handleLogin = (e) => {
-    e.preventDefault();
-    axios
-      .post('/auth/login', input, { withCredentials: true })
-      .then(async (result) => {
-        const resData = result.data.result;
-        console.log(resData);
-        localStorage.setItem('isAuth', true);
-        localStorage.setItem('roles', resData.roles);
-        localStorage.setItem('avatar', resData.avatar);
-        localStorage.setItem('id', resData.id);
-        generateCookie('avatar', resData.avatar, 1);
-        generateCookie('token', resData.token, 1);
-        generateCookie('roles', resData.roles, 1);
-        generateCookie('id', resData.id, 1);
-        router.push('/');
-      })
-      .catch((error) => {
-        console.log(error.response);
-        swal('error', error?.response?.data?.message || 'Login Gagal nih', 'error');
-      });
-  };
+  const dispatch = useDispatch();
   return (
     <LayoutAuth>
       <LoginLayout>
         <div className="custom-hero">
-          <Image src={heroLogin} layout="fill" objectFit="cover" alt="hero login"></Image>
+          <div className="hero-wrapper">
+            <Image src={heroLogin} layout="fill" objectFit="cover" alt="hero login"></Image>
+          </div>
         </div>
         <div className="auth-wrapper">
           <p className="header text-64 c-white text-bold">Le’ts Explore The World</p>
           <div className="auth-content">
             <div className="left">
-              <form onSubmit={handleLogin}>
-                <div className="input-auth">
-                  <Input
-                    type="text"
-                    name="email"
-                    autocomplete="email"
-                    onChange={handleChange}
-                    className="text-24 c-white text-bold email"
-                    placeholder="Email"
-                  ></Input>
-                  <Input
-                    type="password"
-                    name="password"
-                    onChange={handleChange}
-                    autocomplete="current-password"
-                    className="text-24 c-white text-bold"
-                    placeholder="Password"
-                  ></Input>
-                </div>
-                <div className="forgot-password">
-                  <Link href="/forgot-password">
-                    <a className="c-white">Forgot password?</a>
-                  </Link>
-                </div>
-                <div>
-                  <Button type="submit" className="login text-24 text-bold">
-                    Login
-                  </Button>
-                </div>
-              </form>
+              <Formik
+                initialValues={{
+                  email: '',
+                  password: '',
+                }}
+                onSubmit={(values, { resetForm }) => {
+                  dispatch(login(values, router, resetForm));
+                }}
+                validationSchema={Yup.object({
+                  email: Yup.string().email('Email is Invalid').required('email is required'),
+                  password: Yup.string().required('Password is required'),
+                })}
+              >
+                {({ values, touched, handleBlur, handleChange, handleSubmit, isValid }) => (
+                  <Form onSubmit={handleSubmit}>
+                    <div className="input-auth">
+                      <div className="email">
+                        <Input
+                          type="text"
+                          name="email"
+                          autocomplete="email"
+                          id="email"
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          value={values.email}
+                          className="text-24 c-white text-bold "
+                          placeholder="Email"
+                        ></Input>
+                      </div>
+                      <div>
+                        <Input
+                          type="password"
+                          name="password"
+                          id="password"
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          value={values.password}
+                          autocomplete="current-password"
+                          className="text-24 c-white text-bold"
+                          placeholder="Password"
+                        ></Input>
+                      </div>
+                    </div>
+                    <div className="forgot-password">
+                      <Link href="/forgot-password">
+                        <a className="c-white">Forgot password?</a>
+                      </Link>
+                    </div>
+                    <div>
+                      <Button
+                        type="submit"
+                        disabled={!isValid || (Object.keys(touched).length === 0 && touched.constructor === Object)}
+                        className="login text-24 text-bold"
+                      >
+                        Login
+                      </Button>
+                    </div>
+                  </Form>
+                )}
+              </Formik>
             </div>
             <div className="or">
               <p>or</p>
@@ -121,39 +116,42 @@ export const getServerSideProps = publicRoute(async () => {
   };
 });
 const LoginLayout = styled.div`
+  position: relative;
   background: rgba(0, 0, 0, 0.38);
   .custom-hero {
-    position: relative;
-    width: 100vw;
-    z-index: -1;
-    min-height: 100vh;
-  }
-  .header {
-    max-width: 390px;
-    ${customMedia.lessThan('media_md')`
-  max-width: 300px
-    `}
-    font-family: Playfair Display;
-  }
-  .auth-wrapper {
+    position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-    position: absolute;
-
+    width: 100vw;
+    z-index: -4;
+    .hero-wrapper {
+      position: relative;
+      height: 100%;
+      img {
+        object-fit: cover;
+      }
+    }
+  }
+  .header {
+    max-width: 390px;
+    ${customMedia.lessThan('media_md')`
+      max-width: 300px
+    `}
+    font-family: Playfair Display;
+  }
+  .auth-wrapper {
     padding: 5rem;
     ${customMedia.lessThan('media_md')`
-  // position: unset;
-  padding: 5rem 1rem;
+      padding: 5rem 1rem;
     `}
     .auth-content {
-      margin-top: 5rem;
+      margin-top: 2rem;
       display: flex;
-
       ${customMedia.lessThan('media_md')`
-  display: unset;
-  `}
+        display: unset;
+      `}
       .left {
         flex: 2;
         margin: auto;
@@ -191,16 +189,10 @@ const LoginLayout = styled.div`
         font-weight: bold;
         font-size: 36px;
         line-height: 49px;
-
         color: #ffffff;
       }
       .right {
-        // padding: 5rem;
         flex: 2;
-
-        // justify-content: center;
-        // align-items: center;
-
         .withGoogle {
           margin-bottom: 1.5rem;
           display: flex;

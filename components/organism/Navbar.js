@@ -71,7 +71,7 @@ function Navbar({ DataUser }) {
       <StyleNavbar>
         <Link href="/">
           <a>
-            <Image src={brand} alt="Brand"></Image>
+            <Image src={brand} className="brand-icon" alt="Brand"></Image>
           </a>
         </Link>
         <div>
@@ -141,14 +141,10 @@ function Navbar({ DataUser }) {
                     <Image src={arrowRightBlack} width="10px" height="14px" alt="go"></Image>
                   </div>
                 </Link>
-                <Link href="/">
-                  <div className="dropdown-item">
-                    <a onClick={handleLogOut} className="text-14 text-bold">
-                      Logout
-                    </a>
-                    <Image src={arrowRightBlack} width="10px" height="14px" alt="go"></Image>
-                  </div>
-                </Link>
+                <div className="dropdown-item" onClick={handleLogOut}>
+                  <span className="text-14 text-bold">Logout</span>
+                  <Image src={arrowRightBlack} width="10px" height="14px" alt="go"></Image>
+                </div>
               </div>
             </div>
           ) : (
@@ -181,7 +177,9 @@ const StyleNavbar = styled.nav`
   div {
     display: flex;
   }
-
+  .brand-icon {
+    cursor:pointer;
+  }
   .custom-img {
     display: none;
   }
@@ -223,6 +221,7 @@ const StyleNavbar = styled.nav`
         display: flex;
         flex-direction: column;
         .dropdown-item {
+          cursor:pointer;
           padding: 0.75rem 1rem;
           justify-content: space-between;
           &:active {

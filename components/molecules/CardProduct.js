@@ -9,7 +9,7 @@ function CardProduct(props) {
       <Link href={props.href}>
         <a>
           <div className="product-img">
-            <img src={props.image} alt={props.alt}></img>
+            <img src={`${process.env.NEXT_PUBLIC_API_URL}/${props.image}`} alt={props.alt}></img>
           </div>
           <div className="information info">
             <p className="info">{props.name}</p>

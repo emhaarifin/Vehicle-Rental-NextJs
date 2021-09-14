@@ -9,7 +9,7 @@ function CardHistory(props) {
     <StyleCard>
       <div className="left-card">
         <div className="the-img">
-          <img src={props.image} alt="img"></img>
+          <img src={`${process.env.NEXT_PUBLIC_API_URL}/${props.image}`} alt="img"></img>
         </div>
         <div className="information">
           <div>

@@ -19,3 +19,17 @@ a {
 * {
   box-sizing: border-box !important;
 }
+
+.auth-errors {
+  padding: 0.2rem 1rem;
+  margin: 0.5rem 0;
+  font-weight: 700;
+  color: white;
+  width: fit-content;
+  background-color: red;
+  border-radius: 8px;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}

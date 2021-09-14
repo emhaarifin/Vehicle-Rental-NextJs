@@ -3,38 +3,16 @@ import { customMedia } from '../styles/breakpoint';
 import { google, heroSignup } from '@/asset';
 import Image from 'next/image';
 import Link from 'next/link';
-import { axios, publicRoute } from '@/configs';
+import { publicRoute, register } from '@/configs';
 import { Button, Input, Footer, LayoutAuth } from '@/components';
 import { useState } from 'react';
-import swal from 'sweetalert';
 import { useRouter } from 'next/router';
-
+import { Form, Formik } from 'formik';
+import * as Yup from 'yup';
+import { useDispatch } from 'react-redux';
 function Signup() {
   const router = useRouter();
-  const [input, setInput] = useState({
-    fullname: '',
-    email: '',
-    password: '',
-  });
-  const handleChange = (e) => {
-    e.preventDefault();
-    setInput({
-      ...input,
-      [e.target.name]: e.target.value,
-    });
-  };
-  const handleSignup = (e) => {
-    e.preventDefault();
-    axios
-      .post('/auth/register', input)
-      .then((result) => {
-        swal('Success', result?.data?.message || 'Signup Sukses', 'success');
-        router.push('/login');
-      })
-      .catch((error) => {
-        swal('error', error?.response?.data?.message || 'Signup Gagal', 'error');
-      });
-  };
+  const dispatch = useDispatch();
   return (
     <LayoutAuth register>
       <RegisterLayout>
@@ -44,38 +22,90 @@ function Signup() {
           </div>
         </div>
         <div className="right">
-          <div className="right-content">
-            <p className="text-48 header text-bold">Sign Up</p>
-            <div className="input-auth">
-              <Input name="fullname" onChange={handleChange} className="text-24" placeholder="Name" />
-              <Input name="email" onChange={handleChange} className="text-24" placeholder="Email" />
-              <Input
-                type="password"
-                name="password"
-                onChange={handleChange}
-                className="text-24"
-                placeholder="Password"
-              />
-            </div>
-            <div className="button-auth">
-              <Button onClick={handleSignup} className="signup text-24 text-bold">
-                Sign Up
-              </Button>
-              <div className="divider">
-                <hr className="divider-line"></hr>
-                <span className="text-24 span">or try another way</span>
-                <hr className="divider-line"></hr>
-              </div>
-              <Button iconText Image={google} height="33px" width="34px" className="withGoogle text-24 text-bold">
-                Sign Up with Google
-              </Button>
-              <Link href="/login">
-                <a>
-                  <Button className="login text-24 text-bold">Login</Button>
-                </a>
-              </Link>
-            </div>
-          </div>
+          <Formik
+            initialValues={{
+              fullname: '',
+              email: '',
+              password: '',
+            }}
+            validationSchema={Yup.object({
+              fullname: Yup.string().required('Name is required'),
+              email: Yup.string().email('Invalid email address').required('Email is required'),
+              password: Yup.string().min(8, 'Password must be at least 8 charaters').required('Password is required'),
+            })}
+            onSubmit={(values, { resetForm }) => {
+              dispatch(register(values, router, resetForm));
+            }}
+          >
+            {({ values, touched, handleChange, handleBlur, handleSubmit, isValid }) => (
+              <Form onSubmit={handleSubmit}>
+                <div className="right-content">
+                  <p className="text-48 header text-bold">Sign Up</p>
+                  <div className="input-auth">
+                    <Input
+                      type="text"
+                      id="fullname"
+                      name="fullname"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.fullname}
+                      className="text-24"
+                      placeholder="Name"
+                    />
+                    <Input
+                      type="text"
+                      id="email"
+                      name="email"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.email}
+                      className="text-24"
+                      placeholder="Email"
+                    />
+                    <Input
+                      type="password"
+                      name="password"
+                      id="password"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.password}
+                      className="text-24"
+                      placeholder="Password"
+                    />
+                  </div>
+                  <div className="button-auth">
+                    <Button
+                      type="submit"
+                      className="signup text-24 text-bold"
+                      disabled={!isValid || (Object.keys(touched).length === 0 && touched.constructor === Object)}
+                    >
+                      Sign Up
+                    </Button>
+                    <div className="divider">
+                      <hr className="divider-line"></hr>
+                      <span className="text-24 span">or try another way</span>
+                      <hr className="divider-line"></hr>
+                    </div>
+                    <Button
+                      type="button"
+                      iconText
+                      Image={google}
+                      height="33px"
+                      width="34px"
+                      className="withGoogle text-24 text-bold"
+                    >
+                      Sign Up with Google
+                    </Button>
+                    <Link href="/login">
+                      <a>
+                        <Button className="login text-24 text-bold">Login</Button>
+                      </a>
+                    </Link>
+                  </div>
+                </div>
+              </Form>
+            )}
+          </Formik>
           <Footer onlyRegister={true} />
         </div>
       </RegisterLayout>

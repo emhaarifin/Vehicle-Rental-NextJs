@@ -13,6 +13,7 @@ const userReducer = (state = initialValue, action) => {
         userDataID: {},
         errorMsg: {},
       };
+
     case 'UPDATE_USER':
       return {
         ...state,
