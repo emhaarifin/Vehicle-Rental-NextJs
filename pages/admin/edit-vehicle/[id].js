@@ -8,7 +8,7 @@ import swal from 'sweetalert';
 import { useState } from 'react';
 function Index({ vehicleItem, data, dataLocation }) {
   const { location_id, category_id, name, description, price, status, stock, image } = vehicleItem.result[0];
-
+  console.log(image, 'image');
   const dataCategory = data.result;
   const locationData = dataLocation.result;
   const { query } = useRouter();

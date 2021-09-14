@@ -21,10 +21,10 @@ export const login = (data, router, resetForm) => (dispatch) => {
       localStorage.setItem('roles', resData.roles);
       localStorage.setItem('avatar', resData.avatar);
       localStorage.setItem('id', resData.id);
-      generateCookie('avatar', resData.avatar, 1);
-      generateCookie('token', resData.token, 1);
-      generateCookie('roles', resData.roles, 1);
-      generateCookie('id', resData.id, 1);
+      generateCookie('avatar 2', resData.avatar, 1);
+      generateCookie('token 2', resData.token, 1);
+      generateCookie('roles 2', resData.roles, 1);
+      generateCookie('id 2', resData.id, 1);
       dispatch({ type: actionTypes.USER_LOGIN, payload: resData });
       swal('Success!', 'Login success', 'success');
       router.push('/');
