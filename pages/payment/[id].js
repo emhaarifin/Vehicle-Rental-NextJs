@@ -3,7 +3,7 @@ import { axios } from '@/configs';
 import { Input, Button, Main } from '@/components';
 import styled from 'styled-components';
 import { customMedia } from '../../styles/breakpoint';
-
+import { privateRoute } from '@/configs';
 import { useSelector } from 'react-redux';
 function Id(vehicle) {
   const ReserData = useSelector((state) => state.reservation.data);
