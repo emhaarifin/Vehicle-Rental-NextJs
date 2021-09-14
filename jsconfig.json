@@ -4,9 +4,9 @@
     "paths": {
       "@/components": ["components/index"],
       "@/configs": ["configs/index"],
-      "@/decorations": ["public/asset/decorations/*"],
-      "@/icons": ["public/asset/icons/*"],
-      "@/images": ["public/asset/images/*"],
+      "@/decorations/*": ["public/asset/decorations/*"],
+      "@/icons/*": ["public/asset/icons/*"],
+      "@/images/*": ["public/asset/images/*"],
       "@/public": ["public/index"]
     }
   }
