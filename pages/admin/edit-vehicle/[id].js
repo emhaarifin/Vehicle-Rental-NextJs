@@ -12,7 +12,6 @@ function Index({ vehicleItem, data, dataLocation }) {
   const dataCategory = data.result;
   const locationData = dataLocation.result;
   const { query } = useRouter();
-
   const router = useRouter();
   const id = Number(query.id);
   const [vehicle, setVehicle] = useState({
@@ -134,8 +133,8 @@ function Index({ vehicleItem, data, dataLocation }) {
             <Input
               name="name"
               className="input text"
-              onChange={handleChange}
               value={vehicle.name}
+              onChange={handleChange}
               placeholder="Name (max up to 50 words)"
               maxlength="50"
             ></Input>

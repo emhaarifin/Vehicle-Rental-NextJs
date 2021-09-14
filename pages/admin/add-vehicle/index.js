@@ -370,7 +370,7 @@ gap: 1.5rem;
     padding: 1.35rem;
   }
 `;
-export const getServerSideProps = privateRouteAdmin(async () => {
+export const getServerSideProps = privateRouteAdmin(async (context) => {
   const { data } = await axios.get(`/category`);
   const data2 = await axios.get(`/location`);
   const dataLocation = await data2.data;
