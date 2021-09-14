@@ -1,8 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import styled from 'styled-components';
-import { heroLogin } from '@/public';
+import { heroLogin } from '@/asset';
 import { customMedia } from '../../styles/breakpoint';
-import Button from '../atoms/Button';
+import { Button } from '@/components';
 
 function CardHistory(props) {
   return (

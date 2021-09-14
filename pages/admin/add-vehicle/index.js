@@ -2,7 +2,7 @@
 import { axios, privateRouteAdmin } from '@/configs';
 import styled from 'styled-components';
 import { customMedia } from '../../../styles/breakpoint';
-import { frame1, frame2, frame3 } from '@/public';
+import { frame1, frame2, frame3 } from '@/asset';
 import { Input, Button, Main } from '@/components';
 import { useState } from 'react';
 import swal from 'sweetalert';

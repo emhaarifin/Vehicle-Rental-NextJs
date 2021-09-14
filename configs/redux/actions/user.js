@@ -1,4 +1,3 @@
-// INCREMENT COUNTER BY 1
 import { axios } from '@/configs';
 import swal from 'sweetalert';
 

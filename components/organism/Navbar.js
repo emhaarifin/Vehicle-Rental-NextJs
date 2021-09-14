@@ -3,7 +3,7 @@
 /* eslint-disable @next/next/link-passhref */
 import styled from 'styled-components';
 import { customMedia } from '../../styles/breakpoint';
-import { brand, history, searchGrey, home, about, avatarUser, email, arrowRightBlack } from '@/public';
+import { brand, history, searchGrey, home, about, avatarUser, email, arrowRightBlack } from '@/asset';
 import Image from 'next/image';
 import Link from 'next/link';
 import Button from '../atoms/Button';

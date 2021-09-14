@@ -7,7 +7,7 @@
       "@/decorations/*": ["public/asset/decorations/*"],
       "@/icons/*": ["public/asset/icons/*"],
       "@/images/*": ["public/asset/images/*"],
-      "@/public": ["public/index"]
+      "@/asset": ["helper/asset/index"]
     }
   }
 }

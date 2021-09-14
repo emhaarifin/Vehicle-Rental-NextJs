@@ -3,7 +3,7 @@ import { axios } from '@/configs';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Main, Button, Input } from '@/components';
-import { arrowLeftBlack, arrowRightBlack } from '@/public';
+import { arrowLeftBlack, arrowRightBlack } from '@/asset';
 import styled from 'styled-components';
 import { customMedia } from '../../styles/breakpoint';
 import { useState, useEffect } from 'react';

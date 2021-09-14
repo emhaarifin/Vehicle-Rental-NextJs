@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { editProfile, avatarUser } from '@/public';
+import { editProfile, avatarUser } from '@/asset';
 import styled from 'styled-components';
 import { customMedia } from '../../styles/breakpoint';
 import { Input, Button, Main } from '@/components';

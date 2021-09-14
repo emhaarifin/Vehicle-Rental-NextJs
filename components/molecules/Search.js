@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { search } from '@/public';
+import { search } from '@/asset';
 import Image from 'next/image';
 
 const Search = ({ onChange, value, placeholder, onClick }) => {

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import Image from 'next/image';
 import { Button, Input, LayoutAuth } from '@/components';
 import { axios, publicRoute } from '@/configs';
-import { heroLogin, google } from '@/public';
+import { heroLogin, google } from '@/asset';
 import { customMedia } from '../styles/breakpoint';
 import { useState } from 'react';
 import swal from 'sweetalert';

@@ -1,4 +1,4 @@
-import Main from '../components/templates/Main';
+import { Main } from '@/components';
 
 function About() {
   return (
