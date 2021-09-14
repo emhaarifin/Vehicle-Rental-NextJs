@@ -15,10 +15,21 @@ function Navbar({ DataUser }) {
   const [avatar, setAvatar] = useState(null);
   const [refresh, setRefresh] = useState(true);
 
+  const deleteCookies = (cname) => {
+    const d = new Date();
+    d.setHours(0);
+    d.setMinutes(0);
+    d.setSeconds(0);
+    let expires = 'expires=' + d;
+    for (let index = 0; index < cname.length; index++) {
+      document.cookie = `${cname[index]}=; ${expires}; path=/;`;
+    }
+  };
   const handleLogOut = () => {
     localStorage.clear();
     setLogin(!login);
-    axios.get(`/auth/logout`);
+    deleteCookies(['token', 'roles', 'id', 'avatar']);
+    // axios.get(`/auth/logout`, { withCredentials: true });
   };
 
   const isAuth = async () => {

@@ -8,6 +8,7 @@ import { useState } from 'react';
 import swal from 'sweetalert';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import cookies from 'next-cookies';
 function Login() {
   const router = useRouter();
   const [input, setInput] = useState({
@@ -21,15 +22,27 @@ function Login() {
       [e.target.name]: e.target.value,
     });
   };
+  const generateCookie = (cname, cvalue, exdays) => {
+    const d = new Date();
+    d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+    let expires = 'expires=' + d.toUTCString();
+    document.cookie = cname + '=' + cvalue + ';' + expires + ';path=/';
+  };
   const handleLogin = (e) => {
     e.preventDefault();
     axios
       .post('/auth/login', input, { withCredentials: true })
       .then(async (result) => {
+        const resData = result.data.result;
+        console.log(resData);
         localStorage.setItem('isAuth', true);
-        localStorage.setItem('roles', result.data.result.roles);
-        localStorage.setItem('avatar', result.data.result.avatar);
-        localStorage.setItem('id', result.data.result.id);
+        localStorage.setItem('roles', resData.roles);
+        localStorage.setItem('avatar', resData.avatar);
+        localStorage.setItem('id', resData.id);
+        generateCookie('avatar', resData.avatar, 1);
+        generateCookie('token', resData.token, 1);
+        generateCookie('roles', resData.roles, 1);
+        generateCookie('id', resData.id, 1);
         router.push('/');
       })
       .catch((error) => {
