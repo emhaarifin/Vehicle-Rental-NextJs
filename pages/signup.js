@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { customMedia } from '../styles/breakpoint';
-import { google, heroSignup } from '@/public';
+import { google, heroSignup } from '@/asset';
 import Image from 'next/image';
 import Link from 'next/link';
 import { axios, publicRoute } from '@/configs';
