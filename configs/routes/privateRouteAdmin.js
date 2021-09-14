@@ -3,7 +3,7 @@ import cookies from 'next-cookies';
 export function privateRouteAdmin(getServerSideProps) {
   return async (context) => {
     const token = cookies(context).token;
-    const role = cookies(context).user_role;
+    const role = cookies(context).roles;
     if (!token) {
       return {
         redirect: {

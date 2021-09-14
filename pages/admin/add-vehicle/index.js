@@ -371,8 +371,8 @@ gap: 1.5rem;
   }
 `;
 export const getServerSideProps = privateRouteAdmin(async () => {
-  const { data } = await axios.get(`http://localhost:4000/category`);
-  const data2 = await axios.get(`http://localhost:4000/location`);
+  const { data } = await axios.get(`/category`);
+  const data2 = await axios.get(`/location`);
   const dataLocation = await data2.data;
   return {
     props: { data, dataLocation },
