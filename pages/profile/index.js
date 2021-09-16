@@ -57,18 +57,18 @@ function Index({ DataUser }) {
       });
   };
   return (
-    <Main>
+    <Main avatar={DataUser[0].avatar}>
       <p className="text-36 text-bold mt-5 mb-5">Profile</p>
       {DataUser &&
         DataUser.map((item, index) => {
           return (
             <>
-              <form onSubmit={handleSubmit} encType="multipart/form-data">
+              <form key={item.id} onSubmit={handleSubmit} encType="multipart/form-data">
                 <div>
                   <Avatar>
                     <div className="avatar-user">
                       <img
-                        src={user.avatar === null || user.avatar === 'null' ? avatarUser.src : item.avatar}
+                        src={user.defaultImg ? user.imagePreview : item.avatar ? item.avatar : avatarUser.src}
                         alt="ao"
                       ></img>
                     </div>
@@ -89,7 +89,7 @@ function Index({ DataUser }) {
                   </ShowInformation>
                   <Gender>
                     <Input
-                      CustomRadio
+                      customradio="true"
                       id="Male"
                       value="Male"
                       name="gender"
@@ -98,7 +98,7 @@ function Index({ DataUser }) {
                       label="Male"
                     ></Input>
                     <Input
-                      CustomRadio
+                      customradio="true"
                       id="Female"
                       value="Female"
                       name="gender"
@@ -160,12 +160,11 @@ const Avatar = styled.div`
   .avatar-user {
     width: 100%;
     border-radius: 50%;
-    background: red;
     height: 100%;
     img {
+      object-fit: cover;
       width: 100%;
       border-radius: 50%;
-      background: red;
       height: 100%;
     }
   }
@@ -176,12 +175,11 @@ const Avatar = styled.div`
     div {
       label {
         input {
-          visibility: hidden;
+          display: none;
         }
       }
     }
     max-width: fit-content;
-
     max-height: fit-content;
     bottom: 0;
   }

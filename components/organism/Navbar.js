@@ -10,9 +10,9 @@ import Button from '../atoms/Button';
 import { useState, useEffect } from 'react';
 import cookieCutter from 'cookie-cutter';
 import { axios } from '@/configs';
-function Navbar({ DataUser }) {
+function Navbar({ avatar }) {
   const [login, setLogin] = useState(true);
-  const [avatar, setAvatar] = useState(null);
+  // const [avatar, setAvatar] = useState(null);
   const [refresh, setRefresh] = useState(true);
 
   const deleteCookies = (cname) => {
@@ -27,18 +27,14 @@ function Navbar({ DataUser }) {
   };
 
   const isAuth = async () => {
-    let id = localStorage.getItem('id');
-    const res = await axios.get(`/auth/profile/${id}`);
-    const DataUser = await res.data.result;
+    // let id = localStorage.getItem('id');
+    // const res = await axios.get(`/auth/profile/${id}`);
+    // const DataUser = await res.data.result;
 
     const auth = localStorage.getItem('isAuth');
-    const avaP = localStorage.getItem('avatar');
+    // const avaP = localStorage.getItem('avatar');
     setLogin(auth);
-    if (avatar === null || avatar === 'null') {
-      return setAvatar(avatarUser.src);
-    } else {
-      return setAvatar(DataUser[0]?.avatar);
-    }
+    // setAvatar(DataUser[0]?.avatar);
   };
 
   function dropDownUser() {
@@ -115,7 +111,7 @@ function Navbar({ DataUser }) {
             <div className="icon-user">
               <Image src={email} alt="icon chat"></Image>
               <img
-                src={avatar}
+                src={avatar ? avatar : avatarUser.src}
                 onClick={dropDownUser}
                 className="avatar-user"
                 width="50px"

@@ -23,7 +23,7 @@ function Input(props) {
         <Image src={props.image} width={props.widthImg} height={props.heightImg} alt={props.alt}></Image>
       </>
     );
-  } else if (props.CustomRadio) {
+  } else if (props.customradio) {
     return (
       <>
         <CustomRadio htmlFor={props.id}>

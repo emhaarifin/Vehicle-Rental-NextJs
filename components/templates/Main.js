@@ -5,7 +5,7 @@ import { customMedia } from '../../styles/breakpoint';
 function Main({ children, avatar }) {
   return (
     <MainC>
-      <Navbar />
+      <Navbar avatar={avatar} />
       <ContainerMain>{children}</ContainerMain>
       <Footer />
     </MainC>
