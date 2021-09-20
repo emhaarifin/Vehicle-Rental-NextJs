@@ -105,7 +105,7 @@ function Navbar({ avatar }) {
             <div className="icon-user">
               <Image src={email} alt="icon chat"></Image>
               <img
-                src={avatar ? avatar : userData[0].avatar}
+                src={avatar ? avatar : userData[0].avatar ? userData[0].avatar : avatarUser.src}
                 onClick={dropDownUser}
                 className="avatar-user"
                 width="50px"
