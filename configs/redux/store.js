@@ -3,11 +3,32 @@ import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunkMiddleware from 'redux-thunk';
 import reducers from './reducers/index';
+import { persistReducer } from 'redux-persist';
 
-let store;
+import { CookieStorage } from 'redux-persist-cookie-storage';
+import Cookies from 'js-cookie';
 
-function initStore(initialState) {
-  return createStore(reducers, initialState, composeWithDevTools(applyMiddleware(thunkMiddleware)));
+const persistConfig = {
+  key: 'vehicle-rental',
+  keyPrefix: '',
+  timeout: 100,
+  storage: new CookieStorage(Cookies, {
+    setCookieOptions: {
+      path: '/',
+      secure: true,
+    },
+  }),
+  whitelist: ['user', 'reservation'],
+};
+export let store;
+export const persistedReducer = persistReducer(persistConfig, reducers);
+function initStore(initialState = {}) {
+  if (process.env.NODE_ENV !== 'production') {
+    store = createStore(persistedReducer, initialState, composeWithDevTools(applyMiddleware(thunkMiddleware)));
+  } else {
+    store = createStore(persistedReducer, initialState, applyMiddleware(thunkMiddleware));
+  }
+  return store;
 }
 
 export const initializeStore = (preloadedState) => {

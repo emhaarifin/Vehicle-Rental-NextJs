@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { CardHistory, Search, Main } from '@/components';
-import { customMedia } from '../styles/breakpoint';
+import { customMedia } from '../../styles/breakpoint';
 import { axios, privateRoute } from '@/configs';
 import cookies from 'next-cookies';
 
@@ -22,6 +22,7 @@ function History(DataHistory) {
           <div className="mt-5">
             {DataHistory ? (
               DataHistory?.DataHistory?.map((item, index) => {
+                console.log(item.image[0]);
                 return (
                   <CardHistory
                     key={index}
@@ -30,6 +31,8 @@ function History(DataHistory) {
                     status={item.status}
                     date={item.startDate}
                     total={item.subTotal}
+                    href={`/history/${item.id}`}
+                    // onClick={}
                   ></CardHistory>
                 );
               })

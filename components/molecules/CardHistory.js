@@ -3,28 +3,34 @@ import styled from 'styled-components';
 import { heroLogin } from '@/asset';
 import { customMedia } from '../../styles/breakpoint';
 import { Button } from '@/components';
-
+import Link from 'next/link';
 function CardHistory(props) {
   return (
     <StyleCard>
-      <div className="left-card">
-        <div className="the-img">
-          <img src={`${process.env.NEXT_PUBLIC_API_URL}/${props.image}`} alt="img"></img>
-        </div>
-        <div className="information">
-          <div>
-            <p className="text-24 text-bold c-black">{props.name}</p>
-            <p className="text-24 c-black">{props.date}</p>
+      <Link href={props.href}>
+        <a>
+          <div className="left-card">
+            <div className="the-img">
+              <img src={`${props.image}`} alt="img"></img>
+            </div>
+            <div className="information">
+              <div>
+                <p className="text-24 text-bold c-black">{props.name}</p>
+                <p className="text-24 p-date c-black">{props.date}</p>
+              </div>
+              <div className="mt-1">
+                <p className="text-24 p2 text-bold c-black">Prepayment: Rp.{props.total}</p>
+                <p className="text-24 p">{props.status}</p>
+              </div>
+            </div>
           </div>
-          <div className="mt-1">
-            <p className="text-24 p2 text-bold c-black">Prepayment: Rp.{props.total}</p>
-            <p className="text-24 p">{props.status}</p>
+          <div className="right-card">
+            <Button onClick={props.onClick} className="text-24 text-bold">
+              Delete
+            </Button>
           </div>
-        </div>
-      </div>
-      <div className="right-card">
-        <Button className="text-24 text-bold">Delete</Button>
-      </div>
+        </a>
+      </Link>
     </StyleCard>
   );
 }

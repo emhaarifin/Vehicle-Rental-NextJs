@@ -1,13 +1,19 @@
+import { actionTypes } from '@/configs';
 const initialValue = {
   data: [],
 };
 
 const reservationReducer = (state = initialValue, action) => {
   switch (action.type) {
-    case 'ADD_RESERVATION':
+    case actionTypes.ADD_RESERVATION:
       return {
         ...state,
         data: action.payload,
+      };
+    case actionTypes.FINISH_RESERVATION:
+      return {
+        ...state,
+        data: [],
       };
     default:
       return state;

@@ -7,7 +7,9 @@ import { customMedia } from '../../styles/breakpoint';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import cookies from 'next-cookies';
+import { useRouter } from 'next/router';
 function Id(vehicle) {
+  const router = useRouter();
   const { idUser } = vehicle;
   const data = vehicle.vehicle[0];
   const { category, description, stock, location, name, price, status, id, image } = data;
@@ -74,13 +76,9 @@ function Id(vehicle) {
         </StyleDetail>
         <StyleButton className="choice-item">
           <div className="choice-item">
-            <Link href={`/payment/${id}`}>
-              <a>
-                <Button onClick={() => dispatch(addReservation(form))} className="text-24 text-bold  bg__primary">
-                  Pay Now : Rp. {form.subTotal}
-                </Button>
-              </a>
-            </Link>
+            <Button onClick={() => dispatch(addReservation(form, router))} className="text-24 text-bold  bg__primary">
+              Pay Now : Rp. {form.subTotal}
+            </Button>
           </div>
         </StyleButton>
       </>
