@@ -5,7 +5,10 @@ import styled from 'styled-components';
 import { customMedia } from '../styles/breakpoint';
 import { useEffect, useState } from 'react';
 
+import { useSelector } from 'react-redux';
 export default function Home({ vehicles }) {
+  const { userData } = useSelector((state) => state.user);
+
   const [roles, setRoles] = useState();
   const getRole = () => {
     const roles = localStorage.getItem('roles');

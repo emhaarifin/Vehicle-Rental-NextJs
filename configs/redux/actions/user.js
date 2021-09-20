@@ -17,16 +17,16 @@ export const login = (data, router, resetForm) => (dispatch) => {
     .post('/auth/login', data, { withCredentials: true })
     .then(async (result) => {
       const resData = result.data.result;
+      const { roles, avatar, id, token } = resData[0];
       localStorage.setItem('isAuth', true);
-      localStorage.setItem('roles', resData.roles);
-      localStorage.setItem('avatar', resData.avatar);
-      localStorage.setItem('id', resData.id);
-      generateCookie('avatar', resData.avatar, 1);
-      generateCookie('token', resData.token, 1);
-      generateCookie('roles', resData.roles, 1);
-      generateCookie('id', resData.id, 1);
+      localStorage.setItem('roles', roles);
+      localStorage.setItem('avatar', avatar);
+      localStorage.setItem('id', id);
+      generateCookie('avatar', avatar, 1);
+      generateCookie('token', token, 1);
+      generateCookie('roles', roles, 1);
+      generateCookie('id', id, 1);
       dispatch({ type: actionTypes.USER_LOGIN, payload: resData });
-      swal('Success!', 'Login success', 'success');
       router.push('/');
       resetForm();
     })

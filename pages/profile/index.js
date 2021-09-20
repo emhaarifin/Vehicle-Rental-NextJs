@@ -70,7 +70,7 @@ function Index({ DataUser: ResUser, userId }) {
     <Main avatar={user.imagePreview}>
       <p className="text-36 text-bold mt-5 mb-5">Profile</p>
       {dataUser &&
-        dataUser.map((item, index) => {
+        dataUser?.map((item) => {
           return (
             <form key={item.id} onSubmit={handleSubmit} encType="multipart/form-data">
               <div>

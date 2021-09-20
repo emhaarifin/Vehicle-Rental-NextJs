@@ -44,7 +44,7 @@ export async function getServerSideProps() {
   const resCategory = await axios.get(`/category`);
   const category = await resCategory.data.result;
   await Promise.all(
-    category.map(async (item, index) => {
+    category?.map(async (item, index) => {
       const response = await axios.get(`/vehicle?limit=4&table=category&search=${item.name_category}`);
       const todo = await response;
       category[index].vehicles = todo.data.data;

@@ -1,17 +1,17 @@
 import { actionTypes } from '@/configs';
 const initialValue = {
-  userData: {},
-  userDataID: {},
-  errorMsg: {},
+  userData: [],
+  userDataID: [],
+  errorMsg: [],
 };
 const userReducer = (state = initialValue, action) => {
   switch (action.type) {
     case 'LOGOUT':
       return {
         ...state,
-        userData: {},
-        userDataID: {},
-        errorMsg: {},
+        userData: [],
+        userDataID: [],
+        errorMsg: [],
       };
     case 'UPDATE_USER':
       return {

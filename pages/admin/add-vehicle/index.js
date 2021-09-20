@@ -35,7 +35,7 @@ function Index({ data, dataLocation }) {
   };
 
   const [images, setImages] = useState([]);
-  const [imagesPreview] = [images.map((item) => URL.createObjectURL(item))];
+  const [imagesPreview] = [images?.map((item) => URL.createObjectURL(item))];
   const onFileChange = (e) => {
     setImages([...e.target.files]);
   };
@@ -120,7 +120,7 @@ function Index({ data, dataLocation }) {
             ></Input>
             <select className="input text" onChange={handleChange} placeholder="Location" name="location_id">
               {locationData &&
-                locationData.map((item) => {
+                locationData?.map((item) => {
                   return (
                     <>
                       <option key={item.id} name="category_id" value={item.id}>
@@ -180,7 +180,7 @@ function Index({ data, dataLocation }) {
               Add item to
             </option>
             {categoryData &&
-              categoryData.map((item) => {
+              categoryData?.map((item) => {
                 return (
                   <>
                     <option key={item.id} name="category_id" value={item.id}>

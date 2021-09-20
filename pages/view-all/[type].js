@@ -93,7 +93,7 @@ function VehicleType({ resData }) {
             <section className="container pagination-wrapper">
               <nav>
                 <ul className="pagination">
-                  {pageNumbers.map((number) => {
+                  {pageNumbers?.map((number) => {
                     return (
                       <li key={number} className="page-item">
                         <Button onClick={() => btnPagination(number)} className="c-primary page-link">
@@ -131,7 +131,7 @@ const StyleType = styled.div`
 export const getStaticPaths = async () => {
   const { data } = await axios.get(`/category`);
 
-  const dataLocation = data.result.map((item) => ({
+  const dataLocation = data.result?.map((item) => ({
     params: { type: item.name_category.toLowerCase() },
   }));
   // ket: data paths harus sperti dibawah

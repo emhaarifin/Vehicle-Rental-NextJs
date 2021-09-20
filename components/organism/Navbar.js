@@ -19,15 +19,15 @@ function Navbar({ avatar }) {
       document.cookie = `${cname[index]}=; 'expires=Thu, 01 Jan 1970 00:00:00 GMT'; path=/;`;
     }
   };
-  const handleLogOut = () => {
+  const handleLogOut = async () => {
     localStorage.clear();
-    setLogin(!login);
     deleteCookies(['token', 'roles', 'id', 'avatar']);
-    router.push('/login');
+    await router.push('/login');
+    setLogin(!login);
   };
 
   const isAuth = async () => {
-    const auth = localStorage.getItem('isAuth');
+    const auth = await localStorage.getItem('isAuth');
     setLogin(auth);
   };
 
@@ -105,7 +105,7 @@ function Navbar({ avatar }) {
             <div className="icon-user">
               <Image src={email} alt="icon chat"></Image>
               <img
-                src={avatar ? avatar : userData[0].avatar ? userData[0].avatar : avatarUser.src}
+                src={avatar ? avatar : userData[0]?.avatar ? userData[0]?.avatar : avatarUser.src}
                 onClick={dropDownUser}
                 className="avatar-user"
                 width="50px"
@@ -134,14 +134,18 @@ function Navbar({ avatar }) {
           ) : (
             <div className="button">
               <div>
-                <Link href="/login">
-                  <Button className="text-black login">Login</Button>
-                </Link>
+                <Button className="text-black login">
+                  <Link href="/login">
+                    <a>Login</a>
+                  </Link>
+                </Button>
               </div>
               <div>
-                <Link href="/signup">
-                  <Button className="text-black signup">Sign Up</Button>
-                </Link>
+                <Button className="text-black signup">
+                  <Link href="/signup">
+                    <a>Sign Up</a>
+                  </Link>
+                </Button>
               </div>
             </div>
           )}

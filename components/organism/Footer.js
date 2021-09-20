@@ -23,7 +23,7 @@ function Footer({ onlyRegister }) {
           </div>
           <div className="destinations">
             <p className="text-18 text-bold">Destinations</p>
-            {destinations.map((item, index) => {
+            {destinations?.map((item, index) => {
               return (
                 <p key={index} className="text-18 c-light">
                   {item}
@@ -33,7 +33,7 @@ function Footer({ onlyRegister }) {
           </div>
           <div className="vehicle">
             <p className="text-18 text-bold">Vehicle</p>
-            {vehicle.map((item, index) => {
+            {vehicle?.map((item, index) => {
               return (
                 <p key={index} className="text-18 c-light">
                   {item}
@@ -44,7 +44,7 @@ function Footer({ onlyRegister }) {
           <div className="interest">
             <p className="text-18 text-bold">Interest</p>
             {interests &&
-              interests.map((item, index) => {
+              interests?.map((item, index) => {
                 return (
                   <p key={index} className="text-18 c-light">
                     {item}
@@ -56,7 +56,7 @@ function Footer({ onlyRegister }) {
         <hr></hr>
         <div className="social-media">
           {socialmedia &&
-            socialmedia.map((item, index) => {
+            socialmedia?.map((item, index) => {
               return <Image src={item} alt="Social Media" key={index}></Image>;
             })}
         </div>

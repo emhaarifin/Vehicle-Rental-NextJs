@@ -16,7 +16,7 @@ function Id(DataReser) {
     <Main>
       <p>Detail Item</p>
       {payment &&
-        payment.map((item) => {
+        payment?.map((item) => {
           console.log(item);
           return (
             <>
