@@ -1,10 +1,9 @@
 import styled from 'styled-components';
 import Image from 'next/image';
 import { Button, Input, LayoutAuth } from '@/components';
-import { axios, publicRoute, login } from '@/configs';
+import { publicRoute, login } from '@/configs';
 import { heroLogin, google } from '@/asset';
 import { customMedia } from '../styles/breakpoint';
-import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useDispatch } from 'react-redux';
