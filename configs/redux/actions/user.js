@@ -71,3 +71,16 @@ export const updateProfile = (user, id) => (dispatch) => {
       swal('error', error?.response?.data?.message || 'Gagal Update ', 'error');
     });
 };
+
+export const getUserById = (id) => (dispatch) => {
+  axios
+    .get(`/auth/profile/${id}`)
+    .then((result) => {
+      const DataUser = result.data.result;
+      dispatch({ type: actionTypes.GET_USER, payload: DataUser });
+      swal('Success', result?.data?.message || 'Suskes Update Data', 'success');
+    })
+    .catch((error) => {
+      swal('error', error?.response?.data?.message || 'Gagal Update ', 'error');
+    });
+};

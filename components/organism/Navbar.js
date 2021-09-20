@@ -8,13 +8,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Button from '../atoms/Button';
 import { useState, useEffect } from 'react';
-import cookieCutter from 'cookie-cutter';
-import { axios } from '@/configs';
+import { useSelector } from 'react-redux';
 function Navbar({ avatar }) {
   const [login, setLogin] = useState(true);
-  // const [avatar, setAvatar] = useState(null);
-  const [refresh, setRefresh] = useState(true);
 
+  const { DataUser } = useSelector((state) => state.user);
+  console.log(DataUser);
   const deleteCookies = (cname) => {
     for (let index = 0; index < cname.length; index++) {
       document.cookie = `${cname[index]}=; 'expires=Thu, 01 Jan 1970 00:00:00 GMT'; path=/;`;
@@ -27,14 +26,8 @@ function Navbar({ avatar }) {
   };
 
   const isAuth = async () => {
-    // let id = localStorage.getItem('id');
-    // const res = await axios.get(`/auth/profile/${id}`);
-    // const DataUser = await res.data.result;
-
     const auth = localStorage.getItem('isAuth');
-    // const avaP = localStorage.getItem('avatar');
     setLogin(auth);
-    // setAvatar(DataUser[0]?.avatar);
   };
 
   function dropDownUser() {

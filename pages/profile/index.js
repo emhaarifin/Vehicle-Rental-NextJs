@@ -3,14 +3,15 @@ import { editProfile, avatarUser } from '@/asset';
 import styled from 'styled-components';
 import { customMedia } from '../../styles/breakpoint';
 import { Input, Button, Main } from '@/components';
-import { axios, privateRoute } from '@/configs';
-import { useState } from 'react';
+import { axios, privateRoute, getUserById } from '@/configs';
+import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import cookies from 'next-cookies';
 
-function Index({ DataUser }) {
+function Index({ DataUser, userId }) {
   const dispatch = useDispatch();
   const id = DataUser[0].id.toString();
+  const [reset, setReset] = useState(false);
   const [user, setUser] = useState({
     phone_number: '',
     gender: '',
@@ -20,6 +21,9 @@ function Index({ DataUser }) {
     imagePreview: null,
   });
 
+  useEffect(() => {
+    dispatch(getUserById(userId));
+  }, [reset]);
   const handleInputFile = (e) => {
     setUser({
       ...user,
@@ -50,7 +54,9 @@ function Index({ DataUser }) {
       })
       .then((result) => {
         dispatch({ type: 'UPDATE_USER', payload: data });
+
         swal('Success', result?.data?.message || 'Suskes Update Data', 'success');
+        setReset(!reset);
       })
       .catch((error) => {
         swal('error', error?.response?.data?.message || 'Gagal Update ', 'error');
@@ -272,6 +278,6 @@ export const getServerSideProps = privateRoute(async (context) => {
   const res = await axios.get(`/auth/profile/${id}`);
   const DataUser = await res.data.result;
   return {
-    props: { DataUser },
+    props: { DataUser, userId: id },
   };
 });

@@ -1,5 +1,5 @@
 import axios from './axios';
-import { Logout, updateProfile, login, register } from './redux/actions/user';
+import { Logout, updateProfile, login, register, getUserById } from './redux/actions/user';
 import { addReservation } from './redux/actions/reservation';
 import { actionTypes } from './redux/actionTypes';
 import { publicRoute } from './routes/publicRoute';
@@ -15,5 +15,6 @@ export {
   addReservation,
   publicRoute,
   privateRoute,
+  getUserById,
   privateRouteAdmin,
 };
