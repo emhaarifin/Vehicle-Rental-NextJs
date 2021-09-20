@@ -9,11 +9,11 @@ import Link from 'next/link';
 import Button from '../atoms/Button';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
 function Navbar({ avatar }) {
   const [login, setLogin] = useState(true);
-
-  const { DataUser } = useSelector((state) => state.user);
-  console.log(DataUser);
+  const router = useRouter();
+  const { userData } = useSelector((state) => state.user);
   const deleteCookies = (cname) => {
     for (let index = 0; index < cname.length; index++) {
       document.cookie = `${cname[index]}=; 'expires=Thu, 01 Jan 1970 00:00:00 GMT'; path=/;`;
@@ -23,6 +23,7 @@ function Navbar({ avatar }) {
     localStorage.clear();
     setLogin(!login);
     deleteCookies(['token', 'roles', 'id', 'avatar']);
+    router.push('/login');
   };
 
   const isAuth = async () => {
@@ -104,7 +105,7 @@ function Navbar({ avatar }) {
             <div className="icon-user">
               <Image src={email} alt="icon chat"></Image>
               <img
-                src={avatar ? avatar : avatarUser.src}
+                src={avatar ? avatar : userData[0].avatar}
                 onClick={dropDownUser}
                 className="avatar-user"
                 width="50px"
@@ -186,6 +187,7 @@ const StyleNavbar = styled.nav`
     gap: 2rem;
     position: relative;
     .avatar-user {
+      object-fit: cover;
       border-radius: 50%;
       cursor: pointer;
     }
