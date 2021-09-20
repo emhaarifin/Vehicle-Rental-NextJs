@@ -27,7 +27,7 @@ export const login = (data, router, resetForm) => (dispatch) => {
       generateCookie('roles', roles, 1);
       generateCookie('id', id, 1);
       dispatch({ type: actionTypes.USER_LOGIN, payload: resData });
-      router.push('/');
+      await router.push('/');
       resetForm();
     })
     .catch((error) => {

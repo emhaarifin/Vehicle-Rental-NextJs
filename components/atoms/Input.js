@@ -41,7 +41,6 @@ function Input(props) {
             min={props.min}
             max={props.max}
             checked={props.checked}
-            // checked={props.defaultChecked === props.value ? true : false}
             {...props}
           ></input>
           <span className="checkmark"></span>
