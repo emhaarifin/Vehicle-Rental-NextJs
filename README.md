@@ -1,4 +1,6 @@
-<img align="center" src="https://res.cloudinary.com/emhaarifin/image/upload/v1632196777/favicon_hayrhv.png">
+<p  align="center" >
+<img src="https://res.cloudinary.com/emhaarifin/image/upload/v1632196777/favicon_hayrhv.png">
+    <p>
 <h1 align="center">Vehicle Rental</h1>
 
 
