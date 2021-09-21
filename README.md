@@ -90,7 +90,7 @@ npm start
 
 <div align="center">
     <img width="350" src="https://res.cloudinary.com/emhaarifin/image/upload/v1632184106/Screen_Shot_2021-09-21_at_07.26.56_gy5tba.png">   
-    <img width="350" src="https://res.cloudinary.com/emhaarifin/image/upload/v1632184101/Screen_Shot_2021-09-21_at_07.21.44_qzsbjz.pn">
+    <img width="350" src="https://res.cloudinary.com/emhaarifin/image/upload/v1632184101/Screen_Shot_2021-09-21_at_07.21.44_qzsbjz.png">
 </div>
 <div align="center">
     <img width="350" src="https://res.cloudinary.com/emhaarifin/image/upload/v1632183153/Screen_Shot_2021-09-21_at_06.53.50_z3t4wr.png">   
