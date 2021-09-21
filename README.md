@@ -1,6 +1,7 @@
 <h1 align="center">Vehicle Rental</h1>
 
 <p align="center">
+    <img src="https://res.cloudinary.com/emhaarifin/image/upload/v1632196777/favicon_hayrhv.png">
     <a href="https://vehicle-rental-next-js.vercel.app/">View Demo</a>
     ·
     <a href="https://github.com/emhaarifin/Vehicle-Rental-NextJs/issues">Report Bug</a>
