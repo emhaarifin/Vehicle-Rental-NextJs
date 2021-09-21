@@ -31,7 +31,7 @@ function History(DataHistory) {
                     status={item.status}
                     date={item.startDate}
                     total={item.subTotal}
-                    href={`/history/${item.id}`}
+                    href={`/payment/${item.id}`}
                     // onClick={}
                   ></CardHistory>
                 );

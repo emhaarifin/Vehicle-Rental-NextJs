@@ -15,7 +15,7 @@ function Id(DataReser) {
   const ReserData = useSelector((state) => state.reservation.data);
   const { userData } = useSelector((state) => state.user);
   const { result } = DataReser;
-  const { fullname, phone_number, email } = userData;
+  const { fullname, phone_number, email } = userData[0];
   const [payment, setPayment] = useState(result);
   console.log(userData, ReserData, 'dari payment');
   const [data, setData] = useState({
@@ -74,9 +74,9 @@ function Id(DataReser) {
                     <div className="left-content">
                       <p className="text-24 text-bold">Identity: </p>
                       <p className="text-24 ">
-                        {fullname} {phone_number}
+                        {fullname || ''} {phone_number || ''}
                       </p>
-                      <p className="text-24">{email || 'aa'}</p>
+                      <p className="text-24">{email || ''}</p>
                     </div>
                   </div>
                 </div>
