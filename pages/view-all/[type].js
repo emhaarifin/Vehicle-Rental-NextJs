@@ -31,12 +31,12 @@ function VehicleType({ resData }) {
         const pageDetail = result.data.pageDetail;
         setData(data);
         setPagination(pageDetail);
-        setErr(result.data.status);
+        setErr(result?.data?.status);
       })
-      .catch((err) => setErr(err.response.status));
+      .catch((err) => setErr(err?.response?.status));
   };
 
-  for (let i = 1; i <= pagination.totalPage; i++) {
+  for (let i = 1; i <= pagination.totalPage - 1; i++) {
     pageNumbers.push(i);
   }
 

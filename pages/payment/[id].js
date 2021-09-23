@@ -12,26 +12,21 @@ function Id(DataReser) {
   const dispatch = useDispatch();
 
   const router = useRouter();
-  const ReserData = useSelector((state) => state.reservation.data);
   const { userData } = useSelector((state) => state.user);
   const { result } = DataReser;
   const { fullname, phone_number, email } = userData[0];
-  const [payment, setPayment] = useState(result);
-  console.log(userData, ReserData, 'dari payment');
   const [data, setData] = useState({
-    method: '',
+    method: 'Cash',
   });
   const handleChange = (e) => {
-    e.preventDefault();
     setData({ method: e.target.value });
   };
 
   return (
     <Main>
       <p>Detail Item</p>
-      {payment &&
-        payment?.map((item) => {
-          console.log(item);
+      {result &&
+        result?.map((item) => {
           return (
             <>
               <StyleDetail>
@@ -85,14 +80,15 @@ function Id(DataReser) {
                 <label htmlFor="method">Payment:</label>
                 <select
                   id="method"
-                  onChange={(e) => handleChange(e)}
+                  onChange={handleChange}
+                  value={data.method}
                   className="bg__gray"
                   style={{ width: '100%', padding: '1.35rem', border: 'none' }}
                 >
-                  <option value="Cash" name="method" className="text-24">
+                  <option value="Cash" className="text-24">
                     Cash
                   </option>
-                  <option value="Transfer" name="method" className="text-24">
+                  <option value="Transfer" className="text-24">
                     Transfer
                   </option>
                 </select>
