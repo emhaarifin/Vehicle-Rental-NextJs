@@ -52,13 +52,13 @@ function Id(vehicle) {
               <p className="text-24 c-green text-bold">{status}</p>
               <p className="text-24">Type: {category}</p>
               <p className="text-36 font-playfair text-bold price">Rp. {price}/day</p>
-              <div className="choice choiche-item">
+              {/* <div className="choice choiche-item">
                 <div className="choice-item">
                   <Button className="btn-minus bg__gray">-</Button>
                   <Input type="number" value={stock}></Input>
                   <Button className="btn-plus bg__primary">+</Button>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </StyleDetail>
@@ -170,33 +170,33 @@ const StyleDetail = styled.div`
       text-align: right;
       `}
     }
-    .choice {
-      display: flex;
-      flex-direction: column;
-      margin-top: 5rem;
-      gap: 2.5rem;
-      .choice-item:nth-child(1) {
-        display: flex;
-        justify-content: space-between;
-        button {
-          padding: 1.4rem;
-          width: 15%;
-        }
-        input {
-          width: 20%;
-          text-align: center;
-          background: transparent;
-        }
-      }
-      .choice-item:nth-child(2) {
-        button {
-          padding: 1.35rem;
-          box-shadow: 0px 0px 20px rgba(251, 143, 29, 0.4);
-        }
-        width: 100%;
-        align-self: center;
-      }
-    }
+    // .choice {
+    //   display: flex;
+    //   flex-direction: column;
+    //   margin-top: 5rem;
+    //   gap: 2.5rem;
+    //   .choice-item:nth-child(1) {
+    //     display: flex;
+    //     justify-content: space-between;
+    //     button {
+    //       padding: 1.4rem;
+    //       width: 15%;
+    //     }
+    //     input {
+    //       width: 20%;
+    //       text-align: center;
+    //       background: transparent;
+    //     }
+    //   }
+    //   .choice-item:nth-child(2) {
+    //     button {
+    //       padding: 1.35rem;
+    //       box-shadow: 0px 0px 20px rgba(251, 143, 29, 0.4);
+    //     }
+    //     width: 100%;
+    //     align-self: center;
+    //   }
+    // }
   }
 `;
 
