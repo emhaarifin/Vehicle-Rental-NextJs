@@ -24,11 +24,11 @@ function CardHistory(props) {
               </div>
             </div>
           </div>
-          <div className="right-card">
+          {/* <div className="right-card">
             <Button onClick={props.onClick} className="text-24 text-bold">
               Delete
             </Button>
-          </div>
+          </div> */}
         </a>
       </Link>
     </StyleCard>
@@ -75,28 +75,28 @@ const StyleCard = styled.div`
       }
     }
   }
-  &:hover {
-    overflow: hidden;
-    .left-card {
-      margin-left: -100px;
-    }
-    .right-card {
-      visibility: visible;
-      opacity: 1;
-    }
-  }
-  .right-card {
-    visibility: hidden;
-    opacity: 0;
-    margin: auto 0;
-    button {
-      padding: 1rem 2rem;
-      background: #ffcd61;
-      box-shadow: 0px 0px 20px rgba(251, 143, 29, 0.4);
-      border-radius: 10px;
-    }
-    transition: visibility 10s, opacity 0.8s linear;
-  }
+  // &:hover {
+  //   overflow: hidden;
+  //   .left-card {
+  //     margin-left: -100px;
+  //   }
+  //   .right-card {
+  //     visibility: visible;
+  //     opacity: 1;
+  //   }
+  // }
+  // .right-card {
+  //   visibility: hidden;
+  //   opacity: 0;
+  //   margin: auto 0;
+  //   button {
+  //     padding: 1rem 2rem;
+  //     background: #ffcd61;
+  //     box-shadow: 0px 0px 20px rgba(251, 143, 29, 0.4);
+  //     border-radius: 10px;
+  //   }
+  //   transition: visibility 10s, opacity 0.8s linear;
+  // }
 `;
 
 export default CardHistory;

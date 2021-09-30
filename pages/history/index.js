@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import { CardHistory, Search, Main } from '@/components';
+import { CardHistory, Search, Main, CardProduct } from '@/components';
 import { customMedia } from '../../styles/breakpoint';
 import { axios, privateRoute } from '@/configs';
 import cookies from 'next-cookies';
 
-function History(DataHistory) {
+function History({ DataHistory, vehicles }) {
   return (
     <Main>
       <StyleHistory>
@@ -21,7 +21,7 @@ function History(DataHistory) {
           </div>
           <div className="mt-5">
             {DataHistory ? (
-              DataHistory?.DataHistory?.map((item, index) => {
+              DataHistory?.map((item, index) => {
                 console.log(item.image[0]);
                 return (
                   <CardHistory
@@ -37,13 +37,29 @@ function History(DataHistory) {
                 );
               })
             ) : (
-              <p>Data Tidak Ada</p>
+              <p>Belum Ada Reservasi</p>
             )}
           </div>
         </div>
-        <div className="right">
+        {/* <div className="right">
           <p>New Arrival</p>
-        </div>
+          <div className="right-card">
+            {vehicles?.map((item, index) => {
+              return (
+                <>
+                  <CardProduct
+                    href={`/vehicle/${item.id}`}
+                    key={index}
+                    image={item.image[0]}
+                    alt={item.name}
+                    name={item.name}
+                    location={item.location}
+                  ></CardProduct>
+                </>
+              );
+            })}
+          </div>
+        </div> */}
       </StyleHistory>
     </Main>
   );
@@ -52,25 +68,34 @@ function History(DataHistory) {
 const StyleHistory = styled.div`
   display: flex;
   gap: 5%;
+  // & .right {
+  //   top: 10px;
+  //   height: calc(100vh + 250px);
+  //   position: sticky;
+  //   .right-card {
+  //     width: 100%;
+  //   }
+  // }
   ${customMedia.lessThan('media_md')`
   flex-direction: column;`}
-  .left {
+  & .left {
     flex: 2 16%;
     .search {
       display: flex;
       gap: 5%;
     }
   }
-  .right {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid #dadada;
-    box-sizing: border-box;
-    border-radius: 10px;
-    padding: 1rem;
-  }
+  // & .right {
+  //   flex: 1;
+  //   display: flex;
+  //   flex-direction: column;
+  //   justify-content: center;
+  //   align-items: center;
+  //   border: 1px solid #dadada;
+  //   box-sizing: border-box;
+  //   border-radius: 10px;
+  //   padding: 1rem;
+  // }
 `;
 
 export default History;
@@ -80,8 +105,10 @@ export const getServerSideProps = privateRoute(async (context) => {
     const idUser = cookies(context).id;
     const res = await axios.get(`/reservation/get/${idUser}`);
     const DataHistory = await res.data.result;
+    const resVehicle = await axios.get(`/vehicle?limit=2&sort=DESC`);
+    const vehicles = await resVehicle.data.data;
     return {
-      props: { DataHistory },
+      props: { DataHistory, vehicles },
     };
   } catch (error) {
     return {
