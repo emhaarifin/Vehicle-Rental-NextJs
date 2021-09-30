@@ -114,9 +114,8 @@ npm start
     <img width="700" src="https://res.cloudinary.com/emhaarifin/image/upload/v1633025193/github/vehicle/screenshot_1_bjquxc.png">
 </div>
 
-<p align="center"> 
 ** Admin **
-</p>
+
 <div align="center">
     <img width="700" src="https://res.cloudinary.com/emhaarifin/image/upload/v1633025515/github/vehicle/screenshot_1_enrmai.png">
 </div>
