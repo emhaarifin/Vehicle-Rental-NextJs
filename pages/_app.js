@@ -33,7 +33,7 @@ function MyApp({ Component, pageProps }) {
             color="linear-gradient(91.97deg, #f8a170 14.73%, #ffcd61 97.52%)"
             startPosition={0.3}
             stopDelayMs={200}
-            height={3}
+            height={4}
             showOnShallow={true}
             options={{ easing: 'ease', speed: 500, showSpinner: false }}
           />

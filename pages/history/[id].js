@@ -10,14 +10,15 @@ import { useState } from 'react';
 function Id(DataReser) {
   const { userData } = useSelector((state) => state.user);
   const { result } = DataReser;
-  const { fullname, phone_number, email } = userData;
+  console.log(userData);
+  const { fullname, phone_number, email } = userData[0];
   const [payment, setPayment] = useState(result);
   return (
     <Main>
       <p>Detail Item</p>
       {payment &&
         payment?.map((item) => {
-          console.log(item);
+          console.log(item, 'tem hs');
           return (
             <>
               <StyleDetail>
@@ -58,9 +59,9 @@ function Id(DataReser) {
                     <div className="left-content">
                       <p className="text-24 text-bold">Identity: </p>
                       <p className="text-24 ">
-                        {fullname} {phone_number}
+                        {fullname || ''} {phone_number || ''}
                       </p>
-                      <p className="text-24">{email || 'aa'}</p>
+                      <p className="text-24">{email || ''}</p>
                     </div>
                   </div>
                 </div>

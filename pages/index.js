@@ -32,15 +32,17 @@ export default function Home({ vehicles }) {
               </div>
               <div className="my-flex my-col">
                 <div className="my-flex my-row">
-                  <Input className="cstm" placeholder="Location"></Input>
-                  <Input className="cstm" placeholder="Type"></Input>
+                  <Input disabled className="cstm" placeholder="Location"></Input>
+                  <Input disabled className="cstm" placeholder="Type"></Input>
                 </div>
                 {/* <div className="my-flex my-row">
                   <Input className="cstm " placeholder="Payment"></Input>
                   <Input className="cstm" placeholder="Date"></Input>
                 </div> */}
               </div>
-              <Button className="btn-exprole text-bold bg__primary c-black text-18">Exprole</Button>
+              <Button disabled={true} className="btn-exprole text-bold bg__primary c-black text-18">
+                Exprole
+              </Button>
             </div>
           </div>
         </ContainerMain>
@@ -137,6 +139,7 @@ const StyleHero = styled.div`
   }
   `}
   .cstm {
+    cursor: not-allowed;
     background: rgba(255, 255, 255, 0.5);
     border: 0.8px solid #afb0b9;
   }

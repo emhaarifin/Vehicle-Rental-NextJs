@@ -21,8 +21,8 @@ export const finishReservation = (id, data, router) => (dispatch) => {
     .then(async () => {
       console.log(data, 'data finish payment');
       dispatch({ type: actionTypes.FINISH_RESERVATION });
-      await swal('success', 'Payment Success', 'success');
-      router.push('/history');
+      swal('success', 'Payment Success', 'success');
+      router.push(`/history/${id}`);
     })
     .catch((error) => {
       console.log(error);
