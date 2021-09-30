@@ -5,6 +5,7 @@ import { Input, Button, Main } from '@/components';
 import styled from 'styled-components';
 import { customMedia } from '../../../styles/breakpoint';
 import swal from 'sweetalert';
+import { frame2, frame3 } from '@/asset';
 import { useState } from 'react';
 function Index({ vehicleItem, data, dataLocation }) {
   const { location_id, category_id, name, description, price, status, stock, image } = vehicleItem.result[0];
@@ -108,12 +109,12 @@ function Index({ vehicleItem, data, dataLocation }) {
               </div>
               <div className="second-image second">
                 <div className="second">
-                  <img src={imagesPreview[1] ? imagesPreview[1] : image[1]} alt="aa"></img>
+                  <img src={imagesPreview[1] ? imagesPreview[1] : image[1] ? image[1] : frame2.src} alt="aa"></img>
                 </div>
                 <div className="second">
                   <div className="input-files">
                     <label className="label">
-                      <img src={imagesPreview[2] ? imagesPreview[2] : image[2]} alt="aa"></img>
+                      <img src={imagesPreview[2] ? imagesPreview[2] : image[2] ? image[2] : frame3.src} alt="aa"></img>
                       <Input
                         multiple
                         id="image"
